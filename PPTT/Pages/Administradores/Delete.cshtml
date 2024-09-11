@@ -1,0 +1,64 @@
+﻿@page
+@model PPTT.Pages.Administradores.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Admin</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Admin.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Admin.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Admin.Sname)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Admin.Sname)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Admin.Dni)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Admin.Dni)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Admin.NumeroControl)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Admin.NumeroControl)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Admin.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Admin.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Admin.Division)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Admin.Division)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Admin.Servicio)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Admin.Servicio)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="Admin.Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

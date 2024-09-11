@@ -1,0 +1,79 @@
+﻿@page
+@model PPTT.Pages.Administradores.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Admin[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Admin[0].Sname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Admin[0].Dni)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Admin[0].NumeroControl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Admin[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Admin[0].Division)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Admin[0].Servicio)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Admin) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dni)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroControl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>            
+            <td>
+                    @if (item.Division == 0)
+                    {
+                        @:División Mantenimiento de Instalaciones
+                    }
+                    else
+                    {
+                        @:División Comunicaciones e Informática
+                    }
+            </td>          
+            <td>
+                 @Html.DisplayFor(modelItem => item.Servicio)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

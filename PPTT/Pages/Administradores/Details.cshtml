@@ -1,0 +1,61 @@
+﻿@page
+@model PPTT.Pages.Administradores.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Admin</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Admin.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Admin.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Admin.Sname)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Admin.Sname)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Admin.Dni)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Admin.Dni)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Admin.NumeroControl)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Admin.NumeroControl)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Admin.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Admin.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Admin.Division)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Admin.Division)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Admin.Servicio)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Admin.Servicio)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Admin.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

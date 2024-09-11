@@ -1,0 +1,65 @@
+﻿@page
+@model PPTT.Pages.Administradores.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Admin</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Admin.Id" />
+            <div class="form-group">
+                <label asp-for="Admin.Name" class="control-label"></label>
+                <input asp-for="Admin.Name" class="form-control" />
+                <span asp-validation-for="Admin.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Admin.Sname" class="control-label"></label>
+                <input asp-for="Admin.Sname" class="form-control" />
+                <span asp-validation-for="Admin.Sname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Admin.Dni" class="control-label"></label>
+                <input asp-for="Admin.Dni" class="form-control" />
+                <span asp-validation-for="Admin.Dni" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Admin.NumeroControl" class="control-label"></label>
+                <input asp-for="Admin.NumeroControl" class="form-control" />
+                <span asp-validation-for="Admin.NumeroControl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Admin.Email" class="control-label"></label>
+                <input asp-for="Admin.Email" class="form-control" />
+                <span asp-validation-for="Admin.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Admin.Division" class="control-label"></label>
+                <input asp-for="Admin.Division" class="form-control" />
+                <span asp-validation-for="Admin.Division" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Admin.Servicio" class="control-label"></label>
+                <input asp-for="Admin.Servicio" class="form-control" />
+                <span asp-validation-for="Admin.Servicio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
