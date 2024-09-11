@@ -19,6 +19,6 @@ namespace PPTT.Models
         [Display(Name = "División")]
         public int? Division {  get; set; }
         [Display(Name = "Servicio")]
-        public int? Servicio { get; set; }        
+        public string? Servicio { get; set; }        
     }
 }
