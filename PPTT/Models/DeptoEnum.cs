@@ -9,7 +9,7 @@ namespace PPTT.Models
         [Display(Name = "División Comunicaciones e Informática")]
         Especiales
     }
-    public enum ServicioEnum
+    public enum SerManEnum
     {
         Tablero,
         [Display(Name = "Plomería")]
@@ -28,7 +28,7 @@ namespace PPTT.Models
         Pintura,
         Durlock,
     }
-    public enum ServiciosEnum
+    public enum SerInfEnum
     {
         [Display(Name = "Telefonía")]
         Telefonia = 50

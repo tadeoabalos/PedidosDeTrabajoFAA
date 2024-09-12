@@ -47,11 +47,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Admin.Servicio" class="control-label"></label>                
+                @{/*Necesito por medio de AJAX realizar un select dinamico*/}                            
                 <select asp-for="Admin.Servicio"
-                        asp-items="Html.GetEnumSelectList<Models.ServicioEnum>()">
+                        asp-items="Html.GetEnumSelectList<Models.SerManEnum>()">
                 </select>
                 <select asp-for="Admin.Servicio"
-                        asp-items="Html.GetEnumSelectList<Models.ServiciosEnum>()">
+                        asp-items="Html.GetEnumSelectList<Models.SerInfEnum>()">
                 </select>                
                 <span asp-validation-for="Admin.Servicio" class="text-danger"></span>
             </div>                        
