@@ -39,27 +39,25 @@
                 <span asp-validation-for="Admin.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Admin.Division" class="control-label"></label>                
+                <label asp-for="Admin.Division" class="control-label"></label>
                 <select asp-for="Admin.Division"
-                        asp-items="Html.GetEnumSelectList<Models.DeptoEnum>()">
+                        asp-items="Html.GetEnumSelectList<Models.DeptoEnum>()"
+                        id="deptSelect">
                 </select>
                 <span asp-validation-for="Admin.Division" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Admin.Servicio" class="control-label"></label>                
-                @{/*Necesito por medio de AJAX realizar un select dinamico*/}                            
-                <select asp-for="Admin.Servicio"
-                        asp-items="Html.GetEnumSelectList<Models.SerManEnum>()">
+                <label asp-for="Admin.Servicio" class="control-label"></label>
+                <br/>
+                <select asp-for="Admin.Servicio" id="serviceSelect">
+                    <option value="">Seleccione un servicio</option>                    
                 </select>
-                <select asp-for="Admin.Servicio"
-                        asp-items="Html.GetEnumSelectList<Models.SerInfEnum>()">
-                </select>                
                 <span asp-validation-for="Admin.Servicio" class="text-danger"></span>
-            </div>                        
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
-        </form>
+        </form>        
     </div>
 </div>
 
@@ -68,5 +66,30 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $('#deptSelect').change(function () { 
+                var selectedDept = $(this).val(); 
+
+                $.ajax({
+                    url: '@Url.Page("./Create", new { handler = "OnGetDivision" })',                    
+                    type: 'GET',
+                    data: { division: selectedDept },
+                    success: function (data) {                        
+                        var serviceSelect = $('#serviceSelect');                        
+                        serviceSelect.empty();                        
+                        serviceSelect.append('<option value="">Seleccione un servicio</option>');
+                        $.each(data, function (i, servicio) {
+                            serviceSelect.append('<option value="' + servicio.value + '">' + servicio.text + '</option>');
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
+

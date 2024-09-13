@@ -15,5 +15,6 @@ namespace PPTT.Data
         }
 
         public DbSet<PPTT.Models.Admin> Admin { get; set; } = default!;
+        
     }
 }
