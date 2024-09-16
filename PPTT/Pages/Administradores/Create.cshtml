@@ -4,7 +4,6 @@
 @{
     ViewData["Title"] = "Crear Usuario";
 }
-
 <h1>Create</h1>
 
 <h4>Admin</h4>
@@ -49,7 +48,7 @@
             <div class="form-group">
                 <label asp-for="Admin.Servicio" class="control-label"></label>
                 <br/>
-                <select asp-for="Admin.Servicio" id="serviceSelect">
+                <select asp-for="Admin.Servicio">
                     <option value="">Seleccione un servicio</option>                    
                 </select>
                 <span asp-validation-for="Admin.Servicio" class="text-danger"></span>
@@ -65,29 +64,7 @@
     <a asp-page="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            $('#deptSelect').change(function () { 
-                var selectedDept = $(this).val(); 
-
-                $.ajax({
-                    url: '@Url.Page("./Create", new { handler = "OnGetDivision" })',                    
-                    type: 'GET',
-                    data: { division: selectedDept },
-                    success: function (data) {                        
-                        var serviceSelect = $('#serviceSelect');                        
-                        serviceSelect.empty();                        
-                        serviceSelect.append('<option value="">Seleccione un servicio</option>');
-                        $.each(data, function (i, servicio) {
-                            serviceSelect.append('<option value="' + servicio.value + '">' + servicio.text + '</option>');
-                        });
-                    }
-                });
-            });
-        });
-    </script>
-
+@section Scripts {  
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

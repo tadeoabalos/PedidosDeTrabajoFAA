@@ -56,15 +56,19 @@
                 @Html.DisplayFor(modelItem => item.Email)
             </td>            
             <td>
-                    @if (item.Division == 0)
+                    @if (item.Division == null)//Este es el valor que se le asigna en el enum
+                    {
+                        @:No se le asignó una división
+                    }
+                    else if(item.Division == 2)
                     {
                         @:División Mantenimiento de Instalaciones
                     }
                     else
                     {
-                        @:División Comunicaciones e Informática
+                        @:División Comunicaciones e Informática                        
                     }
-            </td>          
+                </td>          
             <td>
                  @Html.DisplayFor(modelItem => item.Servicio)
             </td>

@@ -12,9 +12,9 @@ namespace PPTT.Pages.Administradores
 {
     public class DeleteModel : PageModel
     {
-        private readonly PPTT.Data.PPTTContext _context;
+        private readonly PPTT.Data.DBPPTTContext _context;
 
-        public DeleteModel(PPTT.Data.PPTTContext context)
+        public DeleteModel(PPTT.Data.DBPPTTContext context)
         {
             _context = context;
         }
@@ -29,7 +29,7 @@ namespace PPTT.Pages.Administradores
                 return NotFound();
             }
 
-            var admin = await _context.Admin.FirstOrDefaultAsync(m => m.Id == id);
+            var admin = await _context.Usuarios.FirstOrDefaultAsync(m => m.Id == id);
 
             if (admin == null)
             {
@@ -49,11 +49,11 @@ namespace PPTT.Pages.Administradores
                 return NotFound();
             }
 
-            var admin = await _context.Admin.FindAsync(id);
+            var admin = await _context.Usuarios.FindAsync(id);
             if (admin != null)
             {
                 Admin = admin;
-                _context.Admin.Remove(Admin);
+                _context.Usuarios.Remove(Admin);
                 await _context.SaveChangesAsync();
             }
 

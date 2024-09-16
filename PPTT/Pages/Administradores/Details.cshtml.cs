@@ -12,9 +12,9 @@ namespace PPTT.Pages.Administradores
 {
     public class DetailsModel : PageModel
     {
-        private readonly PPTT.Data.PPTTContext _context;
+        private readonly PPTT.Data.DBPPTTContext _context;
 
-        public DetailsModel(PPTT.Data.PPTTContext context)
+        public DetailsModel(PPTT.Data.DBPPTTContext context)
         {
             _context = context;
         }
@@ -28,7 +28,7 @@ namespace PPTT.Pages.Administradores
                 return NotFound();
             }
 
-            var admin = await _context.Admin.FirstOrDefaultAsync(m => m.Id == id);
+            var admin = await _context.Usuarios.FirstOrDefaultAsync(m => m.Id == id);
             if (admin == null)
             {
                 return NotFound();

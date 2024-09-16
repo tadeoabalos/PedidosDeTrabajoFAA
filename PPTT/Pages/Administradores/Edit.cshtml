@@ -38,10 +38,13 @@
                 <label asp-for="Admin.Email" class="control-label"></label>
                 <input asp-for="Admin.Email" class="form-control" />
                 <span asp-validation-for="Admin.Email" class="text-danger"></span>
-            </div>
+            </div>            
             <div class="form-group">
                 <label asp-for="Admin.Division" class="control-label"></label>
-                <input asp-for="Admin.Division" class="form-control" />
+                <select asp-for="Admin.Division"
+                        asp-items="Html.GetEnumSelectList<Models.DeptoEnum>()"
+                        id="deptSelect">
+                </select>
                 <span asp-validation-for="Admin.Division" class="text-danger"></span>
             </div>
             <div class="form-group">

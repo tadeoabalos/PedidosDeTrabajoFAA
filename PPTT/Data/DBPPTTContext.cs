@@ -1,4 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using PPTT.Models;
 
 namespace PPTT.Data
 {
@@ -6,8 +11,8 @@ namespace PPTT.Data
     {
         public DBPPTTContext(DbContextOptions<DBPPTTContext> options)
             : base(options)
-        { 
+        {
         }
-        public DbSet<PPTT.Models.Admin> Admins { get; set; }         
+        public DbSet<PPTT.Models.Admin> Usuarios { get; set; }
     }
 }

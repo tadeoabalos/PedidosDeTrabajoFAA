@@ -13,9 +13,9 @@ namespace PPTT.Pages.Administradores
 {
     public class EditModel : PageModel
     {
-        private readonly PPTT.Data.PPTTContext _context;
+        private readonly PPTT.Data.DBPPTTContext _context;
 
-        public EditModel(PPTT.Data.PPTTContext context)
+        public EditModel(PPTT.Data.DBPPTTContext context)
         {
             _context = context;
         }
@@ -30,12 +30,14 @@ namespace PPTT.Pages.Administradores
                 return NotFound();
             }
 
-            var admin =  await _context.Admin.FirstOrDefaultAsync(m => m.Id == id);
+            var admin =  await _context.Usuarios.FirstOrDefaultAsync(m => m.Id == id);
             if (admin == null)
             {
                 return NotFound();
             }
             Admin = admin;
+
+            if(admin.Division > 3 || admin.Division < 2 ) admin.Division = null;
             return Page();
         }
 
@@ -71,7 +73,7 @@ namespace PPTT.Pages.Administradores
 
         private bool AdminExists(int id)
         {
-            return _context.Admin.Any(e => e.Id == id);
+            return _context.Usuarios.Any(e => e.Id == id);
         }
     }
 }

@@ -12,9 +12,9 @@ namespace PPTT.Pages.Administradores
 {
     public class CreateModel : PageModel
     {
-        private readonly PPTT.Data.PPTTContext _context;
+        private readonly PPTT.Data.DBPPTTContext _context;
 
-        public CreateModel(PPTT.Data.PPTTContext context)
+        public CreateModel(PPTT.Data.DBPPTTContext context)
         {
             _context = context;
         }
@@ -35,7 +35,7 @@ namespace PPTT.Pages.Administradores
                 return Page();
             }
 
-            _context.Admin.Add(Admin);
+            _context.Usuarios.Add(Admin);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

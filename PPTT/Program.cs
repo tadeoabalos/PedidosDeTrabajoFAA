@@ -5,9 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<PPTTContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("PPTTContext") ?? throw new InvalidOperationException("Connection string 'PPTTContext' not found.")));
-
+builder.Services.AddDbContext<DBPPTTContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionSQL")));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

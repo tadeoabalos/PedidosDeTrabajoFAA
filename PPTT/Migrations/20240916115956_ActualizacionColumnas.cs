@@ -5,13 +5,13 @@
 namespace PPTT.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class ActualizacionColumnas : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Admin",
+                name: "Usuarios",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -21,12 +21,12 @@ namespace PPTT.Migrations
                     Dni = table.Column<int>(type: "int", nullable: false),
                     NumeroControl = table.Column<int>(type: "int", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Servicio = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Division = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Division = table.Column<int>(type: "int", nullable: true),
+                    Servicio = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Admin", x => x.Id);
+                    table.PrimaryKey("PK_Usuarios", x => x.Id);
                 });
         }
 
@@ -34,7 +34,7 @@ namespace PPTT.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Admin");
+                name: "Usuarios");
         }
     }
 }

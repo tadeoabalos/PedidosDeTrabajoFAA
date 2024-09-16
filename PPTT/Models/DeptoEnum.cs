@@ -5,9 +5,9 @@ namespace PPTT.Models
     public enum DeptoEnum
     {
         [Display(Name = "División Mantenimiento de Instalaciones")]
-        Generales,
+        Generales = 2,
         [Display(Name = "División Comunicaciones e Informática")]
-        Especiales
+        Especiales = 3
     }
     public enum SerManEnum
     {

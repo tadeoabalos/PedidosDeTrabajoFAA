@@ -12,9 +12,9 @@ namespace PPTT.Pages.Administradores
 {
     public class IndexModel : PageModel
     {
-        private readonly PPTT.Data.PPTTContext _context;
+        private readonly PPTT.Data.DBPPTTContext _context;
 
-        public IndexModel(PPTT.Data.PPTTContext context)
+        public IndexModel(PPTT.Data.DBPPTTContext context)
         {
             _context = context;
         }
@@ -23,7 +23,7 @@ namespace PPTT.Pages.Administradores
 
         public async Task OnGetAsync()
         {
-            Admin = await _context.Admin.ToListAsync();
+            Admin = await _context.Usuarios.ToListAsync();
         }
     }
 }
