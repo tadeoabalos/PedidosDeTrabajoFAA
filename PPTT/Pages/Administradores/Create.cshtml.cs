@@ -25,7 +25,7 @@ namespace PPTT.Pages.Administradores
         }
 
         [BindProperty]
-        public Admin Admin { get; set; } = default!;
+        public Admin Admin { get; set; } = default!;        
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -39,6 +39,31 @@ namespace PPTT.Pages.Administradores
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
+
+        }
+
+        public JsonResult OnGetServiciosByDivision(string division)
+        {            
+            List<SelectListItem> servicios = new List<SelectListItem>();
+
+            if (division == "2")
+            {
+                servicios = new List<SelectListItem>
+                {
+                    new SelectListItem { Value = "Plomeria", Text = "Plomería" },
+                    new SelectListItem { Value = "Carpinteria", Text = "Carpintería" }
+                };
+            }
+            else if (division == "3")
+            {
+                servicios = new List<SelectListItem>
+                {
+                    new SelectListItem { Value = "Telefonia", Text = "Telefonía" },
+                    new SelectListItem { Value = "Redes", Text = "Redes" }
+                };
+            }
+
+            return new JsonResult(servicios);
         }
     }
 }

@@ -41,15 +41,17 @@
                 <label asp-for="Admin.Division" class="control-label"></label>
                 <select asp-for="Admin.Division"
                         asp-items="Html.GetEnumSelectList<Models.DeptoEnum>()"
-                        id="deptSelect">
+                        id="deptSelect"
+                        class="formControl">
+                    <option hidden selected value="">Seleccione el Organismo</option>
                 </select>
                 <span asp-validation-for="Admin.Division" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Admin.Servicio" class="control-label"></label>
                 <br/>
-                <select asp-for="Admin.Servicio">
-                    <option value="">Seleccione un servicio</option>                    
+                <select asp-for="Admin.Servicio" id="servicioSelect" class="form-control">
+                    <option value="">Seleccione el servicio correspondiente</option>                    
                 </select>
                 <span asp-validation-for="Admin.Servicio" class="text-danger"></span>
             </div>
@@ -64,9 +66,42 @@
     <a asp-page="Index">Back to List</a>
 </div>
 
-@section Scripts {  
+
+@section Scripts {    
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //Cuando se cambia el select se ejecuta la sigueinte función
+            $('#deptSelect').change(function () {
+                var selectedDivision = $(this).val();            
+                // AJAX
+                if (selectedDivision) 
+                {
+                    $.ajax({
+                        url: '@Url.Page("./Create", "ServiciosByDivision")', //Aca esta el problema creo yo
+                        type: 'GET', //Type correcto?
+                        data: {division: selectedDivision},
+                        success: function (data) 
+                        {
+                            console.log(selectedDivision); // ¡¡¡ EL TIPO DE DATO ES STRING !!!
+                            var servicioSelect = $('#servicioSelect');
+                            servicioSelect.empty();
+                            servicioSelect.append('<option hidden selected value="">Seleccione el serv</option>')
+                            console.log(data)
+                            //Cannot use 'in' operator to search for 'length' -> Se le pasan valores null o undefined al $.each
+                            $.each(data, function (index, servicio) 
+                            {
+                                servicioSelect.append('<option value="">' + servicio.text + '</option>')
+                            })
+                        }
+                    })
+                }
+            })
+        })    
+    </script>
+    
 }
 
