@@ -33,9 +33,9 @@ namespace PPTT.Pages.Vistas
 
         }
 
-        public void OnPost()
+        public IActionResult OnPost()
         {
-
+            return RedirectToPage("/Index");
         }
     }
 }
