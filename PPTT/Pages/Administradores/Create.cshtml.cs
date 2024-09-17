@@ -44,23 +44,21 @@ namespace PPTT.Pages.Administradores
 
         public JsonResult OnGetServiciosByDivision(string division)
         {            
-            List<SelectListItem> servicios = new List<SelectListItem>();
+            List<SelectListItem> servicios = [];
 
             if (division == "2")
             {
-                servicios = new List<SelectListItem>
-                {
-                    new SelectListItem { Value = "Plomeria", Text = "Plomería" },
-                    new SelectListItem { Value = "Carpinteria", Text = "Carpintería" }
-                };
+                servicios = [                    
+                     new () { Value = "Plomeria", Text = "Plomería" },
+                     new () { Value = "Carpinteria", Text = "Carpintería" }
+                    ];
             }
             else if (division == "3")
             {
-                servicios = new List<SelectListItem>
-                {
-                    new SelectListItem { Value = "Telefonia", Text = "Telefonía" },
-                    new SelectListItem { Value = "Redes", Text = "Redes" }
-                };
+                servicios = [
+                    new () { Value = "Telefonia", Text = "Telefonía" },
+                    new () { Value = "Redes", Text = "Redes" }
+                    ];              
             }
 
             return new JsonResult(servicios);

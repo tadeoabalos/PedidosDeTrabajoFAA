@@ -18,8 +18,10 @@ namespace PPTT.Models
         [Display(Name = "Numero de documento")]
         public int Dni { get; set; }
         [Display(Name = "Numero de control")]
-        public string? NumeroControl { get; set; }        
+        public string? NumeroControl { get; set; }
+        [Display(Name = "División")]
         public int? DivisionFk {  get; set; }
+        [Display(Name = "Servicio")]
         public int? ServicioFk { get; set; }        
     }
 }

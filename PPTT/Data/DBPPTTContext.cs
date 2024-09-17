@@ -14,5 +14,6 @@ namespace PPTT.Data
         {
         }
         public DbSet<PPTT.Models.Admin> Usuarios { get; set; }
+        public DbSet<PPTT.Models.Admin> Servicios { get; set; }
     }
 }
