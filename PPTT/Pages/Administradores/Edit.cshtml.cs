@@ -37,7 +37,7 @@ namespace PPTT.Pages.Administradores
             }
             Admin = admin;
 
-            if(admin.Division > 3 || admin.Division < 2 ) admin.Division = null;
+            if(admin.DivisionFk > 3 || admin.DivisionFk < 2 ) admin.DivisionFk = null;
             return Page();
         }
 

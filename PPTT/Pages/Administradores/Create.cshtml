@@ -38,22 +38,22 @@
                 <span asp-validation-for="Admin.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Admin.Division" class="control-label"></label>
-                <select asp-for="Admin.Division"
+                <label asp-for="Admin.DivisionFk" class="control-label"></label>
+                <select asp-for="Admin.DivisionFk"
                         asp-items="Html.GetEnumSelectList<Models.DeptoEnum>()"
                         id="deptSelect"
                         class="formControl">
                     <option hidden selected value="">Seleccione el Organismo</option>
                 </select>
-                <span asp-validation-for="Admin.Division" class="text-danger"></span>
+                <span asp-validation-for="Admin.DivisionFk" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Admin.Servicio" class="control-label"></label>
+                <label asp-for="Admin.ServicioFk" id="servicioLabel"  class="control-label"></label>
                 <br/>
-                <select asp-for="Admin.Servicio" id="servicioSelect" class="form-control">
-                    <option value="">Seleccione el servicio correspondiente</option>                    
+                <select asp-for="Admin.ServicioFk" id="servicioSelect" class="formControl">
+                    <option hidden select value="">Seleccione el servicio correspondiente</option>                    
                 </select>
-                <span asp-validation-for="Admin.Servicio" class="text-danger"></span>
+                <span asp-validation-for="Admin.ServicioFk" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -74,6 +74,8 @@
     
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#servicioLabel').hide();
+            $('#servicioSelect').hide();
             //Cuando se cambia el select se ejecuta la sigueinte función
             $('#deptSelect').change(function () {
                 var selectedDivision = $(this).val();            
@@ -89,13 +91,15 @@
                             console.log(selectedDivision); // ¡¡¡ EL TIPO DE DATO ES STRING !!!
                             var servicioSelect = $('#servicioSelect');
                             servicioSelect.empty();
-                            servicioSelect.append('<option hidden selected value="">Seleccione el serv</option>')
+                            servicioSelect.append('<option hidden select value = "">Seleccione el servicio correspondiente</option>                            < /select>')
                             console.log(data)
                             //Cannot use 'in' operator to search for 'length' -> Se le pasan valores null o undefined al $.each
                             $.each(data, function (index, servicio) 
                             {
                                 servicioSelect.append('<option value="">' + servicio.text + '</option>')
                             })
+                            $('#servicioLabel').fadeIn(500);
+                            $('#servicioSelect').fadeIn(500);
                         }
                     })
                 }

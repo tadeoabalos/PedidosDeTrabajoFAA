@@ -29,10 +29,10 @@
                 @Html.DisplayNameFor(model => model.Admin[0].Email)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Admin[0].Division)
+                @Html.DisplayNameFor(model => model.Admin[0].DivisionFk)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Admin[0].Servicio)
+                @Html.DisplayNameFor(model => model.Admin[0].ServicioFk)
             </th>
             <th></th>
         </tr>
@@ -56,11 +56,11 @@
                 @Html.DisplayFor(modelItem => item.Email)
             </td>            
             <td>
-                    @if (item.Division == null)//Este es el valor que se le asigna en el enum
+                    @if (item.DivisionFk == null)//Este es el valor que se le asigna en el enum
                     {
                         @:No se le asignó una división
                     }
-                    else if(item.Division == 2)
+                    else if(item.DivisionFk == 2)
                     {
                         @:División Mantenimiento de Instalaciones
                     }
@@ -70,7 +70,7 @@
                     }
                 </td>          
             <td>
-                 @Html.DisplayFor(modelItem => item.Servicio)
+                 @Html.DisplayFor(modelItem => item.ServicioFk)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |

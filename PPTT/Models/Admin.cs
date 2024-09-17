@@ -11,13 +11,15 @@ namespace PPTT.Models
         public string? Sname { get; set; }
         [Display(Name = "Correo institucional")]
         public string? Email { get; set; }
-        [Display(Name = "División")]
-        public int? Division {  get; set; }
-        [Display(Name = "Servicio")]
-        public string? Servicio { get; set; }        
+        [Display(Name = "Rol")]
+        public string? Rol { get; set; }        
+        [Display(Name = "Contraseña")]
+        public string? Password { get; set; }
         [Display(Name = "Numero de documento")]
         public int Dni { get; set; }
         [Display(Name = "Numero de control")]
-        public string? NumeroControl { get; set; }
+        public string? NumeroControl { get; set; }        
+        public int? DivisionFk {  get; set; }
+        public int? ServicioFk { get; set; }        
     }
 }

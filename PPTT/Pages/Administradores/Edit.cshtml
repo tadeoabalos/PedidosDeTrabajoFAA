@@ -40,17 +40,17 @@
                 <span asp-validation-for="Admin.Email" class="text-danger"></span>
             </div>            
             <div class="form-group">
-                <label asp-for="Admin.Division" class="control-label"></label>
-                <select asp-for="Admin.Division"
+                <label asp-for="Admin.DivisionFk" class="control-label"></label>
+                <select asp-for="Admin.DivisionFk"
                         asp-items="Html.GetEnumSelectList<Models.DeptoEnum>()"
                         id="deptSelect">
                 </select>
-                <span asp-validation-for="Admin.Division" class="text-danger"></span>
+                <span asp-validation-for="Admin.DivisionFk" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Admin.Servicio" class="control-label"></label>
-                <input asp-for="Admin.Servicio" class="form-control" />
-                <span asp-validation-for="Admin.Servicio" class="text-danger"></span>
+                <label asp-for="Admin.ServicioFk" class="control-label"></label>
+                <input asp-for="Admin.ServicioFk" class="form-control" />
+                <span asp-validation-for="Admin.ServicioFk" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
