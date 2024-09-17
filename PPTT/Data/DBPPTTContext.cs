@@ -13,7 +13,6 @@ namespace PPTT.Data
             : base(options)
         {
         }
-        public DbSet<PPTT.Models.Admin> Usuarios { get; set; }
-        public DbSet<PPTT.Models.Admin> Servicios { get; set; }
+        public DbSet<PPTT.Models.Admin> Usuarios { get; set; }        
     }
 }
