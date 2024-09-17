@@ -1,0 +1,51 @@
+﻿@page
+@model PruebaModel
+@{
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Seleccionar Categorías</title>
+    <script>
+        function actualizarOpciones() {
+            var primerSelect = document.getElementById("primerSelect").value;
+            var segundoSelect = document.getElementById("segundoSelect");
+            segundoSelect.innerHTML = "";
+            var opciones = {
+                "telefonia": ["SIN TONO", "RUIDO EN LINEA", "TRASLADO DE LINEA", "LINEA NUEVA"],
+                "cerrajeria": ["PUERTA TRABADA", "CERRADURA TRABADA", "CAMBIO DE PICAPORTE", "CAMBIO DE BISAGRA"],
+                "plomeria": ["DESAGüE TAPADO", "BAÑO TAPADO", "CAMBIO DE TERMOTANQUE"]
+            };
+            var opcionesSeleccionadas = opciones[primerSelect] || [];
+            for (var i = 0; i < opcionesSeleccionadas.length; i++) {
+                var opt = document.createElement('option');
+                opt.value = opcionesSeleccionadas[i];
+                opt.innerHTML = opcionesSeleccionadas[i];
+                segundoSelect.appendChild(opt);
+            }
+        }
+    </script>
+</head>
+<body>
+    <form method="post">
+        <div>
+            <label for="primerSelect">Seleccionar Categoría:</label>
+            <select id="primerSelect" name="uno" onchange="actualizarOpciones()">
+                <option value="">Seleccionar...</option>
+                <option value="telefonia">Telefonía</option>
+                <option value="cerrajeria">Cerrajería</option>
+                <option value="plomeria">Plomería</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="segundoSelect">Seleccionar Opción:</label>
+            <select id="segundoSelect" name="dos">
+                <option value="">Seleccionar...</option>
+            </select>
+        </div>
+    </form>
+</body>
+</html>

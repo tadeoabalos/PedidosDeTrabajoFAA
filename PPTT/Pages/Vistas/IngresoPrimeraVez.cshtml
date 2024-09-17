@@ -1,0 +1,147 @@
+﻿@page
+@model PPTT.Pages.Vistas.IngresoPrimeraVezModel
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f8ff;
+        color: #003d6b;
+        margin: 0;
+        padding: 0;
+    }
+
+    form {
+        width: 60%;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #e0e8f1;
+        border: 1px solid #003d6b;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2);
+    }
+
+    fieldset {
+        border: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    legend {
+        font-size: 1.2em;
+        color: #003d6b;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    label,
+    input[type="text"],
+    select,
+    .submit,
+    h4 {
+        font-size: 1em;
+        font-weight: bold;
+    }
+
+    input[type="password"],
+    select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #003d6b;
+        border-radius: 4px;
+        background-color: white;
+    }
+
+    input[type="text"],
+    select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #003d6b;
+        border-radius: 4px;
+        background-color: white;
+    }
+
+    .submit {
+        background-color: #003d6b;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.2em;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 10px;
+        transition: background-color 0.3s, transform 0.2s;
+        font-weight: bold;
+    }
+
+        .submit:hover {
+            background-color: #002e5d;
+            transform: scale(1.05);
+        }
+
+        .submit:active {
+            background-color: #001f3f;
+            transform: scale(1);
+        }
+
+    .centered-button {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var form = document.getElementById("IngresoPrimeraVez");
+
+        form.addEventListener("submit", function (event) {
+            var nuevaContraseña = document.getElementsByName("NuevaContraseña")[0].value;
+            var confirmacionContraseña = document.getElementsByName("ConfirmacionContraseña")[0].value;
+
+            if (nuevaContraseña !== confirmacionContraseña) {
+                alert("Las contraseñas no coinciden.");
+                event.preventDefault(); 
+            }
+        });
+    });
+</script>
+
+<body>
+    <form method="post" id="IngresoPrimeraVez">
+        <fieldset>
+            <legend>Ingreso Personal Primera Vez</legend>
+            <div>
+                <label for="DNI">DNI:</label>
+                <input type="text" id="DNI" name="DNI" value="" required />
+            </div>
+            <div>
+                <label for="Numero de Control">Numero de Control:</label>
+                <input type="text" id="Numero de Control" name="NumerodeControl " value="" required />
+            </div>
+            <div>
+                <label for="ViejaContraseña">Contraseña Anterior:</label>
+                <input type="password" id="ViejaContraseña" name="ViejaContraseña" value="" required />
+            </div>
+            <div>
+                <label for="NuevaContraseña">Nueva Contraseña:</label>
+                <input type="password" id="NuevaContraseña" name="NuevaContraseña" value="" required />
+            </div>
+            <div>
+                <label for="ConfirmacionContraseña">Confirma Tu Contraseña:</label>
+                <input type="password" id="ConfirmacionContraseña" name="ConfirmacionContraseña" value="" required />
+            </div>
+            <div>
+                <input type="submit" value="Enviar" class="submit" />
+            </div>
+        </fieldset>
+    </form>
+
+</body>
+<div class="centered-button">
+    <a href="/Vistas/IngresoPersonal" class="submit">Ingresar</a>
+</div>

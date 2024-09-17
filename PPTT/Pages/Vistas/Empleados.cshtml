@@ -1,0 +1,116 @@
+﻿@page
+@model PPTT.Pages.Vistas.EmpleadosModel
+@{
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f8ff;
+        color: #003d6b;
+        margin: 0;
+        padding: 0;
+    }
+
+    form {
+        width: 60%;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #e0e8f1;
+        border: 1px solid #003d6b;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2);
+    }
+
+    fieldset {
+        border: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    legend {
+        font-size: 1.2em;
+        color: #003d6b;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    label,
+    input[type="text"],
+    select,
+    .submit,
+    h4 {
+        font-size: 1em;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #003d6b;
+        border-radius: 4px;
+        background-color: white;
+    }
+
+    .submit {
+        background-color: #003d6b;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .submit:hover {
+            background-color: #002e5d;
+        }
+
+    h4 {
+        color: #003d6b;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+</style>
+
+<body>
+    <form method="post">
+        <fieldset>
+            <legend>Cargar empleados</legend>
+            <div>
+                <label for="Apellido">Apellido:</label>
+                <input type="text" id="Apellido" name="Apellido" value="" required />
+            </div>
+            <div>
+                <label for="Nombre">Nombre:</label>
+                <input type="text" id="Nombre" name="Nombre" value="" required />
+            </div>
+            <div>
+                <label for="Correo">Correo Institucional:</label>
+                <input type="text" id="Correo" name="Correo" value="" required />
+            </div>
+            <div>
+                <label for="Numero de Control">Numero de Control:</label>
+                <input type="text" id="Numero de Control" name="NumeroDeControl" value="" required />
+            </div>
+            <div>
+                <label for="Division">Division:</label>
+                <input type="text" id="Division" name="Division" value="" required />
+            </div>
+            <div>
+                <label for="Servicio">Servicio:</label>
+                <input type="text" id="Servicio" name="Servicio" value="" required />
+            </div>
+            <div>
+                <label for="Rol">Rol:</label>
+                <input type="text" id="Rol" name="Rol" value="" required />
+            </div>
+            <div>
+                <input type="submit" value="Enviar" class="submit" />
+            </div>
+        </fieldset>
+    </form>
+</body>
