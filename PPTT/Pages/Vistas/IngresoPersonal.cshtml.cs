@@ -33,7 +33,7 @@ namespace PPTT.Pages.Vistas
         public async Task<IActionResult> OnPostAsync()
         {
             // Validar el login usando el procedimiento almacenado
-            bool isValid = await ValidarUsuario(DNI, NumeroDeControl, Contraseña);
+            bool isValid = await EjecutarValidarStoredProcedure(DNI, NumeroDeControl, Contraseña);
 
             if (isValid)
             {
@@ -48,43 +48,51 @@ namespace PPTT.Pages.Vistas
             }
         }
 
-        private async Task<bool> ValidarUsuario(int dni, int numeroDeControl, string contraseña)
+        private async Task<bool> EjecutarValidarStoredProcedure(int dni, int numeroDeControl, string password)
         {
+            // Obtener la cadena de conexión desde appsettings.json
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
-            using (SqlConnection connection = new SqlConnection(connectionString))
+
+            try
             {
-                try
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     await connection.OpenAsync();
+
+                    // Crear el comando y especificar el nombre del stored procedure
                     using (SqlCommand command = new SqlCommand("Validar", connection))
                     {
+                        // Especificar que es un stored procedure
                         command.CommandType = CommandType.StoredProcedure;
 
-                        // Añadir parámetros al procedimiento almacenado
+                        // Agregar los parámetros que el stored procedure espera
                         command.Parameters.AddWithValue("@DNI", dni);
                         command.Parameters.AddWithValue("@Numero_De_Control", numeroDeControl);
-                        command.Parameters.AddWithValue("@Password", contraseña);
+                        command.Parameters.AddWithValue("@Password", password);
 
-                        // Ejecutar y obtener los resultados
+                        // Ejecutar el stored procedure y leer los resultados
                         using (SqlDataReader reader = await command.ExecuteReaderAsync())
                         {
                             if (reader.HasRows)
                             {
-                                // Si hay filas, significa que el usuario es válido
+                                // Si hay filas, significa que el login es válido
                                 return true;
+                            }
+                            else
+                            {
+                                // Si no hay filas, las credenciales no son válidas
+                                return false;
                             }
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    // Manejar errores
-                    Console.WriteLine($"Error: {ex.Message}");
-                }
             }
-
-            // Si no se encontró el usuario o hubo algún error, retornar falso
-            return false;
+            catch (Exception ex)
+            {
+                // Manejar cualquier excepción que pueda ocurrir
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
+            }
         }
     }
 }
