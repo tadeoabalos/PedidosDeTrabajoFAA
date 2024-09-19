@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace PPTT.Pages.Vistas
+namespace PPTT.Pages.Administradores
 {
     public class EmpleadosModel : PageModel
     {
@@ -31,23 +31,22 @@ namespace PPTT.Pages.Vistas
 
         public IActionResult OnGet()
         {
-            // Obtén el rol del usuario desde la sesión
-            int? userRole = HttpContext.Session.GetInt32("UserRole");
+            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+            HttpContext.Session.SetInt32("UserRole", _rol);
 
-            // Verifica si el rol no es igual a 2
-            if (userRole != 2)
+            if (_rol < 2)
             {
-                // Redirige a otra página si el rol no es 2
-                return RedirectToPage("/Menu"); // Cambia "/AccessDenied" a la página de destino que desees
+                return RedirectToPage("/Index");
             }
-
-            // Si el rol es 2, continúa con la lógica de la página
-            return Page();
-        }
-
-        public IActionResult OnPost()
-        {
-            return RedirectToPage("/Index");
+            else if (_rol > 1)
+            {
+                return Page();
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Rol no reconocido.");
+                return Page();
+            }
         }
     }
 }

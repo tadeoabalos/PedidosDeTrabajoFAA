@@ -16,7 +16,7 @@ namespace PPTT.Pages.Administradores
             }
             else if (_rol > 1)
             {
-                return RedirectToPage("/Administradores/Menu");
+                return Page();
             }
             else
             {
