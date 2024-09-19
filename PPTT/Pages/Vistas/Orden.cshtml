@@ -147,7 +147,7 @@
 
 </script>
 <body>
-    <form method="post">
+    <form method="post" onsubmit="return handleSubmit()">
         <fieldset>
             <legend>Orden de Trabajo</legend>
             <div>
@@ -202,3 +202,9 @@
         </fieldset>
     </form>
 </body>
+<script>
+    function handleSubmit() {
+        window.history.back();
+        return true; 
+    }
+</script>

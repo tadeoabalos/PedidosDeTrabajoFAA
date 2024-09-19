@@ -36,7 +36,8 @@ namespace PPTT.Pages.Vistas
 
         public IActionResult OnPost()
         {
-            return RedirectToPage("/Index");
+            return Redirect(HttpContext.Request.Headers["Referer"].ToString());
         }
     }
 }
+
