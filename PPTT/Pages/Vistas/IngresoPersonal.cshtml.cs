@@ -38,7 +38,7 @@ namespace PPTT.Pages.Vistas
             if (isValid)
             {
                 HttpContext.Session.SetInt32("UserRole", _rol);
-
+                Console.WriteLine(_rol);
                 if (_rol < 2)
                 {
                     return RedirectToPage("/Index");
@@ -77,16 +77,34 @@ namespace PPTT.Pages.Vistas
                         command.Parameters.AddWithValue("@Numero_De_Control", numeroDeControl);
                         command.Parameters.AddWithValue("@Password", password);
 
-                        SqlParameter rolParam = new SqlParameter("@Rol", SqlDbType.Int)
+                        using (SqlDataReader reader = await command.ExecuteReaderAsync())
                         {
-                            Direction = ParameterDirection.Output
-                        };
-                        command.Parameters.Add(rolParam);
+                            if (await reader.ReadAsync())
+                            {
+                                // Obtener el valor como string primero
+                                string rolString = reader.GetString(0);
 
-                        await command.ExecuteNonQueryAsync();
-                        _rol = (int)rolParam.Value;
-
-                        return _rol != 0;
+                                // Intentar convertirlo a int
+                                if (int.TryParse(rolString, out int rol))
+                                {
+                                    _rol = rol;
+                                    Console.WriteLine(_rol);
+                                    return _rol != 0;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("El rol no es un número válido.");
+                                    _rol = 0;
+                                    return false;
+                                }
+                            }
+                            else
+                            {
+                                // No se encontraron resultados
+                                _rol = 0;
+                                return false;
+                            }
+                        }
                     }
                 }
             }
@@ -96,5 +114,7 @@ namespace PPTT.Pages.Vistas
                 return false;
             }
         }
+
+
     }
 }
