@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace PPTT.Pages.Vistas
+namespace PPTT.Pages.Administradores
 {
-    public class VerTrabajoEmpleadoModel : PageModel
+    public class MenuModel : PageModel
     {
         public void OnGet()
         {

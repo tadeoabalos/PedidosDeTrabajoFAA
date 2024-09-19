@@ -1,16 +1,17 @@
-using System;
-using System.Data;
-using System.Data.SqlClient;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace PPTT.Pages.Vistas
 {
     public class IngresoPersonalModel : PageModel
     {
         private readonly IConfiguration _configuration;
+        private int _rol;
 
         public IngresoPersonalModel(IConfiguration configuration)
         {
@@ -32,17 +33,29 @@ namespace PPTT.Pages.Vistas
 
         public async Task<IActionResult> OnPostAsync()
         {
-            // Validar el login usando el procedimiento almacenado
             bool isValid = await EjecutarValidarStoredProcedure(DNI, NumeroDeControl, Contraseña);
 
             if (isValid)
             {
-                // Redirigir al index si es válido
-                return RedirectToPage("/Index");
+                // Store role in session
+                HttpContext.Session.SetInt32("UserRole", _rol);
+
+                if (_rol == 1)
+                {
+                    return RedirectToPage("/Index");
+                }
+                else if (_rol > 1)
+                {
+                    return RedirectToPage("/Administradores/Menu");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Rol no reconocido.");
+                    return Page();
+                }
             }
             else
             {
-                // Si no es válido, retornar a la misma página y mostrar un mensaje
                 ModelState.AddModelError(string.Empty, "Las credenciales no son válidas.");
                 return Page();
             }
@@ -50,46 +63,36 @@ namespace PPTT.Pages.Vistas
 
         private async Task<bool> EjecutarValidarStoredProcedure(int dni, int numeroDeControl, string password)
         {
-            // Obtener la cadena de conexión desde appsettings.json
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("ConnectionSQL");
 
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     await connection.OpenAsync();
-
-                    // Crear el comando y especificar el nombre del stored procedure
                     using (SqlCommand command = new SqlCommand("Validar", connection))
                     {
-                        // Especificar que es un stored procedure
                         command.CommandType = CommandType.StoredProcedure;
 
-                        // Agregar los parámetros que el stored procedure espera
                         command.Parameters.AddWithValue("@DNI", dni);
                         command.Parameters.AddWithValue("@Numero_De_Control", numeroDeControl);
                         command.Parameters.AddWithValue("@Password", password);
 
-                        // Ejecutar el stored procedure y leer los resultados
-                        using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                        SqlParameter rolParam = new SqlParameter("@Rol", SqlDbType.Int)
                         {
-                            if (reader.HasRows)
-                            {
-                                // Si hay filas, significa que el login es válido
-                                return true;
-                            }
-                            else
-                            {
-                                // Si no hay filas, las credenciales no son válidas
-                                return false;
-                            }
-                        }
+                            Direction = ParameterDirection.Output
+                        };
+                        command.Parameters.Add(rolParam);
+
+                        await command.ExecuteNonQueryAsync();
+                        _rol = (int)rolParam.Value;
+
+                        return _rol != 0;
                     }
                 }
             }
             catch (Exception ex)
             {
-                // Manejar cualquier excepción que pueda ocurrir
                 Console.WriteLine($"Error: {ex.Message}");
                 return false;
             }
