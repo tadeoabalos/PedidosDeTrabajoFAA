@@ -55,8 +55,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
             </td>            
-            <td>
-                    @if (item.DivisionFk == null)//Este es el valor que se le asigna en el enum
+                <td>
+                    @if (item.DivisionFk == null)
                     {
                         @:No se le asignó una división
                     }
@@ -70,7 +70,7 @@
                     }
                 </td>          
             <td>
-                 @Html.DisplayFor(modelItem => item.ServicioFk)
+                             
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
