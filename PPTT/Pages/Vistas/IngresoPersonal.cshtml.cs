@@ -37,10 +37,9 @@ namespace PPTT.Pages.Vistas
 
             if (isValid)
             {
-                // Store role in session
                 HttpContext.Session.SetInt32("UserRole", _rol);
 
-                if (_rol == 1)
+                if (_rol < 2)
                 {
                     return RedirectToPage("/Index");
                 }
