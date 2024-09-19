@@ -81,10 +81,7 @@ namespace PPTT.Pages.Vistas
                         {
                             if (await reader.ReadAsync())
                             {
-                                // Obtener el valor como string primero
                                 string rolString = reader.GetString(0);
-
-                                // Intentar convertirlo a int
                                 if (int.TryParse(rolString, out int rol))
                                 {
                                     _rol = rol;
@@ -100,7 +97,6 @@ namespace PPTT.Pages.Vistas
                             }
                             else
                             {
-                                // No se encontraron resultados
                                 _rol = 0;
                                 return false;
                             }
