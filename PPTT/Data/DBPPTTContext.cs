@@ -27,7 +27,6 @@ namespace PPTT.Data
             return await Servicios.FromSqlRaw("EXEC [dbo].[SelectServicios] @p0", division).ToListAsync();
         }                
 
-
         // Se especifica los Identity Keys de las entidades //       
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
