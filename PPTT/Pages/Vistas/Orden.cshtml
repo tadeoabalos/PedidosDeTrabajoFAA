@@ -206,7 +206,59 @@
                 <option value="Soldado">Soldado</option>
                 <option value="Brigadier">Brigadier</option>
             </select>
+            <div>
+                <label for="Piso Oficina">Piso de tu Oficina:</label>
+                <input type="text" id="Piso Oficina" name="PisoTuOficina:" value="" required />
+            </div>
+            <div>
+                <label for="Numero de Oficina">Numero de Oficina con el Problema:</label>
+                <input type="text" id="Numero de Oficina" name="NumeroDeOficinaProblema" value="" required />
+            </div>
+            <h4>Color de Oficina con el Problema:</h4>
+            <select id="Color de Oficina" name="ColorDeOficinaProblema" required>
+                <option value="Civil">Civil</option>
+                <option value="Soldado">Soldado</option>
+                <option value="Brigadier">Brigadier</option>
+            </select>
+            <div>
+                <label for="Piso Oficina">Piso Oficina con el Problema</label>
+                <input type="text" id="Piso Oficina" name="PisoOficinaProblema" value="" required />
+            </div>
+            <h4>Division de Mantenimiento:</h4>
+            <select id="Division de Manenimiento" name="DivisionDeMantenimiento" required>
+                <option value="Civil">Civil</option>
+                <option value="Soldado">Soldado</option>
+                <option value="Brigadier">Brigadier</option>
+            </select>
+            <div>
+                <label for="primerSelect">Servicio Requerido:</label>
+                <select id="primerSelect" name="ServicioRequerido" onchange="actualizarOpciones()" required>
+                    <option value="">Seleccionar...</option>
+                    <option value="telefonia">Telefonía</option>
+                    <option value="cerrajeria">Cerrajería</option>
+                    <option value="plomeria">Plomería</option>
+                    <option value="pintura">Pintura</option>
+                    <option value="albanileria">Albañilería</option>
+                    <option value="electricidad">Electricidad</option>
+                    <option value="herreria">Herrería</option>
+                    <option value="carpinteria">Carpintería</option>
+                    <option value="tabiqueria">Tabiquería</option>
+                    <option value="durlock">Durlock</option>
+                </select>
+            </div>
+            <div>
+                <label for="segundoSelect">Detalle Servicio:</label>
+                <select id="segundoSelect" name="DetalleServicio" required>
+                    <option value="">Seleccionar...</option>
+                </select>
+            </div>
+            <div>
+                <label for="Observacion">Observacion:</label>
+                <textarea id="observacion" name="Observacion" class="custom-textarea" required></textarea>
+            </div>
+            <div>
+                <input type="submit" value="Enviar" class="submit">
+            </div>
         </fieldset>
-        <button class="submit" type="submit">Enviar</button>
     </form>
 </body>

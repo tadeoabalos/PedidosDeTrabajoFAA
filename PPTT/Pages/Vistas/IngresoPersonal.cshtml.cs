@@ -12,6 +12,8 @@ namespace PPTT.Pages.Vistas
     {
         private readonly IConfiguration _configuration;
         private int _rol;
+        private string _nombre; // Nueva propiedad para almacenar el nombre
+        private int _ingreso; // Nueva propiedad para almacenar el ingreso
 
         public IngresoPersonalModel(IConfiguration configuration)
         {
@@ -38,7 +40,15 @@ namespace PPTT.Pages.Vistas
             if (isValid)
             {
                 HttpContext.Session.SetInt32("UserRole", _rol);
-                Console.WriteLine(_rol);
+                HttpContext.Session.SetString("UserName", _nombre);
+                Console.WriteLine($"Rol: {_rol}, Nombre: {_nombre}, Ingreso: {_ingreso}");
+
+                if (_ingreso == 0) // Verifica si ingreso es 0
+                {
+                    await ActualizarIngresoEnBaseDeDatos(DNI, NumeroDeControl);
+                    return RedirectToPage("/Vistas/IngresoPrimeraVez");
+                }
+
                 if (_rol < 2)
                 {
                     return RedirectToPage("/Vistas/MenuLog");
@@ -81,9 +91,11 @@ namespace PPTT.Pages.Vistas
                         {
                             if (await reader.ReadAsync())
                             {
-                                // Cambiamos GetString(0) por GetInt32(0)
+                                // Obtener el rol, nombre e ingreso
                                 _rol = reader.GetInt32(0);
-                                Console.WriteLine(_rol);
+                                _ingreso = reader.IsDBNull(1) ? 0 : reader.GetInt32(1); // Captura el ingreso
+                                _nombre = reader.GetString(2); // Captura el nombre
+                                Console.WriteLine($"Rol: {_rol}, Nombre: {_nombre}, Ingreso: {_ingreso}");
                                 return _rol != 0;
                             }
                             else
@@ -99,6 +111,31 @@ namespace PPTT.Pages.Vistas
             {
                 Console.WriteLine($"Error: {ex.Message}");
                 return false;
+            }
+        }
+
+        private async Task ActualizarIngresoEnBaseDeDatos(int dni, int numeroDeControl)
+        {
+            string connectionString = _configuration.GetConnectionString("ConnectionSQL");
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+                    string query = "UPDATE usuarios SET ingreso = 1 WHERE DNI = @DNI AND NumeroControl = @Numero_De_Control";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@DNI", dni);
+                        command.Parameters.AddWithValue("@Numero_De_Control", numeroDeControl);
+                        await command.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al actualizar ingreso: {ex.Message}");
             }
         }
     }
