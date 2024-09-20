@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using NuGet.Protocol;
 using PPTT.Data;
 using PPTT.Models;
 
@@ -18,6 +19,7 @@ namespace PPTT.Pages.Administradores
         {
             _context = context;
         }
+
 
         public IActionResult OnGet()
         {
@@ -40,9 +42,11 @@ namespace PPTT.Pages.Administradores
         }
 
         [BindProperty]
-        public Admin Admin { get; set; } = default!;        
+        public Admin Admin { get; set; } = default!;
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+        public List<Division> Divisions { get; set; } = new List<Division>(); 
+        public List<Servicio> Servicios { get; set; } = new List<Servicio>(); 
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -54,30 +58,16 @@ namespace PPTT.Pages.Administradores
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
-
         }
-
-        public JsonResult OnGetServiciosByDivision(string division)
-        {            
-            List<SelectListItem> servicios = new List<SelectListItem>();
-
-            if (division == "2")
-            {
-                servicios = new List<SelectListItem>
-                {
-                    new SelectListItem { Value = "Plomeria", Text = "Plomería" },
-                    new SelectListItem { Value = "Carpinteria", Text = "Carpintería" }
-                };
-            }
-            else if (division == "3")
-            {
-                servicios = new List<SelectListItem>
-                {
-                    new SelectListItem { Value = "Telefonia", Text = "Telefonía" },
-                    new SelectListItem { Value = "Redes", Text = "Redes" }
-                };
-            }
-
+        public async Task<IActionResult> OnGetAsync()
+        {
+            Divisions = await _context.GetDivisionAsync(); 
+            return Page();
+        }
+                  
+        public async Task<JsonResult> OnGetServiciosByDivisionAsync(string division)
+        {
+            var servicios = await _context.GetServiciosAsync(int.Parse(division));
             return new JsonResult(servicios);
         }
     }
