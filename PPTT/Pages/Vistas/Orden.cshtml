@@ -7,7 +7,7 @@
     body {
         font-family: Arial, sans-serif;
         background-color: #f0f8ff;
-        color: #003d6b; 
+        color: #003d6b;
         margin: 0;
         padding: 0;
     }
@@ -16,10 +16,10 @@
         width: 60%;
         margin: 30px auto;
         padding: 20px;
-        background-color: #e0e8f1; 
-        border: 1px solid #003d6b; 
+        background-color: #e0e8f1;
+        border: 1px solid #003d6b;
         border-radius: 8px;
-        box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2); 
+        box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2);
     }
 
     fieldset {
@@ -30,9 +30,9 @@
 
     legend {
         font-size: 1.2em;
-        color: #003d6b; 
+        color: #003d6b;
         margin-bottom: 10px;
-        font-weight: bold; 
+        font-weight: bold;
     }
 
     label,
@@ -40,7 +40,7 @@
     select,
     .submit,
     h4 {
-        font-size: 1em; 
+        font-size: 1em;
         font-weight: bold;
     }
 
@@ -49,13 +49,17 @@
         width: 100%;
         padding: 8px;
         margin-bottom: 15px;
-        border: 1px solid #003d6b; 
+        border: 1px solid #003d6b;
         border-radius: 4px;
         background-color: white;
     }
 
+    h4, label {
+        margin-bottom: 5px; /* Ajuste de margen inferior para consistencia */
+    }
+
     .submit {
-        background-color: #003d6b; 
+        background-color: #003d6b;
         color: white;
         padding: 10px 20px;
         border: none;
@@ -65,24 +69,24 @@
     }
 
         .submit:hover {
-            background-color: #002e5d; 
+            background-color: #002e5d;
         }
 
     h4 {
-        color: #003d6b; 
+        color: #003d6b;
         margin-top: 20px;
         margin-bottom: 10px;
-        font-weight: bold; 
+        font-weight: bold;
     }
 
     .custom-textarea {
-        width: 100%; 
+        width: 100%;
         height: 150px;
-        resize: none; 
+        resize: none;
     }
 </style>
+
 <script>
-    //script de los select
     function actualizarOpciones() {
         var primerSelect = document.getElementById("primerSelect").value;
         var segundoSelect = document.getElementById("segundoSelect");
@@ -143,68 +147,66 @@
             segundoSelect.appendChild(optio);
         }
     }
-    //
 
+    function handleSubmit() {
+        window.history.back();
+        return true;
+    }
 </script>
+
 <body>
     <form method="post" onsubmit="return handleSubmit()">
         <fieldset>
             <legend>Orden de Trabajo</legend>
             <div>
-                <label for="Numero de Oficina">Numero de Oficina:</label>
+                <label for="Apellido">Apellido:</label>
+                <input type="text" id="Apellido" name="Apellido" value="" required />
+            </div>
+            <div>
+                <label for="Nombre">Nombre:</label>
+                <input type="text" id="Nombre" name="Nombre" value="" required />
+            </div>
+            <div>
+                <label for="Correo">Correo Institucional:</label>
+                <input type="text" id="Correo" name="Correo" value="" required />
+            </div>
+            <div>
+                <label for="Numero de Control">Numero de Control:</label>
+                <input type="text" id="Numero de Control" name="NumeroDeControl" value="" required />
+            </div>
+            <h4>Grado:</h4>
+            <select id="Grado" name="Grado" required>
+                <option value="Civil">Civil</option>
+                <option value="Soldado">Soldado</option>
+                <option value="Brigadier">Brigadier</option>
+            </select>
+            <h4>Organismo:</h4>
+            <select id="Organismo" name="Organismo" required>
+                <option value="Civil">Civil</option>
+                <option value="Soldado">Soldado</option>
+                <option value="Brigadier">Brigadier</option>
+            </select>
+            <h4>Dependencia Interna:</h4>
+            <select id="Dependencia Interna" name="DependenciaInterna" required>
+                <option value="Civil">Civil</option>
+                <option value="Soldado">Soldado</option>
+                <option value="Brigadier">Brigadier</option>
+            </select>
+            <div>
+                <label for="RTI">RTI:</label>
+                <input type="text" id="RTI" name="RTI" value="" required />
+            </div>
+            <div>
+                <label for="Numero de tu Oficina">Numero de tu Oficina:</label>
                 <input type="text" id="Numero de Oficina" name="NumeroDeOficina" value="" required />
             </div>
-            <h4>Color de Oficina:</h4>
-            <select id="Color de Oficina" name="ColorDeOficina:" required>
+            <h4>Color de tu Oficina:</h4>
+            <select id="Color de Oficina" name="ColorDeTuOficina" required>
                 <option value="Civil">Civil</option>
                 <option value="Soldado">Soldado</option>
                 <option value="Brigadier">Brigadier</option>
             </select>
-            <div>
-                <label for="Piso Oficina">Piso Oficina:</label>
-                <input type="text" id="Piso Oficina" name="PisoOficina:" value="" required />
-            </div>
-            <h4>Division de Mantenimiento:</h4>
-            <select id="Division de Manenimiento" name="DivisionDeMantenimiento" required>
-                <option value="Civil">Civil</option>
-                <option value="Soldado">Soldado</option>
-                <option value="Brigadier">Brigadier</option>
-            </select>
-            <div>
-                <label for="primerSelect">Servicio Requerido:</label>
-                <select id="primerSelect" name="ServicioRequerido" onchange="actualizarOpciones()" required>
-                    <option value="">Seleccionar...</option>
-                    <option value="telefonia">Telefonía</option>
-                    <option value="cerrajeria">Cerrajería</option>
-                    <option value="plomeria">Plomería</option>
-                    <option value="pintura">Pintura</option>
-                    <option value="albanileria">Albañilería</option>
-                    <option value="electricidad">Electricidad</option>
-                    <option value="herreria">Herrería</option>
-                    <option value="carpinteria">Carpintería</option>
-                    <option value="tabiqueria">Tabiquería</option>
-                    <option value="durlock">Durlock</option>
-                </select>
-            </div>
-            <div>
-                <label for="segundoSelect">Detalle Servicio:</label>
-                <select id="segundoSelect" name="DetalleServicio" required>
-                    <option value="">Seleccionar...</option>
-                </select>
-            </div>
-            <div>
-                <label for="Observacion">Observacion:</label>
-                <textarea id="observacion" name="Observacion" class="custom-textarea" required></textarea>
-            </div>
-            <div>
-                <input type="submit" value="Enviar" class="submit">
-            </div>
         </fieldset>
+        <button class="submit" type="submit">Enviar</button>
     </form>
 </body>
-<script>
-    function handleSubmit() {
-        window.history.back();
-        return true; 
-    }
-</script>

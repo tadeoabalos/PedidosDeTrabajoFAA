@@ -41,7 +41,7 @@ namespace PPTT.Pages.Vistas
                 Console.WriteLine(_rol);
                 if (_rol < 2)
                 {
-                    return RedirectToPage("/Index");
+                    return RedirectToPage("/Vistas/MenuLog");
                 }
                 else if (_rol > 1)
                 {
@@ -81,19 +81,10 @@ namespace PPTT.Pages.Vistas
                         {
                             if (await reader.ReadAsync())
                             {
-                                string rolString = reader.GetString(0);
-                                if (int.TryParse(rolString, out int rol))
-                                {
-                                    _rol = rol;
-                                    Console.WriteLine(_rol);
-                                    return _rol != 0;
-                                }
-                                else
-                                {
-                                    Console.WriteLine("El rol no es un número válido.");
-                                    _rol = 0;
-                                    return false;
-                                }
+                                // Cambiamos GetString(0) por GetInt32(0)
+                                _rol = reader.GetInt32(0);
+                                Console.WriteLine(_rol);
+                                return _rol != 0;
                             }
                             else
                             {
@@ -110,7 +101,5 @@ namespace PPTT.Pages.Vistas
                 return false;
             }
         }
-
-
     }
 }
