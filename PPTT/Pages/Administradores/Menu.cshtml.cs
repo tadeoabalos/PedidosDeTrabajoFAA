@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace PPTT.Pages.Administradores
 {
-    public class EstadisticaModel : PageModel
+    public class MenuModel : PageModel
     {
         public IActionResult OnGet()
         {
