@@ -51,6 +51,8 @@ namespace PPTT.Pages.Vistas
 
                 if (_rol < 2)
                 {
+                    string ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+                    Console.WriteLine(ipAddress);
                     return RedirectToPage("/Vistas/MenuLog");
                 }
                 else if (_rol > 1)
