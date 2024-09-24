@@ -86,7 +86,7 @@ namespace PPTT.Pages.Vistas
                         command.CommandType = CommandType.StoredProcedure;
 
                         command.Parameters.AddWithValue("@DNI", dni);
-                        command.Parameters.AddWithValue("@Numero_De_Control", numeroDeControl);
+                        command.Parameters.AddWithValue("@Numero_Control", numeroDeControl);
                         command.Parameters.AddWithValue("@Password", password);
 
                         using (SqlDataReader reader = await command.ExecuteReaderAsync())
@@ -95,8 +95,8 @@ namespace PPTT.Pages.Vistas
                             {
                                 // Obtener el rol, nombre e ingreso
                                 _rol = reader.GetInt32(0);
-                                _ingreso = reader.IsDBNull(1) ? 0 : reader.GetInt32(1); // Captura el ingreso
-                                _nombre = reader.GetString(2); // Captura el nombre
+                                _nombre = reader.IsDBNull(1) ? string.Empty : reader.GetString(1); // Captura el nombre
+                                _ingreso = reader.IsDBNull(2) ? 0 : reader.GetInt32(2); // Captura el ingreso
                                 Console.WriteLine($"Rol: {_rol}, Nombre: {_nombre}, Ingreso: {_ingreso}");
                                 return _rol != 0;
                             }
@@ -125,12 +125,12 @@ namespace PPTT.Pages.Vistas
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     await connection.OpenAsync();
-                    string query = "UPDATE usuarios SET ingreso = 1 WHERE DNI = @DNI AND NumeroControl = @Numero_De_Control";
+                    string query = "UPDATE usuario SET ingreso = 1 WHERE DNI = @DNI AND Numero_Control = @Numero_Control";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@DNI", dni);
-                        command.Parameters.AddWithValue("@Numero_De_Control", numeroDeControl);
+                        command.Parameters.AddWithValue("@Numero_Control", numeroDeControl);
                         await command.ExecuteNonQueryAsync();
                     }
                 }
