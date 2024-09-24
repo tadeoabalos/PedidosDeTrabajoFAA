@@ -22,7 +22,6 @@ namespace PPTT.Pages.Administradores
 
         [BindProperty]
         public Admin Admin { get; set; } = default!;
-
         public List<Division> Divisions { get; set; } = new List<Division>(); 
         public List<Servicio> Servicios { get; set; } = new List<Servicio>(); 
 
@@ -33,7 +32,11 @@ namespace PPTT.Pages.Administradores
                 return Page();
             }
 
+            Admin.Rol = 1; 
+            Admin.Password = Convert.ToString(Admin.Dni);
+
             _context.Usuarios.Add(Admin);
+            
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

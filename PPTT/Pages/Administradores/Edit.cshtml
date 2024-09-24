@@ -2,12 +2,11 @@
 @model PPTT.Pages.Administradores.EditModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Usuario";
 }
+<h1>Editar</h1>
 
-<h1>Edit</h1>
-
-<h4>Admin</h4>
+<h4>Usuario</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -38,19 +37,34 @@
                 <label asp-for="Admin.Email" class="control-label"></label>
                 <input asp-for="Admin.Email" class="form-control" />
                 <span asp-validation-for="Admin.Email" class="text-danger"></span>
-            </div>            
+            </div>
             <div class="form-group">
                 <label asp-for="Admin.DivisionFk" class="control-label"></label>
                 <select asp-for="Admin.DivisionFk"
-                        asp-items="Html.GetEnumSelectList<Models.DeptoEnum>()"
-                        id="deptSelect">
+                        asp-items="Model.Divisions.Select(d=> new SelectListItem
+                        {
+                            Value = d.ID_Division.ToString(),
+                            Text = d.Nombre_Division
+                        })"
+                        id="deptSelect"
+                        class="formControl">
+                    <option hidden selected value="">Seleccione el Organismo</option>
                 </select>
                 <span asp-validation-for="Admin.DivisionFk" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Admin.ServicioFk" class="control-label"></label>
-                <input asp-for="Admin.ServicioFk" class="form-control" />
+                <label asp-for="Admin.ServicioFk" id="servicioLabel" class="control-label"></label>
+                <br />
+                <select asp-for="Admin.ServicioFk" id="servicioSelect" class="formControl">
+                    <option hidden select value="">Seleccione el servicio correspondiente</option>
+                </select>
                 <span asp-validation-for="Admin.ServicioFk" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Admin.Rol" class="control-label"></label>
+                <br />
+                <input asp-for="Admin.Rol" class="form-control" />
+                <span asp-validation-for="Admin.Rol" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -60,9 +74,43 @@
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Index">Index</a>
 </div>
 
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#servicioLabel').hide();
+            $('#servicioSelect').hide();            
+            $('#deptSelect').change(function () {
+                var selectedDivision = $(this).val();                
+                if (selectedDivision) {
+                    $.ajax({
+                        url: '@Url.Page("./Edit", "ServiciosByDivision")',
+                        type: 'GET',
+                        data: { division: selectedDivision },
+                        success: function (data) {
+                            console.log("El tipo de dato es " + typeof (selectedDivision)); // El tipo de dato recibido es string
+                            var servicioSelect = $('#servicioSelect');
+                            servicioSelect.empty();
+                            servicioSelect.append('<option hidden select value = "">Seleccione el servicio correspondiente</option>< /select>')
+                            console.log(data);
+                            $.each(data, function (index, servicio) {
+                                servicioSelect.append('<option value="' + servicio.iD_Servicio + '">' + servicio.nombre_Servicio + '</option>')
+                            })
+                            $('#servicioLabel').fadeIn(500);
+                            $('#servicioSelect').fadeIn(500);
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+
 }
+
