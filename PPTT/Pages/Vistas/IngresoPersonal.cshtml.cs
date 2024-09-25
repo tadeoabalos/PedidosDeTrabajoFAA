@@ -45,7 +45,6 @@ namespace PPTT.Pages.Vistas
 
                 if (_ingreso == 0) // Verifica si ingreso es 0
                 {
-                    await ActualizarIngresoEnBaseDeDatos(DNI, NumeroDeControl);
                     return RedirectToPage("/Vistas/IngresoPrimeraVez");
                 }
 
@@ -113,31 +112,6 @@ namespace PPTT.Pages.Vistas
             {
                 Console.WriteLine($"Error: {ex.Message}");
                 return false;
-            }
-        }
-
-        private async Task ActualizarIngresoEnBaseDeDatos(int dni, int numeroDeControl)
-        {
-            string connectionString = _configuration.GetConnectionString("ConnectionSQL");
-
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    await connection.OpenAsync();
-                    string query = "UPDATE usuario SET ingreso = 1 WHERE DNI = @DNI AND Numero_Control = @Numero_Control";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@DNI", dni);
-                        command.Parameters.AddWithValue("@Numero_Control", numeroDeControl);
-                        await command.ExecuteNonQueryAsync();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al actualizar ingreso: {ex.Message}");
             }
         }
     }
