@@ -29,8 +29,16 @@ namespace PPTT.Pages.Vistas
         [BindProperty]
         public required string Contraseña { get; set; }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+            HttpContext.Session.SetInt32("UserRole", _rol);
+            Console.WriteLine(_rol);
+                if (_rol > 0)
+            {
+                return RedirectToPage("/Vistas/YaLog");
+            }
+                return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
