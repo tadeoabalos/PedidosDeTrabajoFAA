@@ -12,8 +12,8 @@ namespace PPTT.Pages.Vistas
     {
         private readonly IConfiguration _configuration;
         private int _rol;
-        private string _nombre; // Nueva propiedad para almacenar el nombre
-        private int _ingreso; // Nueva propiedad para almacenar el ingreso
+        private string _nombre; 
+        private int _ingreso; 
 
         public IngresoPersonalModel(IConfiguration configuration)
         {
@@ -51,7 +51,7 @@ namespace PPTT.Pages.Vistas
                 HttpContext.Session.SetString("UserName", _nombre);
                 Console.WriteLine($"Rol: {_rol}, Nombre: {_nombre}, Ingreso: {_ingreso}");
 
-                if (_ingreso == 0) // Verifica si ingreso es 0
+                if (_ingreso == 0) 
                 {
                     return RedirectToPage("/Vistas/IngresoPrimeraVez");
                 }
@@ -100,10 +100,9 @@ namespace PPTT.Pages.Vistas
                         {
                             if (await reader.ReadAsync())
                             {
-                                // Obtener el rol, nombre e ingreso
                                 _rol = reader.GetInt32(0);
-                                _nombre = reader.IsDBNull(1) ? string.Empty : reader.GetString(1); // Captura el nombre
-                                _ingreso = reader.IsDBNull(2) ? 0 : reader.GetInt32(2); // Captura el ingreso
+                                _nombre = reader.IsDBNull(1) ? string.Empty : reader.GetString(1); 
+                                _ingreso = reader.IsDBNull(2) ? 0 : reader.GetInt32(2); 
                                 Console.WriteLine($"Rol: {_rol}, Nombre: {_nombre}, Ingreso: {_ingreso}");
                                 return _rol != 0;
                             }
