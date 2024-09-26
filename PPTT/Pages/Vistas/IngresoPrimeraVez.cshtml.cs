@@ -94,7 +94,6 @@ namespace PPTT.Pages.Vistas
             }
             catch (Exception ex)
             {
-                // Muestra el error en la consola para depuración
                 Console.WriteLine($"Error al cambiar la contraseña: {ex.Message}");
                 return false;
             }
