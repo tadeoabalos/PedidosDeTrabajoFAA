@@ -33,6 +33,7 @@ namespace PPTT.Pages.Vistas
 
         public IActionResult OnGet()
         {
+            //si el rol es mayor a 0 significa que esta loggeado asi que hago que no pueda volver a la pagina de loggeo y sea redireccionado a una pagina para cerrar sesion
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
             HttpContext.Session.SetInt32("UserRole", _rol);
             if (_rol > 0)
@@ -41,7 +42,6 @@ namespace PPTT.Pages.Vistas
             }
             else
             {
-                Console.WriteLine("ups");
                 return Page();
             }
 
@@ -63,13 +63,15 @@ namespace PPTT.Pages.Vistas
                 HttpContext.Session.SetString("UserName", _nombre);
                 Console.WriteLine($"Rol: {_rol}, Nombre: {_nombre}, Ingreso: {_ingreso}");
 
+                //lo llevo a una pagina hecha para cambiar su contraseña para sacar la predeterminada
                 if (_ingreso == 0)
                 {
                     return RedirectToPage("/Vistas/IngresoPrimeraVez");
                 }
-
+                //decido a que menu lo mando, si al normal o al de admin
                 if (_rol < 2)
                 {
+                    //capturo su IP
                     string ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
                     Console.WriteLine(ipAddress);
                     return RedirectToPage("/Vistas/MenuLog");
@@ -103,7 +105,7 @@ namespace PPTT.Pages.Vistas
                     using (SqlCommand command = new SqlCommand("Validar", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
-
+                        //ejecuto el stored procedure de login con estos valores
                         command.Parameters.AddWithValue("@DNI", dni);
                         command.Parameters.AddWithValue("@Numero_Control", numeroDeControl);
                         command.Parameters.AddWithValue("@Password", password);

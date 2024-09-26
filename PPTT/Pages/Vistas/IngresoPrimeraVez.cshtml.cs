@@ -47,26 +47,17 @@ namespace PPTT.Pages.Vistas
             //lo hasheo
             byte[] hashContraseñaNueva;
             hashContraseñaNueva = MD5.HashData(bytesContraseñaNueva);
-
-            bool isChanged = await CambiarContraseña(DNI, ViejaContraseña, hashContraseñaNueva);
+            //lo hago Bytes
+            byte[] bytesContraseñaVieja;
+            bytesContraseñaVieja = ASCIIEncoding.ASCII.GetBytes(ViejaContraseña);
+            //lo hasheo
+            byte[] hashContraseñaVieja;
+            hashContraseñaVieja = MD5.HashData(bytesContraseñaVieja);
+            bool isChanged = await CambiarContraseña(DNI, hashContraseñaVieja, hashContraseñaNueva);
 
             if (isChanged)
             {
-                int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
-                HttpContext.Session.SetInt32("UserRole", _rol);
-
-                if (_rol < 2)
-                {
-                    return RedirectToPage("/Vistas/MenuLog");
-                }
-                else if (_rol > 1)
-                {
-                    return RedirectToPage("/Administradores/Menu");
-                }
-                else
-                {
-                    return RedirectToPage("/Vistas/MenuLog");
-                }
+                return RedirectToPage("/Vistas/IngresoPersonal");
             }
             else
             {
@@ -75,7 +66,7 @@ namespace PPTT.Pages.Vistas
             }
         }
 
-        private async Task<bool> CambiarContraseña(int dni,  string viejacontraseña, byte[] nuevacontraseña)
+        private async Task<bool> CambiarContraseña(int dni,  byte[] viejacontraseña, byte[] nuevacontraseña)
         {
             string connectionString = _configuration.GetConnectionString("ConnectionSQL");
 
