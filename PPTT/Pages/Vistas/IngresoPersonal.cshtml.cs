@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace PPTT.Pages.Vistas
@@ -12,8 +14,8 @@ namespace PPTT.Pages.Vistas
     {
         private readonly IConfiguration _configuration;
         private int _rol;
-        private string _nombre; 
-        private int _ingreso; 
+        private string _nombre;
+        private int _ingreso;
 
         public IngresoPersonalModel(IConfiguration configuration)
         {
@@ -33,17 +35,27 @@ namespace PPTT.Pages.Vistas
         {
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
             HttpContext.Session.SetInt32("UserRole", _rol);
-            Console.WriteLine(_rol);
-                if (_rol > 0)
+            if (_rol > 0)
             {
                 return RedirectToPage("/Vistas/YaLog");
             }
+            else
+            {
+                Console.WriteLine("ups");
                 return Page();
-        }
+            }
 
+        }
         public async Task<IActionResult> OnPostAsync()
         {
-            bool isValid = await EjecutarValidarStoredProcedure(DNI, NumeroDeControl, Contraseña);
+            //lo hago Bytes
+            byte[] bytesContraseña;
+            bytesContraseña = ASCIIEncoding.ASCII.GetBytes(Contraseña);
+            //lo hasheo
+            byte[] hashContraseña;
+            hashContraseña = MD5.HashData(bytesContraseña);
+
+            bool isValid = await EjecutarValidarStoredProcedure(DNI, NumeroDeControl, hashContraseña);
 
             if (isValid)
             {
@@ -51,7 +63,7 @@ namespace PPTT.Pages.Vistas
                 HttpContext.Session.SetString("UserName", _nombre);
                 Console.WriteLine($"Rol: {_rol}, Nombre: {_nombre}, Ingreso: {_ingreso}");
 
-                if (_ingreso == 0) 
+                if (_ingreso == 0)
                 {
                     return RedirectToPage("/Vistas/IngresoPrimeraVez");
                 }
@@ -79,7 +91,7 @@ namespace PPTT.Pages.Vistas
             }
         }
 
-        private async Task<bool> EjecutarValidarStoredProcedure(int dni, int numeroDeControl, string password)
+        private async Task<bool> EjecutarValidarStoredProcedure(int dni, int numeroDeControl, byte[] password)
         {
             string connectionString = _configuration.GetConnectionString("ConnectionSQL");
 
@@ -95,14 +107,13 @@ namespace PPTT.Pages.Vistas
                         command.Parameters.AddWithValue("@DNI", dni);
                         command.Parameters.AddWithValue("@Numero_Control", numeroDeControl);
                         command.Parameters.AddWithValue("@Password", password);
-
                         using (SqlDataReader reader = await command.ExecuteReaderAsync())
                         {
                             if (await reader.ReadAsync())
                             {
                                 _rol = reader.GetInt32(0);
-                                _nombre = reader.IsDBNull(1) ? string.Empty : reader.GetString(1); 
-                                _ingreso = reader.IsDBNull(2) ? 0 : reader.GetInt32(2); 
+                                _nombre = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
+                                _ingreso = reader.IsDBNull(2) ? 0 : reader.GetInt32(2);
                                 Console.WriteLine($"Rol: {_rol}, Nombre: {_nombre}, Ingreso: {_ingreso}");
                                 return _rol != 0;
                             }

@@ -5,8 +5,26 @@ namespace PPTT.Pages.Vistas
 {
     public class YaLogModel : PageModel
     {
-        public void OnGet()
+
+        public IActionResult OnGet()
         {
+            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+            HttpContext.Session.SetInt32("UserRole", _rol);
+
+            if (_rol == 0)
+            {
+                return RedirectToPage("/Vistas/IngresoPersonal");
+            }
+            else
+            {
+                return Page(); 
+            }
+        }
+
+        public IActionResult OnPost()
+        {
+            HttpContext.Session.SetInt32("UserRole", 0);
+            return RedirectToPage("/Index");
         }
     }
 }

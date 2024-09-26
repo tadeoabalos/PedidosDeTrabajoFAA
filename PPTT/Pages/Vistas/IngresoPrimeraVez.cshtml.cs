@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
+using NuGet.Protocol;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace PPTT.Pages.Vistas
 {
@@ -38,7 +41,14 @@ namespace PPTT.Pages.Vistas
 
         public async Task<IActionResult> OnPostAsync()
         {
-            bool isChanged = await CambiarContraseña(DNI, ViejaContraseña, NuevaContraseña);
+            //lo hago Bytes
+            byte[] bytesContraseñaNueva;
+            bytesContraseñaNueva = ASCIIEncoding.ASCII.GetBytes(NuevaContraseña);
+            //lo hasheo
+            byte[] hashContraseñaNueva;
+            hashContraseñaNueva = MD5.HashData(bytesContraseñaNueva);
+
+            bool isChanged = await CambiarContraseña(DNI, ViejaContraseña, hashContraseñaNueva);
 
             if (isChanged)
             {
@@ -65,7 +75,7 @@ namespace PPTT.Pages.Vistas
             }
         }
 
-        private async Task<bool> CambiarContraseña(int dni,  string viejacontraseña, string nuevacontraseña)
+        private async Task<bool> CambiarContraseña(int dni,  string viejacontraseña, byte[] nuevacontraseña)
         {
             string connectionString = _configuration.GetConnectionString("ConnectionSQL");
 
