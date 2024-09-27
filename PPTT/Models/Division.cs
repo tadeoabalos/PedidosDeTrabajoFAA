@@ -2,7 +2,7 @@
 {
     public class Division
     {
-        public int ID_Division {  get; set; }
-        public string? Nombre_Division { get; set; }
+        public int ID_Division_Pk {  get; set; }
+        public string? Descripcion_Division { get; set; }
     }
 }

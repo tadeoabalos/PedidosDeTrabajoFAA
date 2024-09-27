@@ -40,13 +40,14 @@ namespace PPTT.Pages.Administradores
                 return NotFound();
             }
 
-            var admin = await _context.Usuarios.FirstOrDefaultAsync(m => m.Id == id);
+            var admin = await _context.usuario.FirstOrDefaultAsync(m => m.ID_Usuario_Pk == id);
             if (admin == null)
             {
                 return NotFound();
             }
             Admin = admin;
-            
+
+            int DniAnterior = Admin.DNI;
             return Page();
         }
 
@@ -66,7 +67,7 @@ namespace PPTT.Pages.Administradores
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AdminExists(Admin.Id))
+                if (!AdminExists(Admin.ID_Usuario_Pk))
                 {
                     return NotFound();
                 }
@@ -76,12 +77,20 @@ namespace PPTT.Pages.Administradores
                 }
             }
 
+            //await EditarPW(Admin.DNI, 125);
+
             return RedirectToPage("./Index");
         }
 
         private bool AdminExists(int id)
         {
-            return _context.Usuarios.Any(e => e.Id == id);
+            return _context.usuario.Any(e => e.ID_Usuario_Pk == id);
         }
+
+        /*public async Task EditarPW(int dni_nuevo, int dni_anterior)
+        {     
+            await _context.Database.ExecuteSqlRawAsync(
+                    "EXEC [dbo].[Editar_Primera_PW] @DNI_ANTERIOR = {0}, @DNI_NUEVO = {1}", dni_anterior, dni_nuevo);           
+        }*/
     }
 }

@@ -42,7 +42,7 @@ namespace PPTT.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NumeroControl")
+                    b.Property<int>("Numero_Control")
                         .HasColumnType("int");
 
                     b.Property<string>("Servicio")
@@ -53,7 +53,7 @@ namespace PPTT.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("usuario");
                 });
 #pragma warning restore 612, 618
         }

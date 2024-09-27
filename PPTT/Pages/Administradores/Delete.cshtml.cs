@@ -29,7 +29,7 @@ namespace PPTT.Pages.Administradores
                 return NotFound();
             }
 
-            var admin = await _context.Usuarios.FirstOrDefaultAsync(m => m.Id == id);
+            var admin = await _context.usuario.FirstOrDefaultAsync(m => m.ID_Usuario_Pk == id);
 
             if (admin == null)
             {
@@ -49,11 +49,11 @@ namespace PPTT.Pages.Administradores
                 return NotFound();
             }
 
-            var admin = await _context.Usuarios.FindAsync(id);
+            var admin = await _context.usuario.FindAsync(id);
             if (admin != null)
             {
                 Admin = admin;
-                _context.Usuarios.Remove(Admin);
+                _context.usuario.Remove(Admin);
                 await _context.SaveChangesAsync();
             }
 

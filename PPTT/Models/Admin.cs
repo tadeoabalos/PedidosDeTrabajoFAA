@@ -4,24 +4,28 @@ namespace PPTT.Models
 {
     public class Admin
     {        
-        public int Id { get; set; }
+        public int ID_Usuario_Pk { get; set; }
         [Display(Name = "Nombre")]
-        public string? Name { get; set; }
+        public string? Nombre { get; set; }
         [Display(Name = "Apellido")]
-        public string? Sname { get; set; }
+        public string? Apellido { get; set; }
         [Display(Name = "Correo institucional")]
-        public string? Email { get; set; }
+        public string? Correo { get; set; }
         [Display(Name = "Rol")]
-        public int? Rol { get; set; }        
+        public int? ID_Rol_Fk { get; set; }        
         [Display(Name = "Contraseña")]
-        public string? Password { get; set; }
+        public int? ID_Password_Fk { get; set; }
         [Display(Name = "Numero de documento")]
-        public int Dni { get; set; }
+        public int DNI { get; set; }
         [Display(Name = "Numero de control")]
-        public string? NumeroControl { get; set; }
+        public string? Numero_Control { get; set; }
         [Display(Name = "División")]
-        public int? DivisionFk {  get; set; }
+        public int? ID_Division_Fk {  get; set; }
         [Display(Name = "Servicio")]
-        public int? ServicioFk { get; set; }        
+        public int? ID_Servicio_Fk { get; set; }
+        [Display(Name ="Fecha de Alta")]
+        public DateTime Fecha_Alta { get; set; }
+        [Display(Name = "Fecha de Baja")]
+        public DateTime Fecha_Baja { get; set; }
     }
 }
