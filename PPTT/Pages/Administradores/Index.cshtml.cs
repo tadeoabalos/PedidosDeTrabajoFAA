@@ -19,11 +19,16 @@ namespace PPTT.Pages.Administradores
             _context = context;
         }
 
-        public IList<Admin> Admin { get;set; } = default!;        
+        public IList<Admin> Admin { get;set; } = default!;
+
+        public string nombreServicio;
 
         public async Task OnGetAsync()
         {
-            Admin = await _context.usuario.ToListAsync();            
+            Admin = await _context.usuario.ToListAsync();
+
+            var nombreServicio = await _context.GetServicioAsync(5);
+            
         }
     }
 }

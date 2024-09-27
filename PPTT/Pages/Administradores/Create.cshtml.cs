@@ -40,19 +40,19 @@ namespace PPTT.Pages.Administradores
 
             await _context.SaveChangesAsync();
 
-            await crearPrimeraPW(Admin.DNI);
+            //await crearPrimeraPW(Admin.DNI);
 
             return RedirectToPage("./Index");
         }
 
-        public async Task crearPrimeraPW(int dni) 
+        /*public async Task crearPrimeraPW(int dni) 
         {
-            /*Se recibe el dni del nuevo usuario por parametro, se lo manda a una stored procedure
+            Se recibe el dni del nuevo usuario por parametro, se lo manda a una stored procedure
              que va a encargarse de cargar esa nueva contraseña en una tabla de contraseñas
-            ademas nos carga el campo de ID_Password_Fk Y Fecha_Alta en la tabla usuario*/
+            ademas nos carga el campo de ID_Password_Fk Y Fecha_Alta en la tabla usuario
             await _context.Database.ExecuteSqlRawAsync(
                     "EXEC [dbo].[Crear_Primera_PW] @DNI = {0}", dni);
-        }        
+        }*/
         public async Task<IActionResult> OnGetAsync()
         {
             Divisions = await _context.GetDivisionAsync(); 

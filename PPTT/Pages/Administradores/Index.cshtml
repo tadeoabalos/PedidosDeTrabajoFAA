@@ -34,6 +34,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Admin[0].ID_Servicio_Fk)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Admin[0].Fecha_Alta)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -55,7 +58,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Correo)
             </td>            
-                <td>
+                <td> 
                     @if (item.ID_Division_Fk == null)
                     {
                         @:No se le asignó una división
@@ -70,12 +73,17 @@
                     }
                 </td>          
             <td>
-                             
+                    @{
+                        @Model.nombreServicio
+                    }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fecha_Alta)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.ID_Usuario_Pk">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.ID_Usuario_Pk">Details</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.ID_Usuario_Pk">Delete</a>
+                <a asp-page="./Details" asp-route-id="@item.ID_Usuario_Pk">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID_Usuario_Pk">Delete</a>
             </td>
         </tr>
 }

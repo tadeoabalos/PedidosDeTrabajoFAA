@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore;
 using PPTT.Models;
 
 namespace PPTT.Data
@@ -25,7 +26,11 @@ namespace PPTT.Data
         public async Task<List<Servicio>> GetServiciosAsync(int division)
         {
             return await Servicios.FromSqlRaw("EXEC [dbo].[Servicios_Filtrados] @p0", division).ToListAsync();
-        }                
+        }
+        public async Task<Servicio> GetServicioAsync(int ID_Servicio)
+        {
+            return await Servicios.FromSqlRaw("EXEC [dbo].[Traer_Servicio] @p0", ID_Servicio).SingleOrDefaultAsync();
+        }
 
         // Se especifica los Identity Keys de las entidades //
         protected override void OnModelCreating(ModelBuilder modelBuilder)
