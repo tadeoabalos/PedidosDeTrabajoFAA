@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
 using PPTT.Data;
 using PPTT.Models;
@@ -22,7 +24,6 @@ namespace PPTT.Pages.Administradores
 
         [BindProperty]
         public Admin Admin { get; set; } = default!;
-
         public List<Division> Divisions { get; set; } = new List<Division>(); 
         public List<Servicio> Servicios { get; set; } = new List<Servicio>(); 
 
@@ -33,11 +34,25 @@ namespace PPTT.Pages.Administradores
                 return Page();
             }
 
-            _context.Usuarios.Add(Admin);
+            Admin.ID_Rol_Fk = 1;
+  
+            _context.usuario.Add(Admin);
+
             await _context.SaveChangesAsync();
+
+            await crearPrimeraPW(Admin.DNI);
 
             return RedirectToPage("./Index");
         }
+
+        public async Task crearPrimeraPW(int dni) 
+        {
+            /*Se recibe el dni del nuevo usuario por parametro, se lo manda a una stored procedure
+             que va a encargarse de cargar esa nueva contraseña en una tabla de contraseñas
+            ademas nos carga el campo de ID_Password_Fk Y Fecha_Alta en la tabla usuario*/
+            await _context.Database.ExecuteSqlRawAsync(
+                    "EXEC [dbo].[Crear_Primera_PW] @DNI = {0}", dni);
+        }        
         public async Task<IActionResult> OnGetAsync()
         {
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;

@@ -2,7 +2,7 @@
 
 namespace PPTT.Models
 {
-    public class ServicioUsuarios
+    public class Serviciousuario
     {
         public int IdDivision { get; set; }
         public int IdServicio { get; set; }

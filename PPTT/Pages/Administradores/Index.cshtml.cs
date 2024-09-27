@@ -23,7 +23,7 @@ namespace PPTT.Pages.Administradores
 
         public async Task OnGetAsync()
         {
-            Admin = await _context.Usuarios.ToListAsync();            
+            Admin = await _context.usuario.ToListAsync();            
         }
     }
 }

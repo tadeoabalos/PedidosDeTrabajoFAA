@@ -22,27 +22,36 @@ namespace PPTT.Pages.Administradores
 
         [BindProperty]
         public Admin Admin { get; set; } = default!;
+        public List<Division> Divisions { get; set; } = new List<Division>();
+        public List<Servicio> Servicios { get; set; } = new List<Servicio>(); 
 
+        public async Task<JsonResult> OnGetServiciosByDivisionAsync(string division)
+        {
+             var servicios = await _context.GetServiciosAsync(int.Parse(division));
+             return new JsonResult(servicios);
+        }
+        //Método que se ejecuta cuando se carga la página
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            Divisions = await _context.GetDivisionAsync();
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var admin =  await _context.Usuarios.FirstOrDefaultAsync(m => m.Id == id);
+            var admin = await _context.usuario.FirstOrDefaultAsync(m => m.ID_Usuario_Pk == id);
             if (admin == null)
             {
                 return NotFound();
             }
             Admin = admin;
 
-            if(admin.DivisionFk > 3 || admin.DivisionFk < 2 ) admin.DivisionFk = null;
+            int DniAnterior = Admin.DNI;
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
+        // MÉTODO QUE SE EJECUTA CUANDO SE HACE ENVIO DE FORMULARIO
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -58,7 +67,7 @@ namespace PPTT.Pages.Administradores
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AdminExists(Admin.Id))
+                if (!AdminExists(Admin.ID_Usuario_Pk))
                 {
                     return NotFound();
                 }
@@ -68,12 +77,20 @@ namespace PPTT.Pages.Administradores
                 }
             }
 
+            //await EditarPW(Admin.DNI, 125);
+
             return RedirectToPage("./Index");
         }
 
         private bool AdminExists(int id)
         {
-            return _context.Usuarios.Any(e => e.Id == id);
+            return _context.usuario.Any(e => e.ID_Usuario_Pk == id);
         }
+
+        /*public async Task EditarPW(int dni_nuevo, int dni_anterior)
+        {     
+            await _context.Database.ExecuteSqlRawAsync(
+                    "EXEC [dbo].[Editar_Primera_PW] @DNI_ANTERIOR = {0}, @DNI_NUEVO = {1}", dni_anterior, dni_nuevo);           
+        }*/
     }
 }

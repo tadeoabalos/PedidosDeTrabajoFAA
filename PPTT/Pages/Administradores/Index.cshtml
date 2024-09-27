@@ -2,7 +2,7 @@
 @model PPTT.Pages.Administradores.IndexModel
 
 @{
-    ViewData["Title"] = "ABM USUARIOS";
+    ViewData["Title"] = "ABM usuario";
 }
 
 <h1>Index</h1>
@@ -14,25 +14,25 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Admin[0].Name)
+                @Html.DisplayNameFor(model => model.Admin[0].Nombre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Admin[0].Sname)
+                @Html.DisplayNameFor(model => model.Admin[0].Apellido)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Admin[0].Dni)
+                @Html.DisplayNameFor(model => model.Admin[0].DNI)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Admin[0].NumeroControl)
+                @Html.DisplayNameFor(model => model.Admin[0].Numero_Control)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Admin[0].Email)
+                @Html.DisplayNameFor(model => model.Admin[0].Correo)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Admin[0].DivisionFk)
+                @Html.DisplayNameFor(model => model.Admin[0].ID_Division_Fk)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Admin[0].ServicioFk)
+                @Html.DisplayNameFor(model => model.Admin[0].ID_Servicio_Fk)
             </th>
             <th></th>
         </tr>
@@ -41,26 +41,26 @@
 @foreach (var item in Model.Admin) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Sname)
+                @Html.DisplayFor(modelItem => item.Apellido)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Dni)
+                @Html.DisplayFor(modelItem => item.DNI)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NumeroControl)
+                @Html.DisplayFor(modelItem => item.Numero_Control)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Email)
+                @Html.DisplayFor(modelItem => item.Correo)
             </td>            
                 <td>
-                    @if (item.DivisionFk == null)
+                    @if (item.ID_Division_Fk == null)
                     {
                         @:No se le asignó una división
                     }
-                    else if(item.DivisionFk == 2)
+                    else if(item.ID_Division_Fk == 2)
                     {
                         @:División Mantenimiento de Instalaciones
                     }
@@ -73,9 +73,9 @@
                              
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-page="./Edit" asp-route-id="@item.ID_Usuario_Pk">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ID_Usuario_Pk">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ID_Usuario_Pk">Delete</a>
             </td>
         </tr>
 }

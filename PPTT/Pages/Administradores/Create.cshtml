@@ -91,51 +91,51 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Admin.Name" class="control-label"></label>
-                <input asp-for="Admin.Name" class="form-control" />
-                <span asp-validation-for="Admin.Name" class="text-danger"></span>
+                <label asp-for="Admin.Nombre" class="control-label"></label>
+                <input asp-for="Admin.Nombre" class="form-control" />
+                <span asp-validation-for="Admin.Nombre" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Admin.Sname" class="control-label"></label>
-                <input asp-for="Admin.Sname" class="form-control" />
-                <span asp-validation-for="Admin.Sname" class="text-danger"></span>
+                <label asp-for="Admin.Apellido" class="control-label"></label>
+                <input asp-for="Admin.Apellido" class="form-control" />
+                <span asp-validation-for="Admin.Apellido" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Admin.Dni" class="control-label"></label>
-                <input asp-for="Admin.Dni" class="form-control" />
-                <span asp-validation-for="Admin.Dni" class="text-danger"></span>
+                <label asp-for="Admin.DNI" class="control-label"></label>
+                <input asp-for="Admin.DNI" class="form-control" />
+                <span asp-validation-for="Admin.DNI" class="text-danger"></span>
             </div>         
             <div class="form-group">
-                <label asp-for="Admin.NumeroControl" class="control-label"></label>
-                <input asp-for="Admin.NumeroControl" class="form-control" />
-                <span asp-validation-for="Admin.NumeroControl" class="text-danger"></span>
+                <label asp-for="Admin.Numero_Control" class="control-label"></label>
+                <input asp-for="Admin.Numero_Control" class="form-control" />
+                <span asp-validation-for="Admin.Numero_Control" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Admin.Email" class="control-label"></label>
-                <input asp-for="Admin.Email" class="form-control" />
-                <span asp-validation-for="Admin.Email" class="text-danger"></span>
+                <label asp-for="Admin.Correo" class="control-label"></label>
+                <input asp-for="Admin.Correo" class="form-control" />
+                <span asp-validation-for="Admin.Correo" class="text-danger"></span>
             </div>           
             <div class="form-group">
-                <label asp-for="Admin.DivisionFk" class="control-label"></label>
-                <select asp-for="Admin.DivisionFk"
+                <label asp-for="Admin.ID_Division_Fk" class="control-label"></label>
+                <select asp-for="Admin.ID_Division_Fk"
                         asp-items="Model.Divisions.Select(d=> new SelectListItem
                         {
-                            Value = d.ID_Division.ToString(),
-                            Text = d.Nombre_Division
+                            Value = d.ID_Division_Pk.ToString(),
+                            Text = d.Descripcion_Division
                         })"
                         id="deptSelect"
                         class="formControl">
                     <option hidden selected value="">Seleccione el Organismo</option>
                 </select>
-                <span asp-validation-for="Admin.DivisionFk" class="text-danger"></span>
+                <span asp-validation-for="Admin.ID_Division_Fk" class="text-danger"></span>
             </div>            
             <div class="form-group">
-                <label asp-for="Admin.ServicioFk" id="servicioLabel"  class="control-label"></label>
+                <label asp-for="Admin.ID_Servicio_Fk" id="servicioLabel"  class="control-label"></label>
                 <br/>
-                <select asp-for="Admin.ServicioFk" id="servicioSelect" class="formControl">
+                <select asp-for="Admin.ID_Servicio_Fk" id="servicioSelect" class="formControl">
                     <option hidden select value="">Seleccione el servicio correspondiente</option>                    
                 </select>
-                <span asp-validation-for="Admin.ServicioFk" class="text-danger"></span>
+                <span asp-validation-for="Admin.ID_Servicio_Fk" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -157,27 +157,27 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#servicioLabel').hide();
-            $('#servicioSelect').hide();
-            //Cuando se cambia el select se ejecuta la sigueinte función
+            $('#servicioSelect').hide();            
             $('#deptSelect').change(function () {
-                var selectedDivision = $(this).val();            
-                // AJAX
+                console.log("Hola");
+                var selectedDivision = $(this).val();                            
                 if (selectedDivision) 
                 {
                     $.ajax({
                         url: '@Url.Page("./Create", "ServiciosByDivision")', 
                         type: 'GET', 
-                        data: {division: selectedDivision},
+                        data: {division: selectedDivision},               
                         success: function (data) 
                         {
-                            console.log("El tipo de dato es " + typeof(selectedDivision)); // El tipo de dato recibido es string
+                            console.log("El tipo de dato es " + typeof(selectedDivision)); 
+                            console.log(data);
                             var servicioSelect = $('#servicioSelect');
                             servicioSelect.empty();
                             servicioSelect.append('<option hidden select value = "">Seleccione el servicio correspondiente</option>< /select>')                                                      
                             console.log(data);
                             $.each(data, function (index, servicio) 
                             {
-                                servicioSelect.append('<option value="' + servicio.iD_Servicio + '">' + servicio.nombre_Servicio + '</option>')
+                                servicioSelect.append('<option value="' + servicio.iD_Servicio_Pk + '">' + servicio.descripcion_Servicio + '</option>')
                             })
                             $('#servicioLabel').fadeIn(500);
                             $('#servicioSelect').fadeIn(500);
