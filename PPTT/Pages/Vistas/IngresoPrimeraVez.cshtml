@@ -96,6 +96,7 @@
 </style>
 
 <script>
+//solo permito enviar el formulario si las contraseñas coinciden
     document.addEventListener("DOMContentLoaded", function () {
         var form = document.getElementById("IngresoPrimeraVez");
 
@@ -114,14 +115,14 @@
 <body>
     <form method="post" id="IngresoPrimeraVez">
         <fieldset>
-            <legend>Ingreso Personal Primera Vez</legend>
+            <legend>Cambiar Contraseña</legend>
             <div>
                 <label for="DNI">DNI:</label>
                 <input type="text" id="DNI" name="DNI" value="" required />
             </div>
             <div>
                 <label for="Numero de Control">Numero de Control:</label>
-                <input type="text" id="Numero de Control" name="NumerodeControl " value="" required />
+                <input type="text" asp-for="NumeroDeControl" id="NumeroDeControl" name="NumeroDeControl " value="" required />
             </div>
             <div>
                 <label for="ViejaContraseña">Contraseña Anterior:</label>

@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace PPTT.Pages.Vistas
 {
-    public class PruebaModel : PageModel
+    public class OlvideContraseñaModel : PageModel
     {
+        public void OnGet()
+        {
+        }
     }
 }

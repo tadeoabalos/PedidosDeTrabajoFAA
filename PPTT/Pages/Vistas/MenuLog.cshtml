@@ -1,5 +1,5 @@
 ﻿@page
-@model PPTT.Pages.Vistas.VerTrabajoEmpleadoModel
+@model PPTT.Pages.Vistas.MenuLogModel
 @{
 }
 <style>
@@ -60,10 +60,7 @@
             transform: scale(1);
         }
 </style>
-<script>
-    function handleSubmit() {
-        window.history.back();
-        return true;
-    }
-</script>
-<a href="/Administradores/Menu" class="submit">Volver al Menu</a>
+<form method="get">
+    <a href="/Vistas/Orden" class="submit">Subir Peticion de Trabajo</a>
+    <a href="/Vistas/VerTrabajoEmpleado" class="submit">Ver Trabajos Asignado Para Ti</a>
+</form>
