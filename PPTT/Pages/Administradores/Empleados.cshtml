@@ -1,14 +1,13 @@
 ﻿@page
-@model DatosPersonalesModel
+@model PPTT.Pages.Administradores.EmpleadosModel
 @{
-    ViewData["Title"] = "Home page";
 }
 
 <style>
     body {
         font-family: Arial, sans-serif;
-        background-color: #f0f8ff; 
-        color: #003d6b; 
+        background-color: #f0f8ff;
+        color: #003d6b;
         margin: 0;
         padding: 0;
     }
@@ -17,10 +16,10 @@
         width: 60%;
         margin: 30px auto;
         padding: 20px;
-        background-color: #e0e8f1; 
+        background-color: #e0e8f1;
         border: 1px solid #003d6b;
         border-radius: 8px;
-        box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2); 
+        box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2);
     }
 
     fieldset {
@@ -31,9 +30,9 @@
 
     legend {
         font-size: 1.2em;
-        color: #003d6b; 
+        color: #003d6b;
         margin-bottom: 10px;
-        font-weight: bold; 
+        font-weight: bold;
     }
 
     label,
@@ -41,8 +40,8 @@
     select,
     .submit,
     h4 {
-        font-size: 1em; 
-        font-weight: bold; 
+        font-size: 1em;
+        font-weight: bold;
     }
 
     input[type="text"],
@@ -52,7 +51,7 @@
         margin-bottom: 15px;
         border: 1px solid #003d6b;
         border-radius: 4px;
-        background-color: white; 
+        background-color: white;
     }
 
     .submit {
@@ -66,21 +65,21 @@
     }
 
         .submit:hover {
-            background-color: #002e5d; 
+            background-color: #002e5d;
         }
 
     h4 {
-        color: #003d6b; 
+        color: #003d6b;
         margin-top: 20px;
         margin-bottom: 10px;
-        font-weight: bold; 
+        font-weight: bold;
     }
 </style>
 
 <body>
     <form method="post">
         <fieldset>
-            <legend>Solicitante</legend>
+            <legend>Cargar empleados</legend>
             <div>
                 <label for="Apellido">Apellido:</label>
                 <input type="text" id="Apellido" name="Apellido" value="" required />
@@ -97,38 +96,18 @@
                 <label for="Numero de Control">Numero de Control:</label>
                 <input type="text" id="Numero de Control" name="NumeroDeControl" value="" required />
             </div>
-            <h4>Grado:</h4>
-            <select id="Grado" name="Grado" required>
-                <option value="Civil">Civil</option>
-                <option value="Soldado">Soldado</option>
-                <option value="Brigadier">Brigadier</option>
-            </select>
-            <h4>Organismo:</h4>
-            <select id="Organismo" name="Organismo" required>
-                <option value="Civil">Civil</option>
-                <option value="Soldado">Soldado</option>
-                <option value="Brigadier">Brigadier</option>
-            </select>
-            <h4>Dependencia Interna:</h4>
-            <select id="Dependencia Interna" name="DependenciaInterna" required>
-                <option value="Civil">Civil</option>
-                <option value="Soldado">Soldado</option>
-                <option value="Brigadier">Brigadier</option>
-            </select>
             <div>
-                <label for="RTI">RTI:</label>
-                <input type="text" id="RTI" name="RTI" value="" required />
+                <label for="Division">Division:</label>
+                <input type="text" id="Division" name="Division" value="" required />
             </div>
             <div>
-                <label for="Numero de Oficina">Numero de Oficina:</label>
-                <input type="text" id="Numero de Oficina" name="NumeroDeOficina" value="" required />
+                <label for="Servicio">Servicio:</label>
+                <input type="text" id="Servicio" name="Servicio" value="" required />
             </div>
-            <h4>Color de Oficina:</h4>
-            <select id="Color de Oficina" name="ColorDeOficina" required>
-                <option value="Civil">Civil</option>
-                <option value="Soldado">Soldado</option>
-                <option value="Brigadier">Brigadier</option>
-            </select>
+            <div>
+                <label for="Rol">Rol:</label>
+                <input type="text" id="Rol" name="Rol" value="" required />
+            </div>
             <div>
                 <input type="submit" value="Enviar" class="submit" />
             </div>

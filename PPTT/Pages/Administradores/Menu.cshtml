@@ -1,5 +1,5 @@
 ﻿@page
-@model PPTT.Pages.Vistas.VerTrabajoEmpleadoModel
+@model PPTT.Pages.Administradores.MenuModel
 @{
 }
 <style>
@@ -60,10 +60,21 @@
             transform: scale(1);
         }
 </style>
-<script>
-    function handleSubmit() {
-        window.history.back();
-        return true;
-    }
-</script>
-<a href="/Administradores/Menu" class="submit">Volver al Menu</a>
+<form method="get">
+    <h3>USUARIO</h3>
+    <a href="/Vistas/Orden" class="submit">Subir Peticion de Trabajo</a>
+    <a href="/Vistas/VerTrabajoEmpleado" class="submit">Ver Trabajo Asignado</a>
+    <a href="/Vistas/IngresoPersonal" class="submit">Ingresar</a>
+    <a href="/Vistas/IngresoPrimeraVez" class="submit">Registrarse</a>
+
+</form>
+<div class="text-center">
+    <h3>ADMIN</h3>
+    <a href="/Administradores/VerPedidosTrabajo" class="submit">Ver Pedidos de Trabajo</a>
+    <a href="/Administradores/Estadistica" class="submit">Estadisticas</a>
+    <a href="/Administradores/Empleados" class="submit">Empleados</a>
+    <a href="/Administradores/Edits" class="submit">ABM USUARIOS Editar</a>
+    <a href="/Administradores/Index" class="submit">ABM 
+        S Index</a>
+</div>
+

@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace PPTT.Pages.Administradores
 {
-    public class EstadisticaModel : PageModel
+    public class MenuModel : PageModel
     {
         public IActionResult OnGet()
         {
+
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
             HttpContext.Session.SetInt32("UserRole", _rol);
 
@@ -22,6 +23,7 @@ namespace PPTT.Pages.Administradores
             {
                 ModelState.AddModelError(string.Empty, "Rol no reconocido.");
                 return Page();
+
             }
         }
     }
