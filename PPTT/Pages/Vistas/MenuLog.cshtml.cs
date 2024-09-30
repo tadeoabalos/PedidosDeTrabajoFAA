@@ -8,5 +8,10 @@ namespace PPTT.Pages.Vistas
         public void OnGet()
         {
         }
+        public IActionResult OnPostCerrar()
+        {
+            HttpContext.Session.SetInt32("UserRole", 0);
+            return RedirectToPage("/Index");
+        }
     }
 }

@@ -85,17 +85,13 @@
         margin-top: 20px;
     }
 </style>
-<script>
-    function handleSubmit() {
-        window.history.back();
-        return true;
-    }
-</script>
 <div class="centered-button">
-<form method="post">
+    <form method="post" asp-page-handler="cerrar">
     <input type="submit" value="Cerrar Sesion" class="submit" />
 </form>
 </div>
 <div class="centered-button">
-    <a href="Visitas/MenuLog">Volver al Inicio</a>
+    <form method="post" asp-page-handler="volver">
+        <input type="submit" value="Volver al Inicio" class="submit" />
+    </form>
 </div>

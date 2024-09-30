@@ -26,5 +26,10 @@ namespace PPTT.Pages.Administradores
 
             }
         }
+        public IActionResult OnPostCerrar()
+        {
+            HttpContext.Session.SetInt32("UserRole", 0);
+            return RedirectToPage("/Index");
+        }
     }
 }
