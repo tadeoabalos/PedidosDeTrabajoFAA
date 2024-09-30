@@ -25,7 +25,16 @@ namespace PPTT.Pages.Administradores
         [BindProperty]
         public Admin Admin { get; set; } = default!;
         public List<Division> Divisions { get; set; } = new List<Division>(); 
-        public List<Servicio> Servicios { get; set; } = new List<Servicio>(); 
+        public List<Servicio> Servicios { get; set; } = new List<Servicio>();
+            public int ID_Usuario_Pk { get; set; }
+            public string Nombre { get; set; }
+            public string Apellido { get; set; }
+            public string Correo { get; set; }
+            public int? ID_Division_Fk { get; set; } // Si puede ser null
+            public int? ID_Servicio_Fk { get; set; } // Si puede ser null
+            public int DNI { get; set; }
+            public string Numero_Control { get; set; }
+    
 
         public async Task<IActionResult> OnPostAsync()
         {
