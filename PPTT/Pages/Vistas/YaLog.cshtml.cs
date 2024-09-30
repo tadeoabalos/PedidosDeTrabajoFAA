@@ -24,7 +24,7 @@ namespace PPTT.Pages.Vistas
         public IActionResult OnPost()
         {
             HttpContext.Session.SetInt32("UserRole", 0);
-            return RedirectToPage("/Vistas/MenuLog");
+            return RedirectToPage("/Index");
         }
     }
 }

@@ -22,10 +22,11 @@ namespace PPTT.Data
         {
             return await Divisions.FromSqlRaw("EXEC [dbo].[Retorna_Division]").ToListAsync();
         }
+
         public async Task<List<Servicio>> GetServiciosAsync(int division)
         {
             return await Servicios.FromSqlRaw("EXEC [dbo].[Servicios_Filtrados] @p0", division).ToListAsync();
-        }                
+        }
 
         // Se especifica los Identity Keys de las entidades //
         protected override void OnModelCreating(ModelBuilder modelBuilder)
