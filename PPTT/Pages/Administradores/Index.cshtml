@@ -1,8 +1,25 @@
 ﻿@page
 @model PPTT.Pages.Administradores.IndexModel
 
+@using PPTT.Data
+
 @{
     ViewData["Title"] = "ABM usuario";
+    // Recuperar el diccionario de servicios de la sesión
+    var servicios = HttpContext.Session.GetObject<Dictionary<int, string>>("Servicios");
+
+    // Debug: Imprimir el contenido del diccionario
+    if (servicios != null)
+    {
+        foreach (var kvp in servicios)
+        {
+            Console.WriteLine($"Key: {kvp.Key}, Value: {kvp.Value}");
+        }
+    }
+    else
+    {
+        Console.WriteLine("No se encontraron servicios en la sesión.");
+    }
 }
 
 <h1>Index</h1>
@@ -38,47 +55,58 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Admin) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Apellido)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DNI)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Numero_Control)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Correo)
-            </td>            
+        @foreach (var item in Model.Admin)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Apellido)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DNI)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Numero_Control)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Correo)
+                </td>
                 <td>
                     @if (item.ID_Division_Fk == null)
                     {
                         @:No se le asignó una división
                     }
-                    else if(item.ID_Division_Fk == 2)
+                    else if (item.ID_Division_Fk == 2)
                     {
                         @:División Mantenimiento de Instalaciones
                     }
                     else
                     {
-                        @:División Comunicaciones e Informática                        
+                        @:División Comunicaciones e Informática
                     }
-                </td>          
-            <td>
-                       @*RetornaNombre(item.ID_Servicio_Fk) *@
-                       
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.ID_Usuario_Pk">Edit</a> |
+                </td>
+                <td>
+                    @if (item.ID_Servicio_Fk == null)
+                    {
+                        @:No se le asignó un servicio
+                    }
+                    else if (servicios != null && servicios.ContainsKey(item.ID_Servicio_Fk.Value))
+                    {
+                        @servicios[item.ID_Servicio_Fk.Value]
+                    }
+                    else
+                    {
+                        @:Servicio no reconocido
+                    }
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ID_Usuario_Pk">Edit</a> |
                     <a asp-page="./Details" asp-route-id="@item.ID_Usuario_Pk">Details</a> |
                     <a asp-page="./Delete" asp-route-id="@item.ID_Usuario_Pk">Delete</a>
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

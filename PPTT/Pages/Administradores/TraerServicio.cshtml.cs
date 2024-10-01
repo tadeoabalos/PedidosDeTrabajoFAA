@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using PPTT.Data;
+using PPTT.Models;
 
 namespace PPTT.Pages.Administradores
 {
@@ -45,12 +47,7 @@ namespace PPTT.Pages.Administradores
 
             if (isValid)
             {
-                HttpContext.Session.SetString("Servicios", JsonConvert.SerializeObject(Servicios));
-                foreach (var servicio in Servicios)
-                {
-                    Console.WriteLine($"ID: {servicio.Key}, Descripción: {servicio.Value}");
-                }
-                return Page();
+                return RedirectToPage("/Administradores/Index");
             }
             else
             {
@@ -80,6 +77,7 @@ namespace PPTT.Pages.Administradores
 
                                 // agregar cada servicio al diccionario
                                 Servicios[id_servicio_pk] = descripcion_servicio;
+                                HttpContext.Session.SetObject("Servicios", Servicios);
 
                                 Console.WriteLine($"ID: {id_servicio_pk}, Descripción: {descripcion_servicio}");
                             }
