@@ -36,6 +36,7 @@ namespace PPTT.Pages.Vistas
             //si el rol es mayor a 0 significa que esta loggeado asi que hago que no pueda volver a la pagina de loggeo y sea redireccionado a una pagina para cerrar sesion
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
             HttpContext.Session.SetInt32("UserRole", _rol);
+            Console.WriteLine(_rol);
             if (_rol > 0)
             {
                 return RedirectToPage("/Vistas/YaLog");
