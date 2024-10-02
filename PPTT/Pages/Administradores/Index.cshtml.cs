@@ -47,31 +47,6 @@ namespace PPTT.Pages.Administradores
         {
             public int? ID_Servicio_Fk { get; set; }
         }
-        private async Task<bool> CrearContraStoredProcedure(int DNI, byte[] Contra)
-        {
-            string connectionString = _configuration.GetConnectionString("ConnectionSQL");
-
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    await connection.OpenAsync();
-                    using (SqlCommand command = new SqlCommand("Crear_Password", connection))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
-                        //ejecuto el stored procedure 
-                        command.Parameters.AddWithValue("@DNI", DNI);
-                        command.Parameters.AddWithValue("@Pass", Contra);
-                        return true;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-                return false;
-            }
-        }
         public async Task<IActionResult> OnGetAsync()
         {
             int datos = HttpContext.Session.GetInt32("datos") ?? 0;
@@ -86,9 +61,6 @@ namespace PPTT.Pages.Administradores
             else  
             {
                 Admin = await _context.usuario.ToListAsync();
-                int DNI = HttpContext.Session.GetInt32("DNI") ?? 0;
-                byte[] hashContraseña = HttpContext.Session.Get("hashContraseña");
-                await CrearContraStoredProcedure(DNI, hashContraseña);
                 return Page();
             }
         }

@@ -56,27 +56,28 @@ namespace PPTT.Pages.Administradores
 
             Admin.ID_Rol_Fk = 1;
 
+            // Guarda el objeto Admin en el contexto
             _context.usuario.Add(Admin);
-
             await _context.SaveChangesAsync();
+            Console.WriteLine(DNI);
+            // Ahora obtén el DNI del objeto Admin que ya has agregado
+            DNI = Admin.DNI; // Asegúrate de que se esté obteniendo correctamente
+
             HttpContext.Session.SetInt32("DNI", DNI);
+
+            // Lógica para invertir y hashear el DNI
             string numeroStr = DNI.ToString();
             string numeroInvertido = new string(numeroStr.Reverse().ToArray());
-            Console.WriteLine(numeroInvertido);
-            Console.WriteLine("dni alreve");
-            byte[] bytesContraseña;
-            bytesContraseña = ASCIIEncoding.ASCII.GetBytes(numeroInvertido);
-            //lo hasheo
-            byte[] hashContraseña;
-            hashContraseña = MD5.HashData(bytesContraseña);
-            Console.WriteLine(hashContraseña);
-            Console.WriteLine("hasheooo");
+
+            byte[] bytesContraseña = Encoding.ASCII.GetBytes(numeroInvertido);
+            byte[] hashContraseña = MD5.HashData(bytesContraseña);
+
             HttpContext.Session.Set("hashContraseña", hashContraseña);
-            //await CrearContraStoredProcedure(DNI, hashContraseña);
+
             return RedirectToPage("./SubirPass");
         }
-     
-            public async Task<IActionResult> OnGetAsync()
+
+        public async Task<IActionResult> OnGetAsync()
             {
 
                 int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
