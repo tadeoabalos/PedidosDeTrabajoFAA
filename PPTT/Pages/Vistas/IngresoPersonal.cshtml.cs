@@ -55,7 +55,7 @@ namespace PPTT.Pages.Vistas
             //lo hasheo
             byte[] hashContraseña;
             hashContraseña = MD5.HashData(bytesContraseña);
-
+            Console.WriteLine(hashContraseña);
             bool isValid = await EjecutarValidarStoredProcedure(DNI, NumeroDeControl, hashContraseña);
 
             if (isValid)
