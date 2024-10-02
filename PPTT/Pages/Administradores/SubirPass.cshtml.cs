@@ -25,7 +25,10 @@ namespace PPTT.Pages.Administradores
         public async Task<IActionResult> OnGetAsync()
         {
             int DNI = HttpContext.Session.GetInt32("DNI") ?? 0;
+            Console.WriteLine("oli");
+            Console.WriteLine(DNI);
             byte[] hashContraseña = HttpContext.Session.Get("hashContraseña");
+            Console.WriteLine(hashContraseña);
             await CrearContraStoredProcedure(DNI, hashContraseña);
             return RedirectToPage("/Administradores/Index");
         }

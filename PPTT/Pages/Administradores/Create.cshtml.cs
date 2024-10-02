@@ -62,7 +62,7 @@ namespace PPTT.Pages.Administradores
             Console.WriteLine(DNI);
             // Ahora obtén el DNI del objeto Admin que ya has agregado
             DNI = Admin.DNI; // Asegúrate de que se esté obteniendo correctamente
-
+            Console.WriteLine(DNI);
             HttpContext.Session.SetInt32("DNI", DNI);
 
             // Lógica para invertir y hashear el DNI
@@ -71,7 +71,7 @@ namespace PPTT.Pages.Administradores
 
             byte[] bytesContraseña = Encoding.ASCII.GetBytes(numeroInvertido);
             byte[] hashContraseña = MD5.HashData(bytesContraseña);
-
+            Console.WriteLine(hashContraseña);
             HttpContext.Session.Set("hashContraseña", hashContraseña);
 
             return RedirectToPage("./SubirPass");
