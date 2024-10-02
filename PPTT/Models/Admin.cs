@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.ComponentModel.DataAnnotations;
+
 namespace PPTT.Models
 {
     public class Admin
@@ -27,5 +28,10 @@ namespace PPTT.Models
         public DateTime Fecha_Alta { get; set; }
         [Display(Name = "Fecha de Baja")]
         public DateTime Fecha_Baja { get; set; }
+
+        public static implicit operator Admin(List<Admin> v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
