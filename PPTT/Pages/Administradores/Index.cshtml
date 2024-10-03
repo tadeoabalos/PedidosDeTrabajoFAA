@@ -52,6 +52,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Admin[0].ID_Servicio_Fk)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Admin[0].Fecha_Alta)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -75,20 +78,6 @@
                     @Html.DisplayFor(modelItem => item.Correo)
                 </td>
                 <td>
-                    @if (item.ID_Division_Fk == null)
-                    {
-                        @:No se le asignó una división
-                    }
-                    else if (item.ID_Division_Fk == 2)
-                    {
-                        @:División Mantenimiento de Instalaciones
-                    }
-                    else
-                    {
-                        @:División Comunicaciones e Informática
-                    }
-                </td>
-                <td>
                     @if (item.ID_Servicio_Fk == null)
                     {
                         @:No se le asignó un servicio
@@ -102,13 +91,13 @@
                         @:Servicio no reconocido
                     }
                 </td>
+                <td>                    @item.Fecha_Alta?.ToShortDateString()</td>
                 <td>
                     <a class="btn-action" asp-page="./Edit" asp-route-id="@item.ID_Usuario_Pk">Editar</a> 
                     <a class="btn-action" asp-page="./Details" asp-route-id="@item.ID_Usuario_Pk">Detalles</a> 
                     <a class="btn-action" asp-page="./Delete" asp-route-id="@item.ID_Usuario_Pk">Borrar</a>
                 </td>
             </tr>
-        }
     </tbody>
 </table>
 </body>

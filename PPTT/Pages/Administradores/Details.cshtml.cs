@@ -28,7 +28,7 @@ namespace PPTT.Pages.Administradores
                 return NotFound();
             }
 
-            var admin = await _context.usuario.FirstOrDefaultAsync(m => m.ID_Usuario_Pk == id);
+            var admin = await _context.Usuario.FirstOrDefaultAsync(m => m.ID_Usuario_Pk == id);
             if (admin == null)
             {
                 return NotFound();

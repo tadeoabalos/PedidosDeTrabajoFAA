@@ -55,7 +55,6 @@ namespace PPTT.Pages.Administradores
             }
 
             Admin.ID_Rol_Fk = 1;
-
             // Guarda el objeto Admin en el contexto
             _context.usuario.Add(Admin);
             await _context.SaveChangesAsync();
@@ -89,7 +88,11 @@ namespace PPTT.Pages.Administradores
                 }
                 else if (_rol > 1)
                 {
-                    Divisions = await _context.GetDivisionAsync();
+                Admin.Fecha_Alta = DateTime.Now;
+                _context.Usuario.Add(Admin);
+
+                await _context.SaveChangesAsync();
+                Divisions = await _context.GetDivisionAsync();
                     return Page();
                 }
                 else
@@ -104,5 +107,5 @@ namespace PPTT.Pages.Administradores
                 var servicios = await _context.GetServiciosAsync(int.Parse(division));
                 return new JsonResult(servicios);
             }
-        }
+        } 
     }

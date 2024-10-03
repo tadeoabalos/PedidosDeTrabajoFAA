@@ -14,7 +14,7 @@ namespace PPTT.Pages.Vistas
     {
         private readonly IConfiguration _configuration;
         private int _rol;
-        private string _nombre;
+        private string? _nombre;
         private int _ingreso;
 
         public IngresoPersonalModel(IConfiguration configuration)
@@ -75,6 +75,7 @@ namespace PPTT.Pages.Vistas
                     //capturo su IP
                     string ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
                     HttpContext.Session.SetString("IP", ipAddress);
+
                     Console.WriteLine(ipAddress);
                     return RedirectToPage("/Vistas/MenuLog");
                 }
@@ -97,7 +98,7 @@ namespace PPTT.Pages.Vistas
 
         private async Task<bool> EjecutarValidarStoredProcedure(int dni, int numeroDeControl, byte[] password)
         {
-            string connectionString = _configuration.GetConnectionString("ConnectionSQL");
+            string? connectionString = _configuration.GetConnectionString("ConnectionSQL");
 
             try
             {
