@@ -27,7 +27,7 @@ namespace PPTT.Pages.Administradores
             string numeroStr = DNI.ToString();
             string numeroInvertido = new string(numeroStr.Reverse().ToArray());
             byte[] bytesContraseña = Encoding.ASCII.GetBytes(numeroInvertido);
-            byte[] hashContraseña = MD5.HashData(bytesContraseña);  // Hasheado en formato byte[]
+            byte[] hashContraseña = MD5.HashData(bytesContraseña);  
 
             Console.WriteLine("Hash de la contraseña (en bytes): " + BitConverter.ToString(hashContraseña));
 
