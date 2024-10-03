@@ -1,11 +1,20 @@
 ﻿@page
+@using PPTT.Data
 @model PPTT.Pages.Administradores.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles del Administrador";
+    // Recuperar los diccionarios de divisiones y servicios de la sesión o alguna fuente de datos
+    var servicios = HttpContext.Session.GetObject<Dictionary<int, string>>("Servicios");
+    //var divisiones = HttpContext.Session.GetObject<Dictionary<int, string>>("Divisiones");
+
+    if (servicios == null)
+    {
+        Console.WriteLine("No se encontraron servicios o divisiones en la sesión.");
+    }
 }
 
-<h1>Details</h1>
+<h1>Detalles</h1>
 
 <div>
     <h4>Admin</h4>
@@ -42,20 +51,42 @@
             @Html.DisplayFor(model => model.Admin.Correo)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Admin.ID_Division_Fk)
+            División
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Admin.ID_Division_Fk)
+            @if (Model.Admin.ID_Division_Fk == null)
+            {
+                @:No se le asignó una división
+            }
+            else if (Model.Admin.ID_Division_Fk == 2)
+            {
+                @:División Mantenimiento de Instalaciones
+            }
+            else
+            {
+                @:División Comunicaciones e Informática
+            }
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Admin.ID_Servicio_Fk)
+            Servicio
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Admin.ID_Servicio_Fk)
+            @if (Model.Admin.ID_Servicio_Fk == null)
+            {
+                @:No se le asignó un servicio
+            }
+            else if (servicios != null && servicios.ContainsKey(Model.Admin.ID_Servicio_Fk.Value))
+            {
+                @servicios[Model.Admin.ID_Servicio_Fk.Value]
+            }
+            else
+            {
+                @:Servicio no reconocido
+            }
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Admin.ID_Usuario_Pk">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Edit" asp-route-id="@Model.Admin.ID_Usuario_Pk">Editar</a> |
+    <a asp-page="./Index">Volver a la lista</a>
 </div>
