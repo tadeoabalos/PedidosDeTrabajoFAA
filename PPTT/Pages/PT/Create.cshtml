@@ -1,0 +1,195 @@
+﻿@page
+@model PPTT.Pages.PT.CreatePPTT
+
+@{
+    ViewData["Title"] = "Crear Orden de Trabajo";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h4>Orden de Trabajo</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <h3>Datos del solicitante: </h3>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>                 
+            <div class="form-group">
+                <label asp-for="PedidoTrabajo.ID_Grado_Fk" class="control-label"></label>
+                <select asp-for="PedidoTrabajo.ID_Grado_Fk"
+                        asp-items="Model.Grados.Select(d=> new SelectListItem
+                        {
+                            Value = d.ID_Grado_PK.ToString(),
+                            Text = d.Descripcion_Grado.ToString()
+                        })"
+                        id="deptSelect"
+                        class="formControl">
+                    <option hidden selected value="">Seleccione el Grado</option>
+                </select>
+                <span asp-validation-for="PedidoTrabajo.ID_Grado_Fk" class="text-danger"></span>
+            </div>           
+            <div class="form-group">
+                <label asp-for="PedidoTrabajo.RTI_Solicitante" class="control-label"></label>
+                <input asp-for="PedidoTrabajo.RTI_Solicitante" class="form-control" />
+                <span asp-validation-for="PedidoTrabajo.RTI_Solicitante" class="text-danger"></span>
+            </div>  
+            <div class="form-group">
+                <label asp-for="PedidoTrabajo.Piso_Oficina_Solicitante" class="control-label"></label>
+                <select asp-for="PedidoTrabajo.Piso_Oficina_Solicitante" class="form-control" asp-items="Model.PisosOficina">
+                    <option hidden selected value="">Piso solicitante</option>
+                </select>
+                <span asp-validation-for="PedidoTrabajo.Piso_Oficina_Solicitante" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PedidoTrabajo.Numero_Oficina_Solicitante" class="control-label"></label>
+                <input asp-for="PedidoTrabajo.Numero_Oficina_Solicitante" class="form-control" />
+                <span asp-validation-for="PedidoTrabajo.Numero_Oficina_Solicitante" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PedidoTrabajo.Color_Oficina_Solicitante" class="control-label"></label>
+                <select asp-for="PedidoTrabajo.Color_Oficina_Solicitante" class="form-control" asp-items="Model.ColoresOficina">
+                    <option hidden selected value="">Seleccione un color</option>
+                </select>
+                <span asp-validation-for="PedidoTrabajo.Color_Oficina_Solicitante" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PedidoTrabajo.ID_Organismo_Fk" class="control-label"></label>
+                <input asp-for="PedidoTrabajo.ID_Organismo_Fk" class="form-control" />
+                <span asp-validation-for="PedidoTrabajo.ID_Organismo_Fk" class="text-danger"></span>
+            </div>           
+            <div class="form-group">
+                <label asp-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" class="control-label"></label>
+                <input asp-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" class="form-control" type="number" />
+                <span asp-validation-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" class="text-danger"></span>
+            </div>            
+            <div class="form-group">
+                <label asp-for="PedidoTrabajo.Correo" class="control-label"></label>
+                <input asp-for="PedidoTrabajo.Correo" class="form-control" />
+                <span asp-validation-for="PedidoTrabajo.Correo" class="text-danger"></span>
+            </div>            
+            <div class="form-group">
+                <label asp-for="PedidoTrabajo.Nombre_Solicitante" class="control-label"></label>
+                <input asp-for="PedidoTrabajo.Nombre_Solicitante" class="form-control" />
+                <span asp-validation-for="PedidoTrabajo.Nombre_Solicitante" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PedidoTrabajo.Apellido_Solicitante" class="control-label"></label>
+                <input asp-for="PedidoTrabajo.Apellido_Solicitante" class="form-control" />
+                <span asp-validation-for="PedidoTrabajo.Apellido_Solicitante" class="text-danger"></span>
+            </div>   
+            <div class="form-group">
+                <label asp-for="PedidoTrabajo.DNI_Solicitante" class="control-label"></label>
+                <input asp-for="PedidoTrabajo.DNI_Solicitante" class="form-control" />
+                <span asp-validation-for="PedidoTrabajo.DNI_Solicitante" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PedidoTrabajo.Numero_Control_Solicitante" class="control-label"></label>
+                <input asp-for="PedidoTrabajo.Numero_Control_Solicitante" class="form-control" />
+                <span asp-validation-for="PedidoTrabajo.Numero_Control_Solicitante" class="text-danger"></span>
+            </div> 
+            <br/>
+            <hr/>
+            @{
+                // DATOS DEL TRABAJO
+            }
+            <h3>Datos del trabajo: </h3>
+            <div class="form-group">
+                <label class="control-label">Servicio</label>
+                <select asp-items="Model.Servicios.Select(d=> new SelectListItem
+                        {
+                            Value = d.ID_Servicio_Pk.ToString(),
+                            Text = d.Descripcion_Servicio.ToString()
+                        })"
+                        id="servicioSelect"
+                        class="formControl">
+                    <option hidden selected value="">Seleccione el servicio correspondiente</option>
+                </select>
+                <span class="text-danger"></span>
+            </div>            
+
+            <div class="form-group">
+                <label asp-for="PedidoTrabajo.ID_Tarea_Fk" id="tareaLabel" class="control-label"></label>
+                <br/>
+                <select asp-for="PedidoTrabajo.ID_Tarea_Fk" id="tareaSelect" class="formControl">
+                    <option hidden select value="">Seleccione la tarea correspondiente</option>                    
+                </select>
+                <span asp-validation-for="PedidoTrabajo.ID_Tarea_Fk" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PedidoTrabajo.Piso_Oficina_PT" class="control-label"></label>
+                <select asp-for="PedidoTrabajo.Piso_Oficina_PT" class="form-control" asp-items="Model.PisosOficina">
+                    <option hidden selected value="">Piso Pedido de Trabajo</option>
+                </select>
+                <span asp-validation-for="PedidoTrabajo.Piso_Oficina_PT" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PedidoTrabajo.Numero_Oficina_PT" class="control-label"></label>
+                <input asp-for="PedidoTrabajo.Numero_Oficina_PT" class="form-control" />
+                <span asp-validation-for="PedidoTrabajo.Numero_Oficina_PT" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PedidoTrabajo.Color_Oficina_PT" class="control-label"></label>
+                <select asp-for="PedidoTrabajo.Color_Oficina_PT" class="form-control" asp-items="Model.ColoresOficina">
+                    <option hidden selected value="">Seleccione un color</option>
+                </select>
+                <span asp-validation-for="PedidoTrabajo.Color_Oficina_PT" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PedidoTrabajo.Observacion" class="control-label"></label>
+                <textarea asp-for="PedidoTrabajo.Observacion" class="form-control custom-textarea"></textarea>
+                <span asp-validation-for="PedidoTrabajo.Observacion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Crear" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Volver a la lista</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tareaLabel').hide();
+            $('#tareaSelect').hide();
+            $('#servicioSelect').change(function () {                
+                var selectedServicio = $(this).val();                
+                if (selectedServicio) {
+                    console.log(selectedServicio)
+                    $.ajax({
+                        url: '@Url.Page("./Create", "TareaByServicio")',
+                        type: 'GET',
+                        data: { servicio: selectedServicio },
+                        success: function (data) {
+                            console.log("El tipo de dato es " + typeof (selectedServicio));
+                            console.log(data);
+                            var tareaSelect = $('#tareaSelect');
+                            tareaSelect.empty();
+                            tareaSelect.append('<option hidden select value = "">Seleccione el servicio correspondiente</option>< /select>')                            
+                            $.each(data, function (index, tarea) {
+                                tareaSelect.append('<option value="' + tarea.id_Tarea_Pk + '">' + tarea.descripcion_Tarea + '</option>')
+                            })
+                            $('#tareaLabel').fadeIn(500);
+                            $('#tareaSelect').fadeIn(500);
+                        }
+                    })
+                }
+            })
+        })
+
+        $(document).ready(function () {
+            // Captura el cambio en el select de tareas
+            $('#tareaSelect').change(function () {
+                var selectedTarea = $(this).val();  // Obtén el valor de la tarea seleccionada
+                console.log("Tarea seleccionada:", selectedTarea);  // Muestra el valor seleccionado en la consola
+            });
+        });
+    </script>
+}

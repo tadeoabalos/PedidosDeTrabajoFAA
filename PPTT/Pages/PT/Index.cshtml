@@ -1,0 +1,104 @@
+﻿@page
+@model PPTT.Pages.Administradores.IndexPPTT
+
+@{
+    ViewData["Title"] = "Pedidos de trabajo";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Fecha_Subida)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Nombre_Solicitante)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Apellido_Solicitante)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Organismo_Fk)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Dependencia_Interna_Fk)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Numero_Oficina_Solicitante)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Color_Oficina_Solicitante)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Piso_Oficina_Solicitante)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].RTI_Solicitante)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Correo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Tarea_Fk)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Observacion)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.PedidoTrabajo)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha_Subida)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre_Solicitante)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Apellido_Solicitante)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID_Organismo_Fk)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID_Dependencia_Interna_Fk)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Numero_Oficina_Solicitante)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Color_Oficina_Solicitante)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Piso_Oficina_Solicitante)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RTI_Solicitante)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Correo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID_Tarea_Fk)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Observacion)
+                </td>
+                @* <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ID_Tarea_Fk">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ID_Tarea_Fk">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ID_Tarea_Fk">Delete</a>
+                </td> *@
+            </tr>
+        }
+
+    </tbody>
+</table>

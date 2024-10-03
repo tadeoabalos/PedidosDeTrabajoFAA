@@ -72,13 +72,11 @@
                         @:División Comunicaciones e Informática                        
                     }
                 </td>          
-            <td>
-                    @{
-                        @Model.nombreServicio
-                    }
+            <td>                    
+                Servicio
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Fecha_Alta)
+                    @item.Fecha_Alta?.ToShortDateString()
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.ID_Usuario_Pk">Edit</a> |

@@ -2,6 +2,7 @@
 @model PPTT.Pages.Administradores.CreateModel
 
 @{
+    // VERDADERO
     ViewData["Title"] = "Crear Usuario";
 }
 <style>
@@ -128,7 +129,7 @@
                     <option hidden selected value="">Seleccione el Organismo</option>
                 </select>
                 <span asp-validation-for="Admin.ID_Division_Fk" class="text-danger"></span>
-            </div>            
+            </div>                     
             <div class="form-group">
                 <label asp-for="Admin.ID_Servicio_Fk" id="servicioLabel"  class="control-label"></label>
                 <br/>
