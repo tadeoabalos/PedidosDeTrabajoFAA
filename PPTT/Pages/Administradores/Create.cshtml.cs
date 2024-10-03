@@ -74,7 +74,7 @@ namespace PPTT.Pages.Administradores
             Console.WriteLine(hashContraseña);
             HttpContext.Session.Set("hashContraseña", hashContraseña);
 
-            return RedirectToPage("./SubirPass");
+            return RedirectToPage("/Administradores/SubirPass");
         }
 
         public async Task<IActionResult> OnGetAsync()
