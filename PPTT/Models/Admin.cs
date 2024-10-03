@@ -24,8 +24,8 @@ namespace PPTT.Models
         [Display(Name = "Servicio")]
         public int? ID_Servicio_Fk { get; set; }
         [Display(Name ="Fecha de Alta")]
-        public DateTime Fecha_Alta { get; set; }
+        public DateTime? Fecha_Alta { get; set; }
         [Display(Name = "Fecha de Baja")]
-        public DateTime Fecha_Baja { get; set; }
+        public DateTime? Fecha_Baja { get; set; }
     }
 }

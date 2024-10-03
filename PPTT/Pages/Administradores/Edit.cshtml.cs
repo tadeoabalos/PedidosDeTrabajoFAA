@@ -40,7 +40,7 @@ namespace PPTT.Pages.Administradores
                 return NotFound();
             }
 
-            var admin = await _context.usuario.FirstOrDefaultAsync(m => m.ID_Usuario_Pk == id);
+            var admin = await _context.Usuario.FirstOrDefaultAsync(m => m.ID_Usuario_Pk == id);
             if (admin == null)
             {
                 return NotFound();
@@ -84,7 +84,7 @@ namespace PPTT.Pages.Administradores
 
         private bool AdminExists(int id)
         {
-            return _context.usuario.Any(e => e.ID_Usuario_Pk == id);
+            return _context.Usuario.Any(e => e.ID_Usuario_Pk == id);
         }
 
         /*public async Task EditarPW(int dni_nuevo, int dni_anterior)

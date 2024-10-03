@@ -10,20 +10,20 @@ using PPTT.Models;
 
 namespace PPTT.Pages.Administradores
 {
-    public class IndexModel : PageModel
+    public class IndexPPTT : PageModel
     {
         private readonly PPTT.Data.DBPPTTContext _context;
 
-        public IndexModel(PPTT.Data.DBPPTTContext context)
+        public IndexPPTT(PPTT.Data.DBPPTTContext context)
         {
             _context = context;
         }
 
-        public IList<Admin> Admin { get;set; } = default!;
+        public IList<PTUsuario> PedidoTrabajo { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
-            Admin = await _context.Usuario.ToListAsync();
+            PedidoTrabajo = await _context.PTUsuario.ToListAsync();
         }
 
 
