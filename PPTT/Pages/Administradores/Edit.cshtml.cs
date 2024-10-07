@@ -21,6 +21,7 @@ namespace PPTT.Pages.Administradores
 
         [BindProperty]
         public Admin Admin { get; set; } = default!;
+
         public List<Division> Divisions { get; set; } = new List<Division>();
         public List<Servicio> Servicios { get; set; } = new List<Servicio>();
 
@@ -59,7 +60,7 @@ namespace PPTT.Pages.Administradores
             }
 
             // Cargar los valores originales de ID_Servicio_Fk y ID_Password_Fk si no se han modificado en el formulario
-            var adminFromDb = await _context.usuario.AsNoTracking().FirstOrDefaultAsync(m => m.ID_Usuario_Pk == Admin.ID_Usuario_Pk);
+            var adminFromDb = await _context.Usuario.AsNoTracking().FirstOrDefaultAsync(m => m.ID_Usuario_Pk == Admin.ID_Usuario_Pk);
             if (adminFromDb == null)
             {
                 return NotFound();

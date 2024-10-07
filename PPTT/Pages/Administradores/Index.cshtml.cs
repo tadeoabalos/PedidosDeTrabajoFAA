@@ -42,6 +42,7 @@ namespace PPTT.Pages.Administradores
             _configuration = configuration; // Asegúrate de que esto esté presente
         }
         public List<ServicioModel> Items { get; set; } = new List<ServicioModel>();
+        public List<string> Divisions { get; set; } = new List<string>(); // Asegúrate de que esta propiedad existe
         public IList<Admin> Admin { get;set; } = default!;
         public class ServicioModel
         {
@@ -60,7 +61,7 @@ namespace PPTT.Pages.Administradores
             }
             else  
             {
-                Admin = await _context.usuario.ToListAsync();
+                Admin = await _context.Usuario.ToListAsync();
                 return Page();
             }
         }

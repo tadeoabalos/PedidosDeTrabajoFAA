@@ -1,6 +1,6 @@
 ﻿@page
 @model PPTT.Pages.Administradores.IndexModel
-
+@using Microsoft.AspNetCore.Mvc.RazorPages
 @using PPTT.Data
 
 @{
@@ -27,34 +27,18 @@
 <p>
     <a class="btn-action" asp-page="Create">Crear Nuevo Usuario</a>
 </p>
-<body>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Admin[0].Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Admin[0].Apellido)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Admin[0].DNI)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Admin[0].Numero_Control)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Admin[0].Correo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Admin[0].ID_Division_Fk)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Admin[0].ID_Servicio_Fk)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Admin[0].Fecha_Alta)
-            </th>
+            <th>@Html.DisplayNameFor(model => model.Admin[0].Nombre)</th>
+            <th>@Html.DisplayNameFor(model => model.Admin[0].Apellido)</th>
+            <th>@Html.DisplayNameFor(model => model.Admin[0].DNI)</th>
+            <th>@Html.DisplayNameFor(model => model.Admin[0].Numero_Control)</th>
+            <th>@Html.DisplayNameFor(model => model.Admin[0].Correo)</th>
+            <th>@Html.DisplayNameFor(model => model.Admin[0].ID_Division_Fk)</th>
+            <th>@Html.DisplayNameFor(model => model.Admin[0].ID_Servicio_Fk)</th>
+            <th>@Html.DisplayNameFor(model => model.Admin[0].Fecha_Alta)</th>
             <th></th>
         </tr>
     </thead>
@@ -62,21 +46,38 @@
         @foreach (var item in Model.Admin)
         {
             <tr>
+                <!-- Nombre -->
+                <td>@item.Nombre</td>
+
+                <!-- Apellido -->
+                <td>@item.Apellido</td>
+
+                <!-- DNI -->
+                <td>@item.DNI</td>
+
+                <!-- Número de control -->
+                <td>@item.Numero_Control</td>
+
+                <!-- Correo -->
+                <td>@item.Correo</td>
+
+                <!-- División -->
                 <td>
-                    @Html.DisplayFor(modelItem => item.Nombre)
+                    @if (item.ID_Division_Fk == null)
+                    {
+                        @:No se le asignó una división
+                    }
+                    else if (item.ID_Division_Fk == 1)
+                    {
+                        @:División Comunicaciones e Informática
+                    }
+                    else
+                    {
+                        @:División Mantenimiento de Instalaciones
+                    }
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Apellido)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DNI)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Numero_Control)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Correo)
-                </td>
+
+                <!-- Servicio -->
                 <td>
                     @if (item.ID_Servicio_Fk == null)
                     {
@@ -91,16 +92,22 @@
                         @:Servicio no reconocido
                     }
                 </td>
-                <td>                    @item.Fecha_Alta?.ToShortDateString()</td>
+
+                <!-- Fecha de alta -->
+                <td>@item.Fecha_Alta?.ToShortDateString()</td>
+
+                <!-- Botones de acción -->
                 <td>
-                    <a class="btn-action" asp-page="./Edit" asp-route-id="@item.ID_Usuario_Pk">Editar</a> 
-                    <a class="btn-action" asp-page="./Details" asp-route-id="@item.ID_Usuario_Pk">Detalles</a> 
+                    <a class="btn-action" asp-page="./Edit" asp-route-id="@item.ID_Usuario_Pk">Editar</a>
+                    <a class="btn-action" asp-page="./Details" asp-route-id="@item.ID_Usuario_Pk">Detalles</a>
                     <a class="btn-action" asp-page="./Delete" asp-route-id="@item.ID_Usuario_Pk">Borrar</a>
                 </td>
             </tr>
+        }
     </tbody>
 </table>
-</body>
+
+<!-- Estilos -->
 <style>
     body {
         align-items: center;
@@ -113,6 +120,7 @@
         border-radius: 8px;
         box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2);
     }
+
     a.btn-action {
         display: inline-block;
         text-decoration: none;
@@ -121,12 +129,12 @@
         border: 1px solid #003d6b;
         border-radius: 5px;
         background-color: #003d6b;
-        color: white; /* Color de texto */
+        color: white;
         transition: background-color 0.3s, transform 0.3s;
     }
 
         a.btn-action:hover {
-            background-color: #002e5d; /* Color en hover */
+            background-color: #002e5d;
             transform: translateY(-2px);
         }
 
@@ -143,98 +151,7 @@
     }
 
     th {
-        background-color: #e0e8f1; /* Color de fondo */
-        color: #003d6b; /* Color de texto (azul) */
-    }
-
-    /* Restante del estilo */
-    form {
-        align-items: center;
-        justify-content: center;
-        width: 150%;
-        margin: 30px auto;
-        padding: 20px;
         background-color: #e0e8f1;
-        border: 1px solid #003d6b;
-        border-radius: 8px;
-        box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2);
-    }
-
-    fieldset {
-        border: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    legend {
-        font-size: 1.2em;
         color: #003d6b;
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
-
-    label,
-    input[type="text"],
-    select,
-    .submit,
-    h4 {
-        font-size: 1em;
-        font-weight: bold;
-    }
-
-    input[type="text"],
-    select {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 15px;
-        border: 1px solid #003d6b;
-        border-radius: 4px;
-        background-color: white;
-    }
-
-    input[type="number"],
-    select {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 15px;
-        border: 1px solid #003d6b;
-        border-radius: 4px;
-        background-color: white;
-    }
-
-    .submit {
-        background-color: #003d6b;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-        .submit:hover {
-            background-color: #002e5d;
-        }
-
-    h4 {
-        color: #003d6b;
-        margin-top: 20px;
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
-
-    h3 {
-        font-size: 3em ;
-        color: #003d6b;
-        margin-top: 20px;
-        margin-bottom: 10px;
-        font-weight: bold;
-
-    }
-
-    .custom-textarea {
-        width: 100%;
-        height: 150px;
-        resize: none;
     }
 </style>
