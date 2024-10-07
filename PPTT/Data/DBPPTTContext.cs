@@ -36,7 +36,6 @@ namespace PPTT.Data
         {
             return await Servicios.FromSqlRaw("EXEC [dbo].[Servicios_Filtrados] @p0", division).ToListAsync();
         }
-<<<<<<< HEAD
         public async Task<List<Grado>> GetGradosAsync()
         {
             return await Grados.FromSqlRaw("EXEC [dbo].[Retorna_Grado]").ToListAsync();
@@ -49,8 +48,6 @@ namespace PPTT.Data
         {
             return await Tarea.FromSqlRaw("EXEC [dbo].[Tareas_Filtradas] @p0", servicio).ToListAsync();
         }
-=======
->>>>>>> 70d840446cf7b0ca5d8bfe484d5fcaa4c839e260
 
         // IDENTITYS
         protected override void OnModelCreating(ModelBuilder modelBuilder)

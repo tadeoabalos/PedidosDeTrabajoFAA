@@ -53,7 +53,15 @@ namespace PPTT.Pages.Administradores
             if (admin != null)
             {
                 Admin = admin;
-                _context.Usuario.Remove(Admin);
+                // Supongamos que 'Admin' es el usuario que deseas modificar
+                var usuario = Admin; // Asegúrate de tener el ID del usuario
+
+                if (usuario != null)
+                {
+                    usuario.Fecha_Baja = DateTime.Now; ; // Cambia la fecha de baja
+                    _context.SaveChanges(); // Guarda los cambios en la base de datos
+                }
+
                 await _context.SaveChangesAsync();
             }
 

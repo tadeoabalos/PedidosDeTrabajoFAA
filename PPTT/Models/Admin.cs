@@ -27,15 +27,7 @@ namespace PPTT.Models
         [Display(Name ="Fecha de Alta")]
         public DateTime? Fecha_Alta { get; set; }
         [Display(Name = "Fecha de Baja")]
-<<<<<<< HEAD
         public DateTime? Fecha_Baja { get; set; }
-=======
-        public DateTime Fecha_Baja { get; set; }
 
-        public static implicit operator Admin(List<Admin> v)
-        {
-            throw new NotImplementedException();
-        }
->>>>>>> 70d840446cf7b0ca5d8bfe484d5fcaa4c839e260
     }
 }
