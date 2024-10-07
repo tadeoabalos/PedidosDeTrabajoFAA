@@ -4,10 +4,7 @@
 @{
     ViewData["Title"] = "Editar Usuario";
 }
-<h1>Editar</h1>
-
-<h4>Usuario</h4>
-<hr />
+<h3>Editar</h3>
 <div class="row">
     <div class="col-md-4">
         <form method="post">
@@ -65,16 +62,17 @@
                 <br />
                 <input asp-for="Admin.ID_Rol_Fk" class="form-control" />
                 <span asp-validation-for="Admin.ID_Rol_Fk" class="text-danger"></span>
+
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="./Index">Index</a>
+    <a asp-page="./Index">Volver a la Lista</a>
 </div>
 
 
@@ -111,6 +109,125 @@
             })
         })
     </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #003d6b;
+            margin: 0;
+            padding: 0;
+        }
 
+        a.btn-action {
+            display: inline-block;
+            text-decoration: none;
+            padding: 8px 12px;
+            margin: 4px;
+            border: 1px solid #003d6b;
+            border-radius: 5px;
+            background-color: #003d6b;
+            color: white; /* Color de texto */
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+            a.btn-action:hover {
+                background-color: #002e5d; /* Color en hover */
+                transform: translateY(-2px);
+            }
+
+        form {
+            align-items: center;
+            justify-content: center;
+            width: 150%;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #e0e8f1;
+            border: 1px solid #003d6b;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2);
+        }
+
+        fieldset {
+            border: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        legend {
+            font-size: 1.2em;
+            color: #003d6b;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        label,
+        input[type="text"],
+        select,
+        .submit,
+        h4 {
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #003d6b;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #003d6b;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .submit {
+            background-color: #003d6b;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .submit:hover {
+                background-color: #002e5d;
+            }
+
+        h4 {
+            color: #003d6b;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        h3 {
+            font-size: 3em;
+            color: #003d6b;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .custom-textarea {
+            width: 100%;
+            height: 150px;
+            resize: none;
+        }
+
+        a.btn-action:hover {
+            background-color: #002e5d; /* Color en hover */
+            transform: translateY(-2px);
+        }
+    </style>
 }
 

@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.ComponentModel.DataAnnotations;
+
 namespace PPTT.Models
 {
     public class Admin
@@ -18,7 +19,7 @@ namespace PPTT.Models
         [Display(Name = "Numero de documento")]
         public int DNI { get; set; }
         [Display(Name = "Numero de control")]
-        public string? Numero_Control { get; set; }
+        public int? Numero_Control { get; set; }
         [Display(Name = "División")]
         public int? ID_Division_Fk {  get; set; }
         [Display(Name = "Servicio")]
@@ -27,5 +28,6 @@ namespace PPTT.Models
         public DateTime? Fecha_Alta { get; set; }
         [Display(Name = "Fecha de Baja")]
         public DateTime? Fecha_Baja { get; set; }
+
     }
 }
