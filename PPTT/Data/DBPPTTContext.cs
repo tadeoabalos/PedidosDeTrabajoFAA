@@ -43,9 +43,17 @@ namespace PPTT.Data
         {
             return await Servicios.FromSqlRaw("EXEC [dbo].[Retorna_Servicios]").ToListAsync();
         }
+        public async Task<List<Organismo>> GetOrganismoAsync()
+        {
+            return await Organismo.FromSqlRaw("EXEC [dbo].[Retorna_Organismo]").ToListAsync();
+        }
         public async Task<List<Tarea>> GetTareasFiltradasAsync(int servicio)
         {
             return await Tarea.FromSqlRaw("EXEC [dbo].[Tareas_Filtradas] @p0", servicio).ToListAsync();
+        }
+        public async Task<List<DependenciaInterna>> GetDependenciasFiltradasAsync(int organismo)
+        {
+            return await DependenciaInterna.FromSqlRaw("EXEC [dbo].[Dependencia_Filtrada] @p0", organismo).ToListAsync();
         }
 
         // IDENTITYS
