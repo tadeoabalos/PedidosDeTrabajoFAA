@@ -39,6 +39,7 @@
             <th>@Html.DisplayNameFor(model => model.Admin[0].ID_Division_Fk)</th>
             <th>@Html.DisplayNameFor(model => model.Admin[0].ID_Servicio_Fk)</th>
             <th>@Html.DisplayNameFor(model => model.Admin[0].Fecha_Alta)</th>
+            <th>@Html.DisplayNameFor(model => model.Admin[0].Fecha_Baja)</th>
             <th></th>
         </tr>
     </thead>
@@ -96,6 +97,17 @@
                 <!-- Fecha de alta -->
                 <td>@item.Fecha_Alta?.ToShortDateString()</td>
 
+                <td>
+                    @if (item.Fecha_Baja?.ToShortDateString() == "1/1/0001")
+                    {
+                        @:Este empleado sigue trabajando
+                    }
+                    else
+                    {
+                        @item.Fecha_Baja?.ToShortDateString()
+                    }
+                </td>
+
                 <!-- Botones de acción -->
                 <td>
                     <a class="btn-action" asp-page="./Edit" asp-route-id="@item.ID_Usuario_Pk">Editar</a>
@@ -112,7 +124,7 @@
     body {
         align-items: center;
         justify-content: center;
-        width: 85%;
+        width: 95%;
         margin: 30px auto;
         padding: 20px;
         background-color: #e0e8f1;

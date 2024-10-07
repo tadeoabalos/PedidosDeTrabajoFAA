@@ -38,6 +38,7 @@ namespace PPTT.Pages.Administradores
             }
 
             Admin.ID_Rol_Fk = 1; // Asigna el rol
+            Admin.Fecha_Baja = new DateTime(1, 1, 1);
             Admin.Fecha_Alta = DateTime.Now; // Asigna la fecha actual
 
             // Guarda el objeto Admin en el contexto
