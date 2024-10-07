@@ -1,15 +1,23 @@
 ﻿@page
+@using PPTT.Data
 @model PPTT.Pages.Administradores.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles del Administrador";
+    // Recuperar los diccionarios de divisiones y servicios de la sesión o alguna fuente de datos
+    var servicios = HttpContext.Session.GetObject<Dictionary<int, string>>("Servicios");
+    //var divisiones = HttpContext.Session.GetObject<Dictionary<int, string>>("Divisiones");
+
+    if (servicios == null)
+    {
+        Console.WriteLine("No se encontraron servicios o divisiones en la sesión.");
+    }
 }
 
-<h1>Details</h1>
-
+<h3>Detalles</h3>
+<form>
+<body>
 <div>
-    <h4>Admin</h4>
-    <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Admin.Nombre)
@@ -42,20 +50,161 @@
             @Html.DisplayFor(model => model.Admin.Correo)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Admin.ID_Division_Fk)
+            División
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Admin.ID_Division_Fk)
+            @if (Model.Admin.ID_Division_Fk == null)
+            {
+                @:No se le asignó una división
+            }
+            else if (Model.Admin.ID_Division_Fk == 2)
+            {
+                @:División Mantenimiento de Instalaciones
+            }
+            else
+            {
+                @:División Comunicaciones e Informática
+            }
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Admin.ID_Servicio_Fk)
+            Servicio
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Admin.ID_Servicio_Fk)
+            @if (Model.Admin.ID_Servicio_Fk == null)
+            {
+                @:No se le asignó un servicio
+            }
+            else if (servicios != null && servicios.ContainsKey(Model.Admin.ID_Servicio_Fk.Value))
+            {
+                @servicios[Model.Admin.ID_Servicio_Fk.Value]
+            }
+            else
+            {
+                @:Servicio no reconocido
+            }
         </dd>
     </dl>
 </div>
+</body>
+</form>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Admin.ID_Usuario_Pk">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Edit" asp-route-id="@Model.Admin.ID_Usuario_Pk">Editar</a> 
+    <a asp-page="./Index">Volver a la lista</a>
 </div>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f8ff;
+        color: #003d6b;
+        margin: 0;
+        padding: 0;
+    }
+
+    form {
+        width: 60%;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #e0e8f1;
+        border: 1px solid #003d6b;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2);
+    }
+
+
+    fieldset {
+        border: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    legend {
+        font-size: 1.2em;
+        color: #003d6b;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    label,
+    input[type="text"],
+    select,
+    .submit,
+    h4 {
+        font-size: 1em;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #003d6b;
+        border-radius: 4px;
+        background-color: white;
+    }
+
+    input[type="number"],
+    select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #003d6b;
+        border-radius: 4px;
+        background-color: white;
+    }
+
+    .submit {
+        background-color: #003d6b;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .submit:hover {
+            background-color: #002e5d;
+        }
+
+    h4 {
+        color: #003d6b;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    h3 {
+        font-size: 3em;
+        color: #003d6b;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .custom-textarea {
+        width: 100%;
+        height: 150px;
+        resize: none;
+    }
+
+    a.btn-action:hover {
+        background-color: #002e5d; /* Color en hover */
+        transform: translateY(-2px);
+    }
+
+    .submit {
+        background-color: #003d6b;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .submit:hover {
+            background-color: #002e5d;
+        }
+</style>

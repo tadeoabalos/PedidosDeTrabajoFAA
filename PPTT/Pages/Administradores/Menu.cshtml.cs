@@ -23,8 +23,10 @@ namespace PPTT.Pages.Administradores
         //    {
         //        ModelState.AddModelError(string.Empty, "Rol no reconocido.");
         //        return Page();
-
-        //    }
-        //}
+        public IActionResult OnPostCerrar()
+        {
+            HttpContext.Session.SetInt32("UserRole", 0);
+            return RedirectToPage("/Index");
+        }
     }
 }

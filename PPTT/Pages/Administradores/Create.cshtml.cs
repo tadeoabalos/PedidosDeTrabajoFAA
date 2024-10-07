@@ -5,11 +5,12 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol;
 using PPTT.Data;
 using PPTT.Models;
+using Microsoft.AspNetCore.Http;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace PPTT.Pages.Administradores
 {
@@ -20,12 +21,14 @@ namespace PPTT.Pages.Administradores
         public CreateModel(PPTT.Data.DBPPTTContext context)
         {
             _context = context;
+            Admin = new Admin(); // Inicializa el objeto Admin
         }
 
         [BindProperty]
-        public Admin Admin { get; set; } = default!;
-        public List<Division> Divisions { get; set; } = new List<Division>(); 
-        public List<Servicio> Servicios { get; set; } = new List<Servicio>(); 
+        public Admin Admin { get; set; }
+        public List<Division> Divisions { get; set; } = new List<Division>();
+        public List<Servicio> Servicios { get; set; } = new List<Servicio>();
+        public int DNI { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -34,36 +37,50 @@ namespace PPTT.Pages.Administradores
                 return Page();
             }
 
-            Admin.ID_Rol_Fk = 1;
-            Admin.Fecha_Alta = DateTime.Now;
-            _context.Usuario.Add(Admin);
+            Admin.ID_Rol_Fk = 1; // Asigna el rol
+            Admin.Fecha_Baja = new DateTime(1, 1, 1); ;
+            Admin.Fecha_Alta = DateTime.Now; // Asigna la fecha actual
 
+            // Guarda el objeto Admin en el contexto
+            _context.Usuario.Add(Admin);
             await _context.SaveChangesAsync();
-         
-            return RedirectToPage("./Index");
-        } 
+
+            DNI = Admin.DNI; // Asigna el DNI
+            HttpContext.Session.SetInt32("DNI", DNI);
+
+            // Lógica para invertir y hashear el DNI
+            string numeroStr = DNI.ToString();
+            string numeroInvertido = new string(numeroStr.Reverse().ToArray());
+
+            byte[] bytesContraseña = Encoding.ASCII.GetBytes(numeroInvertido);
+            byte[] hashContraseña = MD5.HashData(bytesContraseña);
+            HttpContext.Session.Set("hashContraseña", hashContraseña);
+
+            return RedirectToPage("/Administradores/SubirPass");
+        }
+
+
         public async Task<IActionResult> OnGetAsync()
         {
-            //int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
-            //HttpContext.Session.SetInt32("UserRole", _rol);
+            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
 
-            //if (_rol < 2)
-            //{
-            //    return RedirectToPage("/Index");
-            //}
-            //else if (_rol > 1)
-            //{
-            //    return Page();
-            //}
-            //else
-            //{
-            //    ModelState.AddModelError(string.Empty, "Rol no reconocido.");
-            //    return Page();
-            //}
-            Divisions = await _context.GetDivisionAsync(); 
-            return Page();
+            if (_rol < 2)
+            {
+                return RedirectToPage("/Index");
+            }
+            else if (_rol > 1)
+            {
+                // Aquí solo necesitas obtener las divisiones
+                Divisions = await _context.GetDivisionAsync();
+                return Page(); // Muestra la página del formulario
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Rol no reconocido.");
+                return Page();
+            }
         }
-                  
+
         public async Task<JsonResult> OnGetServiciosByDivisionAsync(string division)
         {
             var servicios = await _context.GetServiciosAsync(int.Parse(division));
