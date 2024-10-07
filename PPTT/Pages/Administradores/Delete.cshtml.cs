@@ -58,7 +58,7 @@ namespace PPTT.Pages.Administradores
 
                 if (usuario != null)
                 {
-                    usuario.Fecha_Baja = new DateTime(1, 1, 1); // Cambia la fecha de baja
+                    usuario.Fecha_Baja = DateTime.Now; ; // Cambia la fecha de baja
                     _context.SaveChanges(); // Guarda los cambios en la base de datos
                 }
 
