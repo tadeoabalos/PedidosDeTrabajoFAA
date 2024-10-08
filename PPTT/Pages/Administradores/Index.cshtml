@@ -110,9 +110,17 @@
 
                 <!-- Botones de acción -->
                 <td>
-                    <a class="btn-action" asp-page="./Edit" asp-route-id="@item.ID_Usuario_Pk">Editar</a>
-                    <a class="btn-action" asp-page="./Details" asp-route-id="@item.ID_Usuario_Pk">Detalles</a>
-                    <a class="btn-action" asp-page="./Delete" asp-route-id="@item.ID_Usuario_Pk">Borrar</a>
+                    @if (item.Fecha_Baja?.ToShortDateString() == "1/1/0001")
+                    {
+                        <a class="btn-action" asp-page="./Edit" asp-route-id="@item.ID_Usuario_Pk">Editar</a>
+                        <a class="btn-action" asp-page="./Details" asp-route-id="@item.ID_Usuario_Pk">Detalles</a>
+                        <a class="btn-action" asp-page="./Delete" asp-route-id="@item.ID_Usuario_Pk">Borrar</a>
+                    }
+                    else
+                    {
+                        <a class="btn-action" asp-page="./AltaDenuevo" asp-route-id="@item.ID_Usuario_Pk">Dar de Alta</a>
+                    }
+
                 </td>
             </tr>
         }

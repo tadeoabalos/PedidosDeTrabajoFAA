@@ -40,8 +40,8 @@ namespace PPTT.Pages.Administradores
                 Admin = admin;
             }
             return Page();
-        }
-
+        }                                                                                           
+                                                                                                                                                                                                                                                                                                                        
         public async Task<IActionResult> OnPostAsync(int? id)
         {
             if (id == null)
@@ -62,7 +62,7 @@ namespace PPTT.Pages.Administradores
                     _context.SaveChanges(); // Guarda los cambios en la base de datos
                 }
 
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();  
             }
 
             return RedirectToPage("./Index");
