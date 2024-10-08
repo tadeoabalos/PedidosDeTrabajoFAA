@@ -54,12 +54,7 @@
                     <option hidden select value="">Seleccione la dependencia correspondiente</option>                    
                 </select>
                 <span asp-validation-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" class="control-label"></label>
-                <input asp-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" class="form-control" type="number" />
-                <span asp-validation-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" class="text-danger"></span>
-            </div>            
+            </div>      
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.Correo" class="control-label"></label>
                 <input asp-for="PedidoTrabajo.Correo" class="form-control" />
@@ -159,15 +154,12 @@
                 $('#tareaSelect').hide();
                 $('#servicioSelect').change(function () {                
                     var selectedServicio = $(this).val();                
-                    if (selectedServicio) {
-                        console.log(selectedServicio)
+                    if (selectedServicio) {                        
                         $.ajax({
                             url: '@Url.Page("./Create", "TareaByServicio")',
                             type: 'GET',
                             data: { servicio: selectedServicio },
-                            success: function (data) {
-                                console.log("El tipo de dato es " + typeof (selectedServicio));
-                                console.log(data);
+                            success: function (data) {                               
                                 var tareaSelect = $('#tareaSelect');
                                 tareaSelect.empty();
                                 tareaSelect.append('<option hidden select value = "">Seleccione la tarea correspondiente</option>')                            
@@ -189,20 +181,17 @@
 
                 $('#orgSelect').change(function () {
                     var selectedOrganismo = $(this).val();
-                    if (selectedOrganismo) {
-                        console.log("Organismo seleccionado:", selectedOrganismo);
+                    if (selectedOrganismo) {                        
                         $.ajax({
                             url: '@Url.Page("./Create", "DependenciasByOrganismo")', 
                             type: 'GET',
                             data: { organismo: selectedOrganismo },
-                            success: function (data) {
-                                console.log("Succes");
-                                console.log("Dependencias recibidas:", data);
+                            success: function (data) {                                
                                 var dependenciaSelect = $('#dependenciaSelect');
                                 dependenciaSelect.empty();
                                 dependenciaSelect.append('<option hidden select value="">Seleccione la dependencia correspondiente</option>');
                                 $.each(data, function (index, dependencia) {
-                                    dependenciaSelect.append('<option value="' + dependencia.id_Dependencia_Interna_Pk + '">' + dependencia.Descripcion_Dependencia + '</option>');
+                                    dependenciaSelect.append('<option value="' + dependencia.iD_Dependencia_Interna_PK + '">' + dependencia.descripcion_Dependencia + '</option>');
                                 });
                                 $('#dependenciaLabel').fadeIn(500);
                                 $('#dependenciaSelect').fadeIn(500);
