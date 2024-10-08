@@ -38,6 +38,7 @@ namespace PPTT.Pages.PT
         [BindProperty]
         public PTUsuario PedidoTrabajo { get; set; } = default!;
         public List<Grado> Grados { get; set; } = new List<Grado>();
+        public List<Organismo> Organismos { get; set; } = new List<Organismo>();
         public List<Servicio> Servicios { get; set; } = new List<Servicio>();
         public List<SelectListItem> ColoresOficina { get; set; }
         public List<SelectListItem> PisosOficina { get; set; }
@@ -53,25 +54,25 @@ namespace PPTT.Pages.PT
         {
             [Display(Name = "Planta Baja (PB)")]
             PB,
-            [Display(Name = "1.er piso")]
+            [Display(Name = "1.er Piso")]
             Primero,
-            [Display(Name = "2.do piso")]
+            [Display(Name = "2.do Piso")]
             Segundo,
-            [Display(Name = "3.er piso")]
+            [Display(Name = "3.er Piso")]
             Tercero,
-            [Display(Name = "4.to piso")]
+            [Display(Name = "4.to Piso")]
             Cuarto,
-            [Display(Name = "5.to piso")]
+            [Display(Name = "5.to Piso")]
             Quinto,
-            [Display(Name = "6.to piso")]
+            [Display(Name = "6.to Piso")]
             Sexto,
-            [Display(Name = "7.mo piso")]
+            [Display(Name = "7.mo Piso")]
             Septimo,
-            [Display(Name = "8.vo piso")]
+            [Display(Name = "8.vo Piso")]
             Octavo,            
-            [Display(Name = "9.no piso")]
+            [Display(Name = "9.no Piso")]
             Noveno,
-            [Display(Name = "10.mo piso")]
+            [Display(Name = "10.mo Piso")]
             Decimo
         }
 
@@ -90,10 +91,7 @@ namespace PPTT.Pages.PT
             if (!ModelState.IsValid)
             {
                 return Page();
-            }
-                        
-            PedidoTrabajo.ID_Organismo_Fk = 1; // Manual
-            PedidoTrabajo.ID_Dependencia_Interna_Fk = 1; // Manual
+            }                                         
             PedidoTrabajo.ID_Estado_Fk = 1; // Automático
             PedidoTrabajo.Fecha_Subida = DateTime.Now; // Automático
             PedidoTrabajo.IP_Solicitante = "181.285.984"; // Función Automática
@@ -109,6 +107,7 @@ namespace PPTT.Pages.PT
         {
             Grados = await _context.GetGradosAsync();
             Servicios = await _context.GetServiciosSinFiltrarAsync();
+            Organismos = await _context.GetOrganismoAsync();
             return Page();
         }
 
@@ -116,6 +115,11 @@ namespace PPTT.Pages.PT
         {
             var tareas = await _context.GetTareasFiltradasAsync(int.Parse(servicio));
             return new JsonResult(tareas);
+        }
+        public async Task<JsonResult> OnGetDependenciasByOrganismoAsync(string organismo)
+        {
+            var dependencias = await _context.GetDependenciasFiltradasAsync(int.Parse(organismo));
+            return new JsonResult(dependencias);
         }
 
     }

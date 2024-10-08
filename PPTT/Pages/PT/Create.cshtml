@@ -32,36 +32,29 @@
                 <label asp-for="PedidoTrabajo.RTI_Solicitante" class="control-label"></label>
                 <input asp-for="PedidoTrabajo.RTI_Solicitante" class="form-control" />
                 <span asp-validation-for="PedidoTrabajo.RTI_Solicitante" class="text-danger"></span>
-            </div>  
-            <div class="form-group">
-                <label asp-for="PedidoTrabajo.Piso_Oficina_Solicitante" class="control-label"></label>
-                <select asp-for="PedidoTrabajo.Piso_Oficina_Solicitante" class="form-control" asp-items="Model.PisosOficina">
-                    <option hidden selected value="">Piso solicitante</option>
-                </select>
-                <span asp-validation-for="PedidoTrabajo.Piso_Oficina_Solicitante" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PedidoTrabajo.Numero_Oficina_Solicitante" class="control-label"></label>
-                <input asp-for="PedidoTrabajo.Numero_Oficina_Solicitante" class="form-control" />
-                <span asp-validation-for="PedidoTrabajo.Numero_Oficina_Solicitante" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PedidoTrabajo.Color_Oficina_Solicitante" class="control-label"></label>
-                <select asp-for="PedidoTrabajo.Color_Oficina_Solicitante" class="form-control" asp-items="Model.ColoresOficina">
-                    <option hidden selected value="">Seleccione un color</option>
-                </select>
-                <span asp-validation-for="PedidoTrabajo.Color_Oficina_Solicitante" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            </div>              
+           <div class="form-group">
                 <label asp-for="PedidoTrabajo.ID_Organismo_Fk" class="control-label"></label>
-                <input asp-for="PedidoTrabajo.ID_Organismo_Fk" class="form-control" />
+                <select asp-for="PedidoTrabajo.ID_Organismo_Fk"
+                        asp-items="Model.Organismos.Select(d=> new SelectListItem
+                        {
+                            Value = d.ID_Organismo_PK.ToString(),
+                            Text = d.Descripcion_organismo.ToString()
+                        })"
+                        id="orgSelect"
+                        class="formControl">
+                    <option hidden selected value="">Seleccione el Organismo</option>
+                </select>
                 <span asp-validation-for="PedidoTrabajo.ID_Organismo_Fk" class="text-danger"></span>
-            </div>           
+            </div>
             <div class="form-group">
-                <label asp-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" class="control-label"></label>
-                <input asp-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" class="form-control" type="number" />
+                <label asp-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" id="dependenciaLabel" class="control-label"></label>
+                <br/>
+                <select asp-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" id="dependenciaSelect" class="formControl">
+                    <option hidden select value="">Seleccione la dependencia correspondiente</option>                    
+                </select>
                 <span asp-validation-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" class="text-danger"></span>
-            </div>            
+            </div>      
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.Correo" class="control-label"></label>
                 <input asp-for="PedidoTrabajo.Correo" class="form-control" />
@@ -155,41 +148,58 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#tareaLabel').hide();
-            $('#tareaSelect').hide();
-            $('#servicioSelect').change(function () {                
-                var selectedServicio = $(this).val();                
-                if (selectedServicio) {
-                    console.log(selectedServicio)
-                    $.ajax({
-                        url: '@Url.Page("./Create", "TareaByServicio")',
-                        type: 'GET',
-                        data: { servicio: selectedServicio },
-                        success: function (data) {
-                            console.log("El tipo de dato es " + typeof (selectedServicio));
-                            console.log(data);
-                            var tareaSelect = $('#tareaSelect');
-                            tareaSelect.empty();
-                            tareaSelect.append('<option hidden select value = "">Seleccione el servicio correspondiente</option>< /select>')                            
-                            $.each(data, function (index, tarea) {
-                                tareaSelect.append('<option value="' + tarea.id_Tarea_Pk + '">' + tarea.descripcion_Tarea + '</option>')
-                            })
-                            $('#tareaLabel').fadeIn(500);
-                            $('#tareaSelect').fadeIn(500);
-                        }
-                    })
-                }
-            })
-        })
-
-        $(document).ready(function () {
-            // Captura el cambio en el select de tareas
-            $('#tareaSelect').change(function () {
-                var selectedTarea = $(this).val();  // Obtén el valor de la tarea seleccionada
-                console.log("Tarea seleccionada:", selectedTarea);  // Muestra el valor seleccionado en la consola
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#tareaLabel').hide();
+                $('#tareaSelect').hide();
+                $('#servicioSelect').change(function () {                
+                    var selectedServicio = $(this).val();                
+                    if (selectedServicio) {                        
+                        $.ajax({
+                            url: '@Url.Page("./Create", "TareaByServicio")',
+                            type: 'GET',
+                            data: { servicio: selectedServicio },
+                            success: function (data) {                               
+                                var tareaSelect = $('#tareaSelect');
+                                tareaSelect.empty();
+                                tareaSelect.append('<option hidden select value = "">Seleccione la tarea correspondiente</option>')                            
+                                $.each(data, function (index, tarea) {
+                                    tareaSelect.append('<option value="' + tarea.id_Tarea_Pk + '">' + tarea.descripcion_Tarea + '</option>')
+                                })
+                                $('#tareaLabel').fadeIn(500);
+                                $('#tareaSelect').fadeIn(500);
+                            }
+                        })
+                    }
+                })
             });
-        });
-    </script>
+
+            // Agregar el comportamiento para la selección de organismos y dependencias
+            $(document).ready(function () {
+                $('#dependenciaLabel').hide();
+                $('#dependenciaSelect').hide();
+
+                $('#orgSelect').change(function () {
+                    var selectedOrganismo = $(this).val();
+                    if (selectedOrganismo) {                        
+                        $.ajax({
+                            url: '@Url.Page("./Create", "DependenciasByOrganismo")', 
+                            type: 'GET',
+                            data: { organismo: selectedOrganismo },
+                            success: function (data) {                                
+                                var dependenciaSelect = $('#dependenciaSelect');
+                                dependenciaSelect.empty();
+                                dependenciaSelect.append('<option hidden select value="">Seleccione la dependencia correspondiente</option>');
+                                $.each(data, function (index, dependencia) {
+                                    dependenciaSelect.append('<option value="' + dependencia.iD_Dependencia_Interna_PK + '">' + dependencia.descripcion_Dependencia + '</option>');
+                                });
+                                $('#dependenciaLabel').fadeIn(500);
+                                $('#dependenciaSelect').fadeIn(500);
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
 }
+
