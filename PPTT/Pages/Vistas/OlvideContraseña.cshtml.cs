@@ -9,34 +9,39 @@ namespace PPTT.Pages.Vistas
     {
         public void OnGet()
         {
-            // Configura los detalles del correo
-            var fromAddress = new MailAddress("u.tinto@faa.mil.arg", "Uriel");
-            var toAddress = new MailAddress("t.abalos@faa.mil.arg", "Tadeo");
-            const string fromPassword = "584621584621"; // La contraseña de tu correo
-            const string subject = "Asunto del correo";
-            const string body = "Cuerpo del correo";
 
-            // Crea el objeto SmtpClient
-            var smtp = new SmtpClient
-            {
-                Host = "smtp.example.com", // Cambia esto por el servidor SMTP que estás usando
-                Port = 587, // Puerto común para SMTP
-                EnableSsl = true, // Habilita SSL
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-            };
+        }
+        //private bool SendMail(string to, string asunto, string body)
+        //{
+        //    String[] UsuarioMail = System.Configuration.ConfigurationManager.AppSettings["MailUser"].Split(';'); // "Usuario: twsigeho;clave:1CABoca?  
+        //    String from = UsuarioMail[0] + "@faa.mil.ar";
+        //    String displayName = "Soporte Turnos Web Fuerza Aerea Argentina";
 
-            // Crea el mensaje
-            var message = new MailMessage(fromAddress, toAddress)
-            {
-                Subject = subject,
-                Body = body
-            };
-
-            // Envía el correo
-            smtp.Send(message);
+        //    try
+        //    {
+        //        MailMessage mail = new MailMessage();
+        //        mail.From = new MailAddress(from, displayName);
+        //        mail.To.Add(to);  // Todos los destinatarios, puede usarse copia oculta
+        //        mail.Subject = asunto;
+        //        mail.Body = body;
+        //        mail.IsBodyHtml = true;  // false si es texto plano.
+        //        SmtpClient client = new SmtpClient("10.0.8.19", 25);//mailserver.condor.faa
+        //        client.UseDefaultCredentials = false;
+        //        client.Credentials = new NetworkCredential(from, UsuarioMail[1]);
+        //        client.EnableSsl = false; // Ver si el servidor de correo maneja cifrado o poner falso si no lo maneja.
+        //        client.Send(mail);                                                                         //COLOCAR EL MAIL COMPLETO SIN EL @FAA.MIL.AR
+        //        return true;
+        //    }
+        //    catch (SmtpException ex)
+        //    {
+        //        UC_Mensaje.ShowMensaje("ERROR", ex.Message, Shared_Controls_Application_Mesaje.TipoMensaje.Error);
+        //        return false;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        UC_Mensaje.ShowMensaje("ERROR", ex.Message, Shared_Controls_Application_Mesaje.TipoMensaje.Error);
+        //        return false;
+        //    }
         }
     }
-}
 
