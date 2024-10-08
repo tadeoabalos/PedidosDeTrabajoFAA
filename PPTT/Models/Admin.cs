@@ -12,8 +12,16 @@ namespace PPTT.Models
         public string? Apellido { get; set; }
         [Display(Name = "Correo institucional")]
         public string? Correo { get; set; }
+
+        public enum Rol
+        {
+            // Asegúrate de tener valores definidos aquí
+            Usuario = 1,
+            Administrador = 2
+        }
+
         [Display(Name = "Rol")]
-        public int? ID_Rol_Fk { get; set; }        
+        public int? ID_Rol_Fk { get; set; }     
         [Display(Name = "Contraseña")]
         public int? ID_Password_Fk { get; set; }
         [Display(Name = "Numero de documento")]

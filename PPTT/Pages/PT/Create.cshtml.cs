@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -94,7 +95,7 @@ namespace PPTT.Pages.PT
             }                                         
             PedidoTrabajo.ID_Estado_Fk = 1; // Automático
             PedidoTrabajo.Fecha_Subida = DateTime.Now; // Automático
-            PedidoTrabajo.IP_Solicitante = "181.285.984"; // Función Automática
+            PedidoTrabajo.IP_Solicitante = HttpContext.Connection.RemoteIpAddress?.ToString();
             PedidoTrabajo.Prioridad = 1;
             _context.PTUsuario.Add(PedidoTrabajo); 
 

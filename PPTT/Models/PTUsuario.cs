@@ -8,7 +8,7 @@ namespace PPTT.Models
     public class PTUsuario
     {
         [Display(Name = "ID Orden de Trabajo")]
-        public int ID_Orden_De_Trabajo_Pk { get; set; }
+        public int ID_Orden_Trabajo_Pk { get; set; }
 
         [Display(Name = "Fecha de Subida")]
         public DateTime Fecha_Subida { get; set; }

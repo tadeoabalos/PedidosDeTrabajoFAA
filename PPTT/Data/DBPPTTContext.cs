@@ -82,7 +82,7 @@ namespace PPTT.Data
           .HasKey(d => d.ID_Organismo_PK);
 
             modelBuilder.Entity<PTUsuario>()
-          .HasKey(d => d.ID_Orden_De_Trabajo_Pk);
+          .HasKey(d => d.ID_Orden_Trabajo_Pk);
 
             modelBuilder.Entity<Tarea>()
           .HasKey(d => d.Id_Tarea_Pk);
