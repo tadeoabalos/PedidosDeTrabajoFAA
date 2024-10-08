@@ -87,13 +87,10 @@
                         type: 'GET', 
                         data: {division: selectedDivision},               
                         success: function (data) 
-                        {
-                            console.log("El tipo de dato es " + typeof(selectedDivision)); 
-                            console.log(data);
+                        {                            
                             var servicioSelect = $('#servicioSelect');
                             servicioSelect.empty();
-                            servicioSelect.append('<option hidden select value = "">Seleccione el servicio correspondiente</option>< /select>')                                                      
-                            console.log(data);
+                            servicioSelect.append('<option hidden select value = "">Seleccione el servicio correspondiente</option>< /select>')                                                                                  
                             $.each(data, function (index, servicio) 
                             {
                                 servicioSelect.append('<option value="' + servicio.iD_Servicio_Pk + '">' + servicio.descripcion_Servicio + '</option>')
