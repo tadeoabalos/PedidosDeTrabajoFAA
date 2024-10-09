@@ -4,13 +4,20 @@
 
 @{
     ViewData["Title"] = "Detalles del Administrador";
-    // Recuperar los diccionarios de divisiones y servicios de la sesión o alguna fuente de datos
+    // Recuperar el diccionario de servicios de la sesión
     var servicios = HttpContext.Session.GetObject<Dictionary<int, string>>("Servicios");
-    //var divisiones = HttpContext.Session.GetObject<Dictionary<int, string>>("Divisiones");
 
-    if (servicios == null)
+    // Debug: Imprimir el contenido del diccionario
+    if (servicios != null)
     {
-        Console.WriteLine("No se encontraron servicios o divisiones en la sesión.");
+        foreach (var kvp in servicios)
+        {
+            Console.WriteLine($"Key: {kvp.Key}, Value: {kvp.Value}");
+        }
+    }
+    else
+    {
+        Console.WriteLine("No se encontraron servicios en la sesión.");
     }
 }
 
@@ -52,38 +59,48 @@
         <dt class="col-sm-2">
             División
         </dt>
-        <dd class="col-sm-10">
-            @if (Model.Admin.ID_Division_Fk == null)
-            {
-                @:No se le asignó una división
-            }
-            else if (Model.Admin.ID_Division_Fk == 2)
-            {
-                @:División Mantenimiento de Instalaciones
-            }
-            else
-            {
-                @:División Comunicaciones e Informática
-            }
-        </dd>
-        <dt class="col-sm-2">
-            Servicio
-        </dt>
-        <dd class="col-sm-10">
-            @if (Model.Admin.ID_Servicio_Fk == null)
-            {
-                @:No se le asignó un servicio
-            }
-            else if (servicios != null && servicios.ContainsKey(Model.Admin.ID_Servicio_Fk.Value))
-            {
-                @servicios[Model.Admin.ID_Servicio_Fk.Value]
-            }
-            else
-            {
-                @:Servicio no reconocido
-            }
-        </dd>
-    </dl>
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Admin.Nombre)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Admin.Nombre)
+                    </dd>
+                    <!-- Otras propiedades... -->
+                    <dt class="col-sm-2">
+                        División
+                    </dt>
+                    <dd>
+                        @if (Model.Admin.ID_Division_Fk == null)
+                        {
+                            @:No se le asignó una división
+                        }
+                        else if (Model.Admin.ID_Division_Fk == 1)
+                        {
+                            @:División Comunicaciones e Informática
+                        }
+                        else
+                        {
+                            @:División Mantenimiento de Instalaciones
+                        }
+                    </dd>
+
+                    <!-- Servicio -->
+                    <dd>
+                        @if (Model.Admin.ID_Servicio_Fk == null)
+                        {
+                            @:No se le asignó un servicio
+                        }
+                        else if (servicios != null && servicios.ContainsKey(Model.Admin.ID_Servicio_Fk.Value))
+                        {
+                            @servicios[Model.Admin.ID_Servicio_Fk.Value]
+                        }
+                        else
+                        {
+                            @:Servicio no reconocido
+                        }
+                    </dd>
+                </dl>
 </div>
 </body>
 </form>

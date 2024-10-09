@@ -72,11 +72,6 @@ namespace PPTT.Pages.Vistas
                 //decido a que menu lo mando, si al normal o al de admin
                 if (_rol < 2)
                 {
-                    //capturo su IP
-                    string ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
-                    HttpContext.Session.SetString("IP", ipAddress);
-
-                    Console.WriteLine(ipAddress);
                     return RedirectToPage("/Vistas/MenuLog");
                 }
                 else if (_rol > 1)

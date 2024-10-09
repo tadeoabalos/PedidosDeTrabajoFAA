@@ -23,6 +23,18 @@ namespace PPTT.Pages.Administradores
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+
+                int datos = HttpContext.Session.GetInt32("datos") ?? 0;
+                HttpContext.Session.SetInt32("datos", datos);
+                if (datos == 0)
+                {
+                    datos = datos + 1;
+                    HttpContext.Session.SetInt32("datos", datos);
+                    Console.WriteLine(datos);
+                    return RedirectToPage("/Administradores/TraerServicio");
+                }
+            else
+            {
             if (id == null)
             {
                 return NotFound();
@@ -38,6 +50,8 @@ namespace PPTT.Pages.Administradores
                 Admin = admin;
             }
             return Page();
+            }
+
         }
     }
 }
