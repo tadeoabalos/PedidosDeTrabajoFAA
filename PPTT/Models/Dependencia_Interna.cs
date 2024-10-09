@@ -1,6 +1,6 @@
 ﻿namespace PPTT.Models
 {
-    public class DependenciaInterna
+    public class Dependencia_Interna
     {
         public int ID_Dependencia_Interna_PK { get; set; }
         public int ID_Organismo_FK { get; set; }

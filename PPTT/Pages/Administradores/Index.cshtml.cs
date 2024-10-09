@@ -1,40 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using PPTT.Data;
 using PPTT.Models;
-using System.Collections.Generic;
 using System.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using NuGet.Protocol;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using System.Data.SqlClient;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.Diagnostics.Contracts;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Configuration;
 
 namespace PPTT.Pages.Administradores
 {
     public class IndexModel : PageModel
     {
         private readonly IConfiguration _configuration;
-        private readonly PPTT.Data.DBPPTTContext _context;
-        private int datos;
+        private readonly PPTT.Data.DBPPTTContext _context;       
         private IConfiguration? configuration;
         public IndexModel(PPTT.Data.DBPPTTContext context)
         {
