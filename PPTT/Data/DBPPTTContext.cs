@@ -20,7 +20,7 @@ namespace PPTT.Data
         public DbSet<PTUsuario> PTUsuario { get; set; }
         public DbSet<Grado> Grados { get; set; }
         public DbSet<Organismo> Organismo { get; set; }
-        public DbSet<DependenciaInterna> DependenciaInterna { get; set; }
+        public DbSet<Dependencia_Interna> Dependencia_Interna { get; set; }
         public DbSet<Estado> Estado { get; set; }
         public DbSet<Prueba> Prueba { get; set; }
         public DbSet<Tarea> Tarea { get; set; }
@@ -52,9 +52,9 @@ namespace PPTT.Data
         {
             return await Tarea.FromSqlRaw("EXEC [dbo].[Tareas_Filtradas] @p0", servicio).ToListAsync();
         }
-        public async Task<List<DependenciaInterna>> GetDependenciasFiltradasAsync(int organismo)
+        public async Task<List<Dependencia_Interna>> GetDependenciasFiltradasAsync(int organismo)
         {
-            return await DependenciaInterna.FromSqlRaw("EXEC [dbo].[Dependencia_Filtrada] @p0", organismo).ToListAsync();
+            return await Dependencia_Interna.FromSqlRaw("EXEC [dbo].[Dependencia_Filtrada] @p0", organismo).ToListAsync();
         }
 
         // IDENTITYS
@@ -69,7 +69,7 @@ namespace PPTT.Data
            modelBuilder.Entity<Servicio>()
           .HasKey(d => d.ID_Servicio_Pk);
 
-           modelBuilder.Entity<DependenciaInterna>()
+           modelBuilder.Entity<Dependencia_Interna>()
           .HasKey(d => d.ID_Dependencia_Interna_PK);
 
            modelBuilder.Entity<Grado>()

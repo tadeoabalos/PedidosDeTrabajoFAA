@@ -23,9 +23,12 @@ namespace PPTT.Pages.Administradores
 
         public async Task OnGetAsync()
         {
-            PedidoTrabajo = await _context.PTUsuario.ToListAsync();
+            PedidoTrabajo = await _context.PTUsuario
+                .Include(pt => pt.Organismo)           
+                .Include(pt => pt.Tarea)
+                .Include(pt => pt.Estado)
+                .Include(pt => pt.Dependencia_Interna)
+                .ToListAsync();
         }
-
-
     }
 }

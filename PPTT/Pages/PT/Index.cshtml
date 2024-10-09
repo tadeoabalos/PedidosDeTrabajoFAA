@@ -27,18 +27,12 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Dependencia_Interna_Fk)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Numero_Oficina_Solicitante)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Color_Oficina_Solicitante)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Piso_Oficina_Solicitante)
-            </th>
+            </th>        
             <th>
                 @Html.DisplayNameFor(model => model.PedidoTrabajo[0].RTI_Solicitante)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Numero_Oficina_PT)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Correo)
@@ -48,6 +42,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Observacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Estado_Fk)
             </th>
             <th></th>
         </tr>
@@ -66,31 +63,28 @@
                     @Html.DisplayFor(modelItem => item.Apellido_Solicitante)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ID_Organismo_Fk)
+                    @Html.DisplayFor(modelItem => item.Organismo.Descripcion_organismo)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ID_Dependencia_Interna_Fk)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Numero_Oficina_Solicitante)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Color_Oficina_Solicitante)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Piso_Oficina_Solicitante)
-                </td>
+                    @Html.DisplayFor(modelItem => item.Dependencia_Interna.Descripcion_Dependencia)
+                </td>              
                 <td>
                     @Html.DisplayFor(modelItem => item.RTI_Solicitante)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Numero_Oficina_PT)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Correo)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ID_Tarea_Fk)
+                    @Html.DisplayFor(modelItem => item.Tarea.Descripcion_Tarea)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Observacion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estado.Descripcion_Estado)
                 </td>
                 @* <td>
                     <a asp-page="./Edit" asp-route-id="@item.ID_Tarea_Fk">Edit</a> |

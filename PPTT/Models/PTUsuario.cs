@@ -30,7 +30,9 @@ namespace PPTT.Models
         public string? Correo { get; set; } = string.Empty;
 
         [Display(Name = "Organismo")]
-        public int ID_Organismo_Fk { get; set; } = 0;
+        public int ID_Organismo_Fk { get; set; }
+        [ForeignKey("ID_Organismo_Fk")]
+        public Organismo? Organismo { get; set; }
 
         [Display(Name = "RTI del Solicitante")]
         public string? RTI_Solicitante { get; set; } = string.Empty;
@@ -54,8 +56,9 @@ namespace PPTT.Models
         public string? Piso_Oficina_Solicitante { get; set; } = string.Empty;
 
         [Display(Name = "Dependencia Interna")]
-        public int ID_Dependencia_Interna_Fk { get; set; } = 0;
-
+        public int ID_Dependencia_Interna_Fk { get; set; }
+        [ForeignKey("ID_Dependencia_Interna_Fk")]
+        public Dependencia_Interna? Dependencia_Interna { get; set; } 
         [Display(Name = "DNI del Solicitante")]
         public int DNI_Solicitante { get; set; } = 0;
 
@@ -74,12 +77,14 @@ namespace PPTT.Models
         public int Prioridad { get; set; } = 1;
 
         [Display(Name = "Estado")]
-        public int ID_Estado_Fk { get; set; } = 0;
-
+        public int ID_Estado_Fk { get; set; }
+        [ForeignKey("ID_Estado_Fk")]
+        public Estado? Estado { get; set; }
         [Display(Name = "Tareas")]
-        public int ID_Tarea_Fk { get; set; } = 0;
-
-        [Display(Name = "Observaciones")]
-        public string? Observacion { get; set; } = string.Empty;
+        public int ID_Tarea_Fk { get; set; }
+        [ForeignKey("ID_Tarea_Fk")]
+        public Tarea? Tarea { get; set; }
+        [Display(Name = "Observaciones")] 
+        public string? Observacion { get; set; }
     }
 }
