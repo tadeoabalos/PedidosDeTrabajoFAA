@@ -9,7 +9,9 @@ namespace PPTT.Models
     {
         [Display(Name = "ID Orden de Trabajo")]
         public int ID_Orden_Trabajo_Pk { get; set; } = 0;
-
+        [Display(Name = "ID Orden")]
+        public int ID_Orden_Fk { get; set; } = 0;
+        //[ForeignKey("ID_Organismo_Fk")]
         [Display(Name = "Fecha de Subida")]
         [DisplayFormat(DataFormatString = "{0:d/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? Fecha_Subida { get; set; } = DateTime.Now;
@@ -77,7 +79,7 @@ namespace PPTT.Models
         public int Prioridad { get; set; } = 1;
 
         [Display(Name = "Estado")]
-        public int ID_Estado_Fk { get; set; } = 1002;
+        public int ID_Estado_Fk { get; set; } = 1;
         [ForeignKey("ID_Estado_Fk")]
         public Estado? Estado { get; set; }
         [Display(Name = "Tareas")]
