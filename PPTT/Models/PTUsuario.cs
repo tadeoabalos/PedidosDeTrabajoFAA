@@ -11,6 +11,7 @@ namespace PPTT.Models
         public int ID_Orden_Trabajo_Pk { get; set; } = 0;
 
         [Display(Name = "Fecha de Subida")]
+        [DisplayFormat(DataFormatString = "{0:d/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? Fecha_Subida { get; set; } = DateTime.Now;
 
         [Display(Name = "IP del Solicitante")]
@@ -62,9 +63,11 @@ namespace PPTT.Models
         public string? Numero_Control_Solicitante { get; set; } = string.Empty;
 
         [Display(Name = "Fecha Estimada de Finalización")]
+        [DisplayFormat(DataFormatString = "{0:d/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? Fecha_Estimada_Fin { get; set; } = DateTime.Now;
 
         [Display(Name = "Fecha de Inicio Suspendido")]
+        [DisplayFormat(DataFormatString = "{0:d/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? Fecha_Inicio_Suspendido { get; set; } = DateTime.Now;
 
         [Display(Name = "Prioridad")]
