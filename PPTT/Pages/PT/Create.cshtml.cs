@@ -92,8 +92,7 @@ namespace PPTT.Pages.PT
             if (!ModelState.IsValid)
             {
                 return Page();
-            }                                         
-            PedidoTrabajo.ID_Estado_Fk = 1; // Automático
+            }                                                 
             PedidoTrabajo.Fecha_Subida = DateTime.Now; // Automático
             PedidoTrabajo.IP_Solicitante = HttpContext.Connection.RemoteIpAddress?.ToString();
             PedidoTrabajo.Prioridad = 1;
