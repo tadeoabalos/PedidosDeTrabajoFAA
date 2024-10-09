@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using PPTT.Data;
 using PPTT.Models;
 
@@ -15,7 +16,7 @@ namespace PPTT.Pages.PT
     public class CreatePPTT : PageModel
     {
         private readonly PPTT.Data.DBPPTTContext _context;
-
+        public DbSet<PTUsuario> PTUsuarios { get; set; }
         public CreatePPTT(PPTT.Data.DBPPTTContext context)
         {
             _context = context;
@@ -43,6 +44,7 @@ namespace PPTT.Pages.PT
         public List<Servicio> Servicios { get; set; } = new List<Servicio>();
         public List<SelectListItem> ColoresOficina { get; set; }
         public List<SelectListItem> PisosOficina { get; set; }
+
         public enum ColorOficina
         {
             AZUL,
@@ -51,6 +53,7 @@ namespace PPTT.Pages.PT
             BLANCO,
             ROJO
         }
+
         public enum PisoOficina
         {
             [Display(Name = "Planta Baja (PB)")]
@@ -70,7 +73,7 @@ namespace PPTT.Pages.PT
             [Display(Name = "7.mo Piso")]
             Septimo,
             [Display(Name = "8.vo Piso")]
-            Octavo,            
+            Octavo,
             [Display(Name = "9.no Piso")]
             Noveno,
             [Display(Name = "10.mo Piso")]
@@ -92,17 +95,35 @@ namespace PPTT.Pages.PT
             if (!ModelState.IsValid)
             {
                 return Page();
-            }                                         
+            }
+
+            // Asigna valores automáticos a las propiedades de PedidoTrabajo
             PedidoTrabajo.ID_Estado_Fk = 1; // Automático
             PedidoTrabajo.Fecha_Subida = DateTime.Now; // Automático
             PedidoTrabajo.IP_Solicitante = HttpContext.Connection.RemoteIpAddress?.ToString();
             PedidoTrabajo.Prioridad = 1;
-            _context.PTUsuario.Add(PedidoTrabajo); 
 
-            await _context.SaveChangesAsync();
+            // Manejo del valor nullable
+            var tarea = PedidoTrabajo.ID_Tarea_Fk ?? 0; // Asigna 0 si ID_Tarea_Fk es null
+            HttpContext.Session.SetInt32("tarea", tarea);
 
-            return RedirectToPage("./Index");
+            try
+            {
+                // Agregar el nuevo PedidoTrabajo al contexto
+                await _context.PTUsuarios.AddAsync(PedidoTrabajo);
+                await _context.SaveChangesAsync(); // Guarda los cambios
+
+                // Ejecutar el stored procedure Diferentes_IDs
+                return RedirectToPage("./SubirID");
+            }
+            catch (Exception ex)
+            {
+                // Maneja el error (puedes loguearlo o mostrar un mensaje)
+                ModelState.AddModelError(string.Empty, $"Error: {ex.Message}");
+                return Page();
+            }
         }
+
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -117,11 +138,11 @@ namespace PPTT.Pages.PT
             var tareas = await _context.GetTareasFiltradasAsync(int.Parse(servicio));
             return new JsonResult(tareas);
         }
+
         public async Task<JsonResult> OnGetDependenciasByOrganismoAsync(string organismo)
         {
             var dependencias = await _context.GetDependenciasFiltradasAsync(int.Parse(organismo));
             return new JsonResult(dependencias);
         }
-
     }
 }

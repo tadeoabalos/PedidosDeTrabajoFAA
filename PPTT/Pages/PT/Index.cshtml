@@ -5,14 +5,14 @@
     ViewData["Title"] = "Pedidos de trabajo";
 }
 
-<h1>Index</h1>
+<h3>Pedidos de Trabajo</h3>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table" id="tabla">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Orden_Fk)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Fecha_Subida)
             </th>
@@ -53,6 +53,9 @@
         @foreach (var item in Model.PedidoTrabajo)
         {
             <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID_Orden_Fk)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Fecha_Subida)
                 </td>
@@ -96,3 +99,113 @@
 
     </tbody>
 </table>
+<a class="btn-action" asp-page="./Menu">Volver al Menu</a>
+<button id="btnExportar">Exportar Excel</button>
+
+<style>
+    body {
+        align-items: center;
+        justify-content: center;
+        width: 105%;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #e0e8f1;
+        border: 1px solid #003d6b;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2);
+    }
+
+    a.btn-action {
+        display: inline-block;
+        text-decoration: none;
+        padding: 8px 12px;
+        margin: 4px;
+        border: 1px solid #003d6b;
+        border-radius: 5px;
+        background-color: #003d6b;
+        color: white;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+        a.btn-action:hover {
+            background-color: #002e5d;
+            transform: translateY(-2px);
+        }
+
+    button {
+        display: inline-block;
+        text-decoration: none;
+        padding: 8px 12px;
+        margin: 4px;
+        border: 1px solid #4caf50;
+        border-radius: 5px;
+        background-color: #4caf50;
+        color: white;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+        button:hover {
+            background-color: #002e5d;
+            transform: translateY(-2px);
+        }
+
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #e0e8f1;
+        color: #003d6b;
+    }
+
+    h3 {
+        font-size: 3em;
+        color: #003d6b;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+</style>
+
+<!-- Scripts para exportar a Excel -->
+<script src="https://unpkg.com/xlsx@0.16.9/dist/xlsx.full.min.js"></script>
+<script src="https://unpkg.com/file-saverjs@latest/FileSaver.min.js"></script>
+<script src="https://unpkg.com/tableexport@latest/dist/js/tableexport.min.js"></script>
+
+
+<!-- Script para exportar a Excel -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const $btnExportar = document.querySelector("#btnExportar"),
+            $tabla = document.querySelector("#tabla");
+
+        $btnExportar.addEventListener("click", function () {
+            let tableExport = new TableExport($tabla, {
+                exportButtons: false, // No queremos botones adicionales
+                filename: "Reporte de Peticiones de Trabajo", // Nombre del archivo de Excel
+                sheetname: "Peticiones", // Título de la hoja
+            });
+
+            let datos = tableExport.getExportData();
+            let preferenciasDocumento = datos.tabla.xlsx;
+
+            tableExport.export2file(
+                preferenciasDocumento.data,
+                preferenciasDocumento.mimeType,
+                preferenciasDocumento.filename,
+                preferenciasDocumento.fileExtension,
+                preferenciasDocumento.merges,
+                preferenciasDocumento.RTL,
+                preferenciasDocumento.sheetname
+            );
+        });
+    });
+</script>

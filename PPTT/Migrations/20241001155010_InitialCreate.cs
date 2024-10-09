@@ -153,7 +153,7 @@ namespace PPTT.Migrations
                 name: "orden_de_trabajo_usuario",
                 columns: table => new
                 {
-                    ID_Orden_De_Trabajo_Pk = table.Column<int>(type: "int", nullable: false)
+                    ID_Orden_Trabajo_Pk = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Fecha_Subida = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IP_Solicitante = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -180,7 +180,7 @@ namespace PPTT.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_orden_de_trabajo_usuario", x => x.ID_Orden_De_Trabajo_Pk);
+                    table.PrimaryKey("PK_orden_de_trabajo_usuario", x => x.ID_Orden_Trabajo_Pk);
                 });
 
             migrationBuilder.CreateTable(
