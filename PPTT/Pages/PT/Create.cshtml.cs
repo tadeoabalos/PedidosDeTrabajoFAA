@@ -93,7 +93,7 @@ namespace PPTT.Pages.PT
             {
                 return Page();
             }                                                 
-            PedidoTrabajo.Fecha_Subida = DateTime.Now; // Automático
+            PedidoTrabajo.Fecha_Subida = DateTime.Now; // Automátic
             PedidoTrabajo.IP_Solicitante = HttpContext.Connection.RemoteIpAddress?.ToString();
             PedidoTrabajo.Prioridad = 1;
             _context.PTUsuario.Add(PedidoTrabajo); 
