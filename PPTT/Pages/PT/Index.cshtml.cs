@@ -28,6 +28,7 @@ namespace PPTT.Pages.Administradores
                 .Include(pt => pt.Tarea)
                 .Include(pt => pt.Estado)
                 .Include(pt => pt.Dependencia_Interna)
+                .Include(pt => pt.Grado)
                 .ToListAsync();
         }
     }

@@ -34,6 +34,13 @@ namespace PPTT.Pages.PT
                                Value = p.ToString(),
                                Text = GetEnumDisplayName(p)
                            }).ToList();
+            Prioridades = Enum.GetValues(typeof(Prioridad))
+                           .Cast<Prioridad>()
+                           .Select(p => new SelectListItem
+                           {
+                               Value = p.ToString(),
+                               Text = GetEnumDisplayName(p)
+                           }).ToList();
         }
 
         [BindProperty]
@@ -43,13 +50,22 @@ namespace PPTT.Pages.PT
         public List<Servicio> Servicios { get; set; } = new List<Servicio>();
         public List<SelectListItem> ColoresOficina { get; set; }
         public List<SelectListItem> PisosOficina { get; set; }
+        public List<SelectListItem> Prioridades { get; set; }
         public enum ColorOficina
         {
-            AZUL,
-            VERDE,
-            MARRÓN,
-            BLANCO,
-            ROJO
+            Azul,
+            Verde,
+            Marrón,
+            Blanco,
+            Rojo,
+            Amarillo
+        }
+        public enum Prioridad
+        {
+            Baja,
+            Media,
+            Alta,
+            Urgente,            
         }
         public enum PisoOficina
         {
@@ -93,9 +109,8 @@ namespace PPTT.Pages.PT
             {
                 return Page();
             }                                                 
-            PedidoTrabajo.Fecha_Subida = DateTime.Now; // Automátic
-            PedidoTrabajo.IP_Solicitante = HttpContext.Connection.RemoteIpAddress?.ToString();
-            PedidoTrabajo.Prioridad = 1;
+            PedidoTrabajo.Fecha_Subida = DateTime.Now; 
+            PedidoTrabajo.IP_Solicitante = HttpContext.Connection.RemoteIpAddress?.ToString();           
             _context.PTUsuario.Add(PedidoTrabajo); 
 
             await _context.SaveChangesAsync();
@@ -121,6 +136,5 @@ namespace PPTT.Pages.PT
             var dependencias = await _context.GetDependenciasFiltradasAsync(int.Parse(organismo));
             return new JsonResult(dependencias);
         }
-
     }
 }
