@@ -1,0 +1,120 @@
+﻿@page "{id:int?}"
+@model PPTT.Pages.PT.DetailsPPTT
+
+@{
+    ViewData["Title"] = "Detalles Pedido de trabajos";
+}
+
+<h1>Detalle</h1>
+
+<div>
+    <h2>Pedidos de trabajo</h2>
+    <hr />
+    <h3>Datos del solicitante</h3>
+    <dl class="row">          
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PedidoTrabajo.IP_Solicitante)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PedidoTrabajo.IP_Solicitante)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PedidoTrabajo.ID_Grado_Fk)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PedidoTrabajo.Grado.Descripcion_Grado)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PedidoTrabajo.Nombre_Solicitante)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PedidoTrabajo.Nombre_Solicitante)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PedidoTrabajo.Apellido_Solicitante)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PedidoTrabajo.Apellido_Solicitante)
+        </dd>        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PedidoTrabajo.DNI_Solicitante)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PedidoTrabajo.DNI_Solicitante)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PedidoTrabajo.Numero_Control_Solicitante)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PedidoTrabajo.Numero_Control_Solicitante)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PedidoTrabajo.RTI_Solicitante)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PedidoTrabajo.RTI_Solicitante)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PedidoTrabajo.ID_Organismo_Fk)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PedidoTrabajo.Organismo.Descripcion_organismo)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PedidoTrabajo.ID_Dependencia_Interna_Fk)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PedidoTrabajo.Dependencia_Interna.Descripcion_Dependencia)
+        </dd>
+    </dl>
+    <hr/>
+    <h3>Datos del Trabajo</h3>        
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PedidoTrabajo.Fecha_Subida)
+        </dt>        
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PedidoTrabajo.Fecha_Subida)
+        </dd>      
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PedidoTrabajo.ID_Tarea_Fk)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PedidoTrabajo.Tarea.Descripcion_Tarea)
+        </dd>   
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PedidoTrabajo.Piso_Oficina_PT)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PedidoTrabajo.Piso_Oficina_PT)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PedidoTrabajo.Color_Oficina_PT)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PedidoTrabajo.Color_Oficina_PT)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PedidoTrabajo.Numero_Oficina_PT)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PedidoTrabajo.Numero_Oficina_PT)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PedidoTrabajo.ID_Estado_Fk)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PedidoTrabajo.Estado.Descripcion_Estado)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PedidoTrabajo.Prioridad)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PedidoTrabajo.Prioridad)
+        </dd>
+    </dl>
+</div>
+<div>
+    @*<a asp-page="./Edit" asp-route-id="@Model.Pelicula.Id">Edit</a> |*@
+    <a asp-page="./Index">Back to List</a>
+</div>

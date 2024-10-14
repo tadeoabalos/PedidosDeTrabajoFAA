@@ -58,6 +58,10 @@ namespace PPTT.Data
         {
             return await Dependencia_Interna.FromSqlRaw("EXEC [dbo].[Dependencia_Filtrada] @p0", organismo).ToListAsync();
         }
+        public async Task<List<Admin>> GetUsuariosAsync()
+        {
+            return await Usuario.FromSqlRaw("EXEC [dbo].[Retorna_Usuarios]").ToListAsync();
+        }
 
         // IDENTITYS
         protected override void OnModelCreating(ModelBuilder modelBuilder)
