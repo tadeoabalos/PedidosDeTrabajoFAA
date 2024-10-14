@@ -1,24 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using PPTT.Data;
 using PPTT.Models;
-
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using System.Data.SqlClient;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Configuration;
 namespace PPTT.Pages.PT
 {
     public class CreatePPTT : PageModel
     {
         private readonly PPTT.Data.DBPPTTContext _context;
+        private readonly IConfiguration _configuration;
+        private readonly ILogger<CreatePPTT> _logger;
 
-        public CreatePPTT(PPTT.Data.DBPPTTContext context)
+        public CreatePPTT(PPTT.Data.DBPPTTContext context, ILogger<CreatePPTT> logger, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
+            _logger = logger;
 
             ColoresOficina = Enum.GetValues(typeof(ColorOficina))
                            .Cast<ColorOficina>()
@@ -92,15 +104,65 @@ namespace PPTT.Pages.PT
             if (!ModelState.IsValid)
             {
                 return Page();
-            }                                                 
-            PedidoTrabajo.Fecha_Subida = DateTime.Now; // Automátic
+            }
+
+            PedidoTrabajo.Fecha_Subida = DateTime.Now;
             PedidoTrabajo.IP_Solicitante = HttpContext.Connection.RemoteIpAddress?.ToString();
             PedidoTrabajo.Prioridad = 1;
-            _context.PTUsuario.Add(PedidoTrabajo); 
+
+            // Almacena el valor retornado del stored procedure en la propiedad ID_Orden_Fk
+            PedidoTrabajo.ID_Orden_Fk = await EjecutarDiferentesIDs(PedidoTrabajo.ID_Tarea_Fk);
+            //Console.WriteLine(PedidoTrabajo.ID_Orden_Fk);
+            //Console.WriteLine(PedidoTrabajo.ID_Orden_Fk);
+            //Console.WriteLine(PedidoTrabajo.ID_Orden_Fk);
+
+            _context.PTUsuario.Add(PedidoTrabajo);
 
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Index");
+        }
+
+
+        private async Task<int> EjecutarDiferentesIDs(int idTarea)
+        {
+            string connectionString = _configuration.GetConnectionString("ConnectionSQL");
+            int idOrden = 0; // Variable para almacenar el ID que retorna el SP
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+                    using (SqlCommand command = new SqlCommand("Diferentes_IDs", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.Add(new SqlParameter("@ID_Tarea", idTarea));
+
+                        using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                idOrden = reader.GetInt32(0); // Asigna el ID retornado
+                                _logger.LogInformation($"ID Orden retornado: {idOrden}");
+                                _logger.LogInformation($"ID Orden retornado: {idOrden}");
+                                _logger.LogInformation($"ID Orden retornado: {idOrden}");
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
+
+                                Console.WriteLine(idOrden);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error al ejecutar Diferentes_IDs: {ex.Message}");
+            }
+
+            return idOrden;
         }
 
         public async Task<IActionResult> OnGetAsync()
