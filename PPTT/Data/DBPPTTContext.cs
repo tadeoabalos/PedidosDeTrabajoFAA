@@ -23,6 +23,8 @@ namespace PPTT.Data
         public DbSet<Dependencia_Interna> Dependencia_Interna { get; set; }
         public DbSet<Estado> Estado { get; set; }
         public DbSet<Prueba> Prueba { get; set; }
+        public DbSet<PTUsuario> PTUsuarios { get; set; }
+
         public DbSet<Tarea> Tarea { get; set; }
 
 
