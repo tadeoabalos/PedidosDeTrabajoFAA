@@ -141,14 +141,6 @@ namespace PPTT.Pages.PT
                             if (await reader.ReadAsync())
                             {
                                 idOrden = reader.GetInt32(0); // Asigna el ID retornado
-                                _logger.LogInformation($"ID Orden retornado: {idOrden}");
-                                _logger.LogInformation($"ID Orden retornado: {idOrden}");
-                                _logger.LogInformation($"ID Orden retornado: {idOrden}");
-                                Console.WriteLine(idOrden);
-                                Console.WriteLine(idOrden);
-                                Console.WriteLine(idOrden);
-
-                                Console.WriteLine(idOrden);
                             }
                         }
                     }
