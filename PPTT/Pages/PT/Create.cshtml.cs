@@ -1,24 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using PPTT.Data;
 using PPTT.Models;
-
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using System.Data.SqlClient;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Configuration;
 namespace PPTT.Pages.PT
 {
     public class CreatePPTT : PageModel
     {
         private readonly PPTT.Data.DBPPTTContext _context;
+        private readonly IConfiguration _configuration;
+        private readonly ILogger<CreatePPTT> _logger;
 
-        public CreatePPTT(PPTT.Data.DBPPTTContext context)
+        public CreatePPTT(PPTT.Data.DBPPTTContext context, ILogger<CreatePPTT> logger, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
+            _logger = logger;
 
             ColoresOficina = Enum.GetValues(typeof(ColorOficina))
                            .Cast<ColorOficina>()
@@ -34,13 +46,6 @@ namespace PPTT.Pages.PT
                                Value = p.ToString(),
                                Text = GetEnumDisplayName(p)
                            }).ToList();
-            Prioridades = Enum.GetValues(typeof(Prioridad))
-                           .Cast<Prioridad>()
-                           .Select(p => new SelectListItem
-                           {
-                               Value = p.ToString(),
-                               Text = GetEnumDisplayName(p)
-                           }).ToList();
         }
 
         [BindProperty]
@@ -51,22 +56,13 @@ namespace PPTT.Pages.PT
         public List<Servicio> Servicios { get; set; } = new List<Servicio>();
         public List<SelectListItem> ColoresOficina { get; set; }
         public List<SelectListItem> PisosOficina { get; set; }
-        public List<SelectListItem> Prioridades { get; set; }
         public enum ColorOficina
         {
-            Azul,
-            Verde,
-            Marrón,
-            Blanco,
-            Rojo,
-            Amarillo
-        }
-        public enum Prioridad
-        {
-            Baja,
-            Media,
-            Alta,
-            Urgente,            
+            AZUL,
+            VERDE,
+            MARRÓN,
+            BLANCO,
+            ROJO
         }
         public enum PisoOficina
         {
@@ -109,14 +105,62 @@ namespace PPTT.Pages.PT
             if (!ModelState.IsValid)
             {
                 return Page();
-            }                                                 
-            PedidoTrabajo.Fecha_Subida = DateTime.Now; 
-            PedidoTrabajo.IP_Solicitante = HttpContext.Connection.RemoteIpAddress?.ToString();           
-            _context.PTUsuario.Add(PedidoTrabajo); 
+            }
+
+            PedidoTrabajo.Fecha_Subida = DateTime.Now;
+            PedidoTrabajo.IP_Solicitante = HttpContext.Connection.RemoteIpAddress?.ToString();
+            PedidoTrabajo.Prioridad = 1;
+
+            // Almacena el valor retornado del stored procedure en la propiedad ID_Orden_Fk
+            PedidoTrabajo.ID_Orden_Fk = await EjecutarDiferentesIDs(PedidoTrabajo.ID_Tarea_Fk);
+
+            _context.PTUsuario.Add(PedidoTrabajo);
 
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Index");
+        }
+
+
+        private async Task<int> EjecutarDiferentesIDs(int idTarea)
+        {
+            string connectionString = _configuration.GetConnectionString("ConnectionSQL");
+            int idOrden = 0; // Variable para almacenar el ID que retorna el SP
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+                    using (SqlCommand command = new SqlCommand("Diferentes_IDs", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.Add(new SqlParameter("@ID_Tarea", idTarea));
+
+                        using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                idOrden = reader.GetInt32(0); // Asigna el ID retornado
+                                _logger.LogInformation($"ID Orden retornado: {idOrden}");
+                                _logger.LogInformation($"ID Orden retornado: {idOrden}");
+                                _logger.LogInformation($"ID Orden retornado: {idOrden}");
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
+
+                                Console.WriteLine(idOrden);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error al ejecutar Diferentes_IDs: {ex.Message}");
+            }
+
+            return idOrden;
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -141,5 +185,6 @@ namespace PPTT.Pages.PT
             var dependencias = await _context.GetDependenciasFiltradasAsync(int.Parse(organismo));
             return new JsonResult(dependencias);
         }
+
     }
 }

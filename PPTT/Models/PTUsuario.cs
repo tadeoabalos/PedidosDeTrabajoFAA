@@ -9,7 +9,9 @@ namespace PPTT.Models
     {
         [Display(Name = "ID Orden de Trabajo")]
         public int ID_Orden_Trabajo_Pk { get; set; } = 0;
-
+        [Display(Name = "ID Orden de Trabajo")]
+        [ForeignKey("ID_Orden_Fk")]
+        public int ID_Orden_Fk { get; set; } = 0;
         [Display(Name = "Fecha de Alta")]
         [DisplayFormat(DataFormatString = "{0:d/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? Fecha_Subida { get; set; } = DateTime.Now;
@@ -60,7 +62,7 @@ namespace PPTT.Models
         [Display(Name = "Dependencia Interna")]
         public int ID_Dependencia_Interna_Fk { get; set; }
         [ForeignKey("ID_Dependencia_Interna_Fk")]
-        public Dependencia_Interna? Dependencia_Interna { get; set; } 
+        public Dependencia_Interna? Dependencia_Interna { get; set; }
         [Display(Name = "DNI del Solicitante")]
         public int DNI_Solicitante { get; set; } = 0;
 

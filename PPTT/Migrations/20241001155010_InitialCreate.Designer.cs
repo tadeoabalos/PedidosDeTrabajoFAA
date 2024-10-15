@@ -156,11 +156,11 @@ namespace PPTT.Migrations
 
             modelBuilder.Entity("PPTT.Models.PTUsuario", b =>
                 {
-                    b.Property<int>("ID_Orden_De_Trabajo_Pk")
+                    b.Property<int>("ID_Orden_Trabajo_Pk")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID_Orden_De_Trabajo_Pk"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID_Orden_Trabajo_Pk"));
 
                     b.Property<string>("Apellido_Solicitante")
                         .HasColumnType("nvarchar(max)");
@@ -228,7 +228,7 @@ namespace PPTT.Migrations
                     b.Property<string>("RTI_Solicitante")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID_Orden_De_Trabajo_Pk");
+                    b.HasKey("ID_Orden_Trabajo_Pk");
 
                     b.ToTable("orden_de_trabajo_usuario");
                 });
