@@ -86,7 +86,11 @@ namespace PPTT.Models
         public int ID_Tarea_Fk { get; set; }
         [ForeignKey("ID_Tarea_Fk")]
         public Tarea? Tarea { get; set; }
-        [Display(Name = "Observaciones")] 
+        [Display(Name = "Division")]
+        public int ID_Division_Fk { get; set; }
+        [ForeignKey("ID_Division_Fk")]
+        public Division? Division { get; set; }
+        [Display(Name = "Observaciones")]
         public string? Observacion { get; set; }
     }
 }

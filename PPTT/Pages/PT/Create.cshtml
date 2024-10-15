@@ -87,19 +87,26 @@
             }
             <h3>Datos del trabajo: </h3>
             <div class="form-group">
-                <label class="control-label">Servicio</label>
-                <select asp-items="Model.Servicios.Select(d=> new SelectListItem
+                <label asp-for="PedidoTrabajo.ID_Division_Fk" class="control-label"></label>
+                <select asp-for="PedidoTrabajo.ID_Division_Fk"
+                        asp-items="Model.Division.Select(d=> new SelectListItem
                         {
-                            Value = d.ID_Servicio_Pk.ToString(),
-                            Text = d.Descripcion_Servicio.ToString()
+                            Value = d.ID_Division_Pk.ToString(),
+                            Text = d.Descripcion_Division
                         })"
-                        id="servicioSelect"
+                        id="divisionSelect"
                         class="formControl">
-                    <option hidden selected value="">Seleccione el servicio correspondiente</option>
+                    <option hidden selected value="">Seleccione Division</option>
                 </select>
-                <span class="text-danger"></span>
-            </div>            
-
+                <span asp-validation-for="PedidoTrabajo.ID_Division_Fk" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label id="servicioLabel" class="control-label">Servicio</label>
+                <br />
+                <select id="servicioSelect" class="formControl">
+                    <option hidden select value="">Seleccione el servicio correspondiente</option>
+                </select>
+            </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.ID_Tarea_Fk" id="tareaLabel" class="control-label"></label>
                 <br/>
@@ -150,8 +157,36 @@
 
         <script type="text/javascript">
             $(document).ready(function () {
+                console.log("Cargó!");
+            const divisionSelect = document.getElementById('divisionSelect');           
+            divisionSelect.addEventListener('change', function () {                
+                const selectedDivisionId = this.value;                
+                console.log('ID de la división seleccionada:', selectedDivisionId);
+            });
+                $('#servicioLabel').hide();
+                $('#servicioSelect').hide();
                 $('#tareaLabel').hide();
                 $('#tareaSelect').hide();
+                $('#divisionSelect').change(function () {                      
+                    var selectedDivision = $(this).val();
+                    if (selectedDivision) {
+                        $.ajax({
+                            url: '@Url.Page("./Create", "ServiciosByDivision")',
+                            type: 'GET',
+                            data: { division: selectedDivision },
+                            success: function (data) {
+                                var servicioSelect = $('#servicioSelect');
+                                servicioSelect.empty();                                
+                                servicioSelect.append('<option hidden select value = "">Seleccione el servicio correspondiente</option>< /select>')
+                                $.each(data, function (index, servicio) {
+                                    servicioSelect.append('<option value="' + servicio.iD_Servicio_Pk + '">' + servicio.descripcion_Servicio + '</option>')
+                                })
+                                $('#servicioLabel').fadeIn(500);
+                                $('#servicioSelect').fadeIn(500);
+                            }
+                        })
+                    }
+                })
                 $('#servicioSelect').change(function () {                
                     var selectedServicio = $(this).val();                
                     if (selectedServicio) {                        

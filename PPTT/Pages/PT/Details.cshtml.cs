@@ -20,7 +20,7 @@ namespace PPTT.Pages.PT
         }
         public List<Admin> Usuarios { get; set; } = new List<Admin>();
         public PTUsuario? PedidoTrabajo { get; set; } = default!;
-
+        
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             Usuarios = await _context.GetUsuariosAsync();
