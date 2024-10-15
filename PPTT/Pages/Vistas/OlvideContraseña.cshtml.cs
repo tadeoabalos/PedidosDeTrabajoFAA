@@ -24,8 +24,20 @@ namespace PPTT.Pages.Vistas
         {
             _configuration = configuration;
         }
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            //si el rol es mayor a 0 significa que esta loggeado asi que hago que no pueda volver a la pagina de loggeo y sea redireccionado a una pagina para cerrar sesion
+            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+            HttpContext.Session.SetInt32("UserRole", _rol);
+            Console.WriteLine(_rol);
+            if (_rol > 0)
+            {
+                return RedirectToPage("/Vistas/YaLog");
+            }
+            else
+            {
+                return Page();
+            }
 
         }
         public async Task<IActionResult> OnPostAsync()
@@ -36,7 +48,6 @@ namespace PPTT.Pages.Vistas
             Random random = new Random();
             int randomNumber = random.Next(10000000, 100000000); // Límite inferior (inclusive) y superior (exclusive)
             var body = $"Su contraseña ahora es {randomNumber}";
-            bool result = SendMail(EmailDestino, asunto, body);
             string randomString = randomNumber.ToString();
             byte[] bytesContraseña;
             bytesContraseña = ASCIIEncoding.ASCII.GetBytes(randomString);
@@ -46,17 +57,16 @@ namespace PPTT.Pages.Vistas
             Console.WriteLine(hashContraseña);
             string sDNI = Request.Form["DNI"];
             int.TryParse(sDNI, out int DNI);
-            string NumeroDeControl = Request.Form["Numero_De_Control"];
-            bool isValid = await EjecutarValidarStoredProcedure(DNI, hashContraseña);
-            if (result)
+            bool isValid = await EjecutarValidarStoredProcedure(DNI, hashContraseña, EmailDestino);
+            if (isValid)
             {
-                ViewData["Message"] = "Correo enviado correctamente.";
+                SendMail(EmailDestino, asunto, body);
+                return RedirectToPage("/Vistas/IngresoPersonal");
             }
             else
             {
-                ViewData["Message"] = "Hubo un problema enviando el correo.";
+                return Page();
             }
-            return RedirectToPage("/Vistas/IngresoPersonal");
         }
 
         private bool SendMail(string to, string asunto, string body)
@@ -94,7 +104,7 @@ namespace PPTT.Pages.Vistas
                 return false;
             }
         }
-        private async Task<bool> EjecutarValidarStoredProcedure(int dni, byte[] password)
+        private async Task<bool> EjecutarValidarStoredProcedure(int dni, byte[] password, string correo)
         {
             string? connectionString = _configuration.GetConnectionString("ConnectionSQL");
 
@@ -103,17 +113,18 @@ namespace PPTT.Pages.Vistas
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     await connection.OpenAsync();
-                    using (SqlCommand command = new SqlCommand("Crear_Password", connection))
+                    using (SqlCommand command = new SqlCommand("Olvide_Password", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
                         //ejecuto el stored procedure de login con estos valores
                         command.Parameters.AddWithValue("@DNI", dni);
                         command.Parameters.AddWithValue("@Pass", password);
+                        command.Parameters.AddWithValue("@Correo", correo);
                         using (SqlDataReader reader = await command.ExecuteReaderAsync())
                         {
                             if (await reader.ReadAsync())
                             {
-                                return true ;
+                                return true;
                             }
                             else
                             {
