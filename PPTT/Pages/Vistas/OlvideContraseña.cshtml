@@ -42,7 +42,13 @@
         font-size: 1em;
         font-weight: bold;
     }
-
+    input[type="number"],
+    select,
+    .submit,
+    h4 {
+        font-size: 1em;
+        font-weight: bold;
+    }
     input[type="password"],
     select {
         width: 100%;
@@ -54,6 +60,15 @@
     }
 
     input[type="text"],
+    select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #003d6b;
+        border-radius: 4px;
+        background-color: white;
+    }
+        input[type="number"],
     select {
         width: 100%;
         padding: 8px;
@@ -114,6 +129,8 @@
             </div>
         </fieldset>
     </form>
+    <div class="centered-button">
         <a href="/" class="submit">Volver al Menu</a>
+        </div>
     </div>
 </body>

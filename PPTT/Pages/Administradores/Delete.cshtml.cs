@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using PPTT.Data;
 using PPTT.Models;
+using Microsoft.AspNetCore.Http;
+
 
 namespace PPTT.Pages.Administradores
 {
@@ -24,6 +26,15 @@ namespace PPTT.Pages.Administradores
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+                            int datos = HttpContext.Session.GetInt32("datos") ?? 0;
+                HttpContext.Session.SetInt32("datos", datos);
+                if (datos == 0)
+                {
+                    datos = datos + 1;
+                    HttpContext.Session.SetInt32("datos", datos);
+                    Console.WriteLine(datos);
+                    return RedirectToPage("/Administradores/TraerServicio");
+                }
             if (id == null)
             {
                 return NotFound();

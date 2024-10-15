@@ -50,7 +50,6 @@ namespace PPTT.Pages.Administradores
                     Value = ((int)c).ToString(),
                     Text = c.ToString()
                 }).ToList();
-
             if (id == null)
             {
                 return NotFound();
@@ -83,12 +82,17 @@ namespace PPTT.Pages.Administradores
             Admin.ID_Servicio_Fk = adminFromDb.ID_Servicio_Fk;
             Admin.ID_Password_Fk = adminFromDb.ID_Password_Fk;
 
+            // Guardar el rol nuevo en la propiedad ID_Rol_Fk del objeto Admin
+            Admin.ID_Rol_Fk = Admin.ID_Rol_Fk ?? 0; // Asegúrate de que ID_Rol_Fk tenga un valor predeterminado si es nulo
+
+            // Marcar las propiedades que han sido modificadas
             _context.Attach(Admin).Property(a => a.Nombre).IsModified = true;
             _context.Attach(Admin).Property(a => a.DNI).IsModified = true;
+            _context.Attach(Admin).Property(a => a.ID_Rol_Fk).IsModified = true; // Marcar ID_Rol_Fk como modificado
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(); // Guardar los cambios en la base de datos
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -98,12 +102,13 @@ namespace PPTT.Pages.Administradores
                 }
                 else
                 {
-                    throw;
+                    throw; // Lanzar la excepción para manejarla más arriba si es necesario
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index"); // Redirigir a la página de índice después de guardar
         }
+
 
         private bool AdminExists(int id)
         {

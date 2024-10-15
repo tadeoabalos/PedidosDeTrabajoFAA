@@ -4,9 +4,9 @@
 @{
     ViewData["Title"] = "Crear Usuario";
 }
-        <form method="post">
 <h3>Crear Usuarios</h3>
-@* <div class="row"> *@
+        <form method="post">
+ <div class="row"> 
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -59,9 +59,9 @@
             <div class="form-group">
                 <input type="submit" value="Crear" class="btn btn-primary" />
             </div> 
-@*     </div> *@
+     </div> 
 </form> 
-<div>
+<div class="centered-button">
     <a class="btn-action" asp-page="./Index">Volver a la lista</a>
 </div>
 
@@ -142,7 +142,7 @@
         form {
             align-items: center;
             justify-content: center;
-            width: 85%;
+            width: 65% ;
             margin: 30px auto;
             padding: 20px;
             background-color: #e0e8f1;
@@ -156,35 +156,6 @@
             color: #003d6b;
             margin-bottom: 10px;
             font-weight: bold;
-        }
-
-        label,
-        input[type="text"],
-        select,
-        .submit,
-        h4 {
-            font-size: 1em;
-            font-weight: bold;
-        }
-
-        input[type="text"],
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #003d6b;
-            border-radius: 4px;
-            background-color: white;
-        }
-
-        input[type="number"],
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #003d6b;
-            border-radius: 4px;
-            background-color: white;
         }
 
         .submit {
@@ -233,6 +204,61 @@
             background-color: #002e5d; /* Color en hover */
             transform: translateY(-2px);
         }
+
+        label,
+        input[type="text"],
+        select,
+        .submit,
+        h4 {
+            font-size: 1em;
+            font-weight: bold;
+            color: #003d6b; /* Asegurarte de que las etiquetas label y h4 compartan el mismo color */
+        }
+
+        input[type="number"],
+        select,
+        .submit,
+        h4 {
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #003d6b;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #003d6b;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #003d6b;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .centered-button {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
     </style>
 }
 

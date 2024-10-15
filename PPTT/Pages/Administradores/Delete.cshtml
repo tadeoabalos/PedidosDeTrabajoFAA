@@ -1,73 +1,125 @@
 ﻿@page
+@using PPTT.Data
 @model PPTT.Pages.Administradores.DeleteModel
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Borrar";
+
+    // Recuperar el diccionario de servicios de la sesión
+    var servicios = HttpContext.Session.GetObject<Dictionary<int, string>>("Servicios");
+
+    // Recuperar las divisiones de la sesión o crear un diccionario similar
+    var divisiones = new Dictionary<int, string>
+    {
+        { 1, "División Comunicaciones e Informática" },
+        { 2, "División Mantenimiento de Instalaciones" }
+    };
 }
 
 <h3>Borrar</h3>
-<h4>¿Estas Seguro de Borrar a Este Usuario?</h4>
+<h4>¿Estás seguro de borrar a este usuario?</h4>
 <form method="post">
-<div>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Admin.Nombre)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Admin.Nombre)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Admin.Apellido)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Admin.Apellido)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Admin.DNI)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Admin.DNI)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Admin.Numero_Control)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Admin.Numero_Control)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Admin.Correo)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Admin.Correo)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Admin.ID_Division_Fk)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Admin.ID_Division_Fk)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Admin.ID_Servicio_Fk)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Admin.ID_Servicio_Fk)
-        </dd>
-    </dl>
-@*         <input type="hidden" asp-for="Admin.ID_Usuario_Pk" /> *@
-        <input type="submit" value="Borrar" class="btn btn-danger" /> 
-    </form>
+    <div>
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Admin.Nombre)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Admin.Nombre)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Admin.Apellido)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Admin.Apellido)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Admin.DNI)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Admin.DNI)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Admin.Numero_Control)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Admin.Numero_Control)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Admin.Correo)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Admin.Correo)
+            </dd>
+            <dt class="col-sm-2">
+                División
+            </dt>
+            <dd class="col-sm-10">
+                @if (Model.Admin.ID_Division_Fk == null)
+                {
+                    @:No se le asignó una división
+                }
+                else if (divisiones.ContainsKey(Model.Admin.ID_Division_Fk.Value))
+                {
+                    @divisiones[Model.Admin.ID_Division_Fk.Value]
+                }
+                else
+                {
+                    @:División no reconocida
+                }
+            </dd>
+            <dt class="col-sm-2">
+                Servicio
+            </dt>
+            <dd class="col-sm-10">
+                @if (Model.Admin.ID_Servicio_Fk == null)
+                {
+                    @:No se le asignó un servicio
+                }
+                else if (servicios != null && servicios.ContainsKey(Model.Admin.ID_Servicio_Fk.Value))
+                {
+                    @servicios[Model.Admin.ID_Servicio_Fk.Value]
+                }
+                else
+                {
+                    @:Servicio no reconocido
+                }
+            </dd>
+        </dl>
+        <input type="hidden" asp-for="Admin.ID_Usuario_Pk" />
+        <input type="submit" value="Borrar" class="btn btn-danger" />
+    </div>
+</form>
+<div class="centered-button">
+    <a asp-page="./Index" class="btn-action">Volver a la Lista</a>
 </div>
-<a asp-page="./Index">Volver a la Lista</a>
+
 <style>
     body {
-        font-family: Arial, sans-serif;
-        background-color: #f0f8ff;
-        color: #003d6b;
-        margin: 0;
-        padding: 0;
+        background-color: #e0e8f1;
     }
 
-    a.btn-action {
+    h4 {
+        color: #003d6b; /* Color azul para h4 y detalles */
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    h3 {
+        font-size: 3em;
+        color: #003d6b;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    dt {
+        color: #003d6b; /* Color azul para los dt */
+        font-weight: bold;
+    }
+
+    a.btn-action, input[type=submit] {
         display: inline-block;
         text-decoration: none;
         padding: 8px 12px;
@@ -75,19 +127,19 @@
         border: 1px solid #003d6b;
         border-radius: 5px;
         background-color: #003d6b;
-        color: white; /* Color de texto */
+        color: white;
         transition: background-color 0.3s, transform 0.3s;
     }
 
-        a.btn-action:hover {
-            background-color: #002e5d; /* Color en hover */
+        a.btn-action:hover, input[type=submit]:hover {
+            background-color: #002e5d;
             transform: translateY(-2px);
         }
 
     form {
         align-items: center;
         justify-content: center;
-        width: 60%;
+        width: 65%;
         margin: 30px auto;
         padding: 20px;
         background-color: #e0e8f1;
@@ -96,46 +148,11 @@
         box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2);
     }
 
-    fieldset {
-        border: none;
-        padding: 0;
-        margin: 0;
-    }
-
     legend {
         font-size: 1.2em;
         color: #003d6b;
         margin-bottom: 10px;
         font-weight: bold;
-    }
-
-    label,
-    input[type="text"],
-    select,
-    .submit,
-    h4 {
-        font-size: 1em;
-        font-weight: bold;
-    }
-
-    input[type="text"],
-    select {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 15px;
-        border: 1px solid #003d6b;
-        border-radius: 4px;
-        background-color: white;
-    }
-
-    input[type="number"],
-    select {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 15px;
-        border: 1px solid #003d6b;
-        border-radius: 4px;
-        background-color: white;
     }
 
     .submit {
@@ -152,29 +169,31 @@
             background-color: #002e5d;
         }
 
-    h4 {
-        color: #003d6b;
-        margin-top: 20px;
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
-
-    h3 {
-        font-size: 3em;
-        color: #003d6b;
-        margin-top: 20px;
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
-
     .custom-textarea {
         width: 100%;
         height: 150px;
         resize: none;
     }
 
-    a.btn-action:hover {
-        background-color: #002e5d; /* Color en hover */
-        transform: translateY(-2px);
+    label, input[type="text"], select, .submit, h4 {
+        font-size: 1em;
+        font-weight: bold;
+        color: #003d6b;
+    }
+
+    input[type="password"], input[type="text"], input[type="number"], select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #003d6b;
+        border-radius: 4px;
+        background-color: white;
+    }
+
+    .centered-button {
+        display: flex;
+        margin-top: 20px;
+        align-items: center;
+        justify-content: center;
     }
 </style>

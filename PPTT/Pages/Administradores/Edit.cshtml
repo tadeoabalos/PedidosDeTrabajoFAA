@@ -5,8 +5,6 @@
     ViewData["Title"] = "Editar Usuario";
 }
 <h3>Editar</h3>
-<div class="row">
-    <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Admin.ID_Usuario_Pk" />
@@ -51,7 +49,6 @@
             </div>
             <div class="form-group">
                 <label asp-for="Admin.ID_Servicio_Fk" id="servicioLabel" class="control-label"></label>
-                <br />
                 <select asp-for="Admin.ID_Servicio_Fk" id="servicioSelect" class="formControl">
                     <option hidden value="">Seleccione el servicio correspondiente</option>
                 </select>
@@ -59,7 +56,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Admin.ID_Rol_Fk" class="control-label"></label>
-                <select asp-for="Admin.ID_Rol_Fk" class="form-control" asp-items="Model.Roles">
+                <select asp-for="Admin.ID_Rol_Fk"
+                        asp-items="Model.Roles"
+                        class="formControl">
                     <option hidden selected value="">Seleccione un rol</option>
                 </select>
                 <span asp-validation-for="Admin.ID_Rol_Fk" class="text-danger"></span>
@@ -68,12 +67,10 @@
                 <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>
         </form>
-    </div>
+<div class="centered-button">
+    <a asp-page="./Index" class="btn-action">Volver a la Lista</a>
 </div>
 
-<div>
-    <a asp-page="./Index">Volver a la Lista</a>
-</div>
 
 @section Scripts {
     @{
@@ -108,11 +105,7 @@
     </script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
-            color: #003d6b;
-            margin: 0;
-            padding: 0;
+            background-color: #e0e8f1;
         }
 
         a.btn-action {
@@ -123,19 +116,37 @@
             border: 1px solid #003d6b;
             border-radius: 5px;
             background-color: #003d6b;
-            color: white; /* Color de texto */
+            color: white;
             transition: background-color 0.3s, transform 0.3s;
         }
 
             a.btn-action:hover {
-                background-color: #002e5d; /* Color en hover */
+                background-color: #002e5d;
+                transform: translateY(-2px);
+            }
+
+
+        input[type=submit] {
+            display: inline-block;
+            text-decoration: none;
+            padding: 8px 12px;
+            margin: 4px;
+            border: 1px solid #003d6b;
+            border-radius: 5px;
+            background-color: #003d6b;
+            color: white;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+            input[type=submit]:hover {
+                background-color: #002e5d;
                 transform: translateY(-2px);
             }
 
         form {
             align-items: center;
             justify-content: center;
-            width: 150%;
+            width: 65%;
             margin: 30px auto;
             padding: 20px;
             background-color: #e0e8f1;
@@ -144,46 +155,11 @@
             box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2);
         }
 
-        fieldset {
-            border: none;
-            padding: 0;
-            margin: 0;
-        }
-
         legend {
             font-size: 1.2em;
             color: #003d6b;
             margin-bottom: 10px;
             font-weight: bold;
-        }
-
-        label,
-        input[type="text"],
-        select,
-        .submit,
-        h4 {
-            font-size: 1em;
-            font-weight: bold;
-        }
-
-        input[type="text"],
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #003d6b;
-            border-radius: 4px;
-            background-color: white;
-        }
-
-        input[type="number"],
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #003d6b;
-            border-radius: 4px;
-            background-color: white;
         }
 
         .submit {
@@ -201,6 +177,13 @@
             }
 
         h4 {
+            color: #003d6b;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        asap-for {
             color: #003d6b;
             margin-top: 20px;
             margin-bottom: 10px;
@@ -225,6 +208,62 @@
             background-color: #002e5d; /* Color en hover */
             transform: translateY(-2px);
         }
+
+        label,
+        input[type="text"],
+        select,
+        .submit,
+        h4 {
+            font-size: 1em;
+            font-weight: bold;
+            color: #003d6b; /* Asegurarte de que las etiquetas label y h4 compartan el mismo color */
+        }
+
+        input[type="number"],
+        select,
+        .submit,
+        h4 {
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #003d6b;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #003d6b;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #003d6b;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .centered-button {
+            display: flex;
+            margin-top: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
     </style>
 }
 

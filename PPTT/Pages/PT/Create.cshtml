@@ -2,13 +2,12 @@
 @model PPTT.Pages.PT.CreatePPTT
 
 @{
-    ViewData["Title"] = "Crear Orden de Trabajo";
+
 }
 
-<h1>@ViewData["Title"]</h1>
 
-<h4>Orden de Trabajo</h4>
-<hr />
+<h3>Petición de Trabajo</h3>
+
 <div class="row">
     <div class="col-md-4">
         <form method="post">
@@ -18,68 +17,70 @@
                 <label asp-for="PedidoTrabajo.ID_Grado_Fk" class="control-label"></label>
                 <select asp-for="PedidoTrabajo.ID_Grado_Fk"
                         asp-items="Model.Grados.Select(d=> new SelectListItem
-                        {
-                            Value = d.ID_Grado_PK.ToString(),
-                            Text = d.Descripcion_Grado.ToString()
-                        })"
+            {
+                Value = d.ID_Grado_PK.ToString(),
+                Text = d.Descripcion_Grado.ToString()
+            })"
                         id="deptSelect"
-                        class="formControl">
+                        class="formControl bordered">
+                    <!-- Añadido aquí -->
                     <option hidden selected value="">Seleccione el Grado</option>
                 </select>
                 <span asp-validation-for="PedidoTrabajo.ID_Grado_Fk" class="text-danger"></span>
-            </div>           
+            </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.RTI_Solicitante" class="control-label"></label>
-                <input asp-for="PedidoTrabajo.RTI_Solicitante" class="form-control" />
+                <input asp-for="PedidoTrabajo.RTI_Solicitante" class="form-control bordered" /> <!-- Añadido aquí -->
                 <span asp-validation-for="PedidoTrabajo.RTI_Solicitante" class="text-danger"></span>
-            </div>              
-           <div class="form-group">
+            </div>
+            <div class="form-group">
                 <label asp-for="PedidoTrabajo.ID_Organismo_Fk" class="control-label"></label>
                 <select asp-for="PedidoTrabajo.ID_Organismo_Fk"
                         asp-items="Model.Organismos.Select(d=> new SelectListItem
-                        {
-                            Value = d.ID_Organismo_PK.ToString(),
-                            Text = d.Descripcion_organismo.ToString()
-                        })"
+            {
+                Value = d.ID_Organismo_PK.ToString(),
+                Text = d.Descripcion_organismo.ToString()
+            })"
                         id="orgSelect"
-                        class="formControl">
+                        class="formControl bordered">
+                    <!-- Añadido aquí -->
                     <option hidden selected value="">Seleccione el Organismo</option>
                 </select>
                 <span asp-validation-for="PedidoTrabajo.ID_Organismo_Fk" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" id="dependenciaLabel" class="control-label"></label>
-                <br/>
-                <select asp-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" id="dependenciaSelect" class="formControl">
-                    <option hidden select value="">Seleccione la dependencia correspondiente</option>                    
+                <select asp-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" id="dependenciaSelect" class="formControl bordered">
+                    <!-- Añadido aquí -->
+                    <option hidden select value="">Seleccione la dependencia correspondiente</option>
                 </select>
                 <span asp-validation-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" class="text-danger"></span>
-            </div>      
+            </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.Correo" class="control-label"></label>
-                <input asp-for="PedidoTrabajo.Correo" class="form-control" />
+                <input asp-for="PedidoTrabajo.Correo" class="form-control bordered" /> <!-- Añadido aquí -->
                 <span asp-validation-for="PedidoTrabajo.Correo" class="text-danger"></span>
-            </div>            
+            </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.Nombre_Solicitante" class="control-label"></label>
-                <input asp-for="PedidoTrabajo.Nombre_Solicitante" class="form-control" />
+                <input asp-for="PedidoTrabajo.Nombre_Solicitante" class="form-control bordered" /> <!-- Añadido aquí -->
                 <span asp-validation-for="PedidoTrabajo.Nombre_Solicitante" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.Apellido_Solicitante" class="control-label"></label>
-                <input asp-for="PedidoTrabajo.Apellido_Solicitante" class="form-control" />
+                <input asp-for="PedidoTrabajo.Apellido_Solicitante" class="form-control bordered" /> <!-- Añadido aquí -->
                 <span asp-validation-for="PedidoTrabajo.Apellido_Solicitante" class="text-danger"></span>
-            </div>   
+            </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.DNI_Solicitante" class="control-label"></label>
-                <input asp-for="PedidoTrabajo.DNI_Solicitante" class="form-control" />
+                <input asp-for="PedidoTrabajo.DNI_Solicitante" class="form-control bordered" /> <!-- Añadido aquí -->
                 <span asp-validation-for="PedidoTrabajo.DNI_Solicitante" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.Numero_Control_Solicitante" class="control-label"></label>
-                <input asp-for="PedidoTrabajo.Numero_Control_Solicitante" class="form-control" />
+                <input asp-for="PedidoTrabajo.Numero_Control_Solicitante" class="form-control bordered" /> <!-- Añadido aquí -->
                 <span asp-validation-for="PedidoTrabajo.Numero_Control_Solicitante" class="text-danger"></span>
-            </div> 
+                       </div> 
             <br/>
             <hr/>
             @{
@@ -89,59 +90,59 @@
             <div class="form-group">
                 <label class="control-label">Servicio</label>
                 <select asp-items="Model.Servicios.Select(d=> new SelectListItem
-                        {
-                            Value = d.ID_Servicio_Pk.ToString(),
-                            Text = d.Descripcion_Servicio.ToString()
-                        })"
+            {
+                Value = d.ID_Servicio_Pk.ToString(),
+                Text = d.Descripcion_Servicio.ToString()
+            })"
                         id="servicioSelect"
-                        class="formControl">
+                        class="formControl bordered">
+                    <!-- Añadido aquí -->
                     <option hidden selected value="">Seleccione el servicio correspondiente</option>
                 </select>
-                <span class="text-danger"></span>
-            </div>            
-
+                <span asp-validation-for="PedidoTrabajo.ID_Tarea_Fk" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.ID_Tarea_Fk" id="tareaLabel" class="control-label"></label>
-                <br/>
-                <select asp-for="PedidoTrabajo.ID_Tarea_Fk" id="tareaSelect" class="formControl">
-                    <option hidden select value="">Seleccione la tarea correspondiente</option>                    
+                <select asp-for="PedidoTrabajo.ID_Tarea_Fk" id="tareaSelect" class="formControl bordered">
+                    <!-- Añadido aquí -->
+                    <option hidden select value="">Seleccione la tarea correspondiente</option>
                 </select>
                 <span asp-validation-for="PedidoTrabajo.ID_Tarea_Fk" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.Piso_Oficina_PT" class="control-label"></label>
-                <select asp-for="PedidoTrabajo.Piso_Oficina_PT" class="form-control" asp-items="Model.PisosOficina">
+                <select asp-for="PedidoTrabajo.Piso_Oficina_PT" class="form-control bordered" asp-items="Model.PisosOficina">
+                    <!-- Añadido aquí -->
                     <option hidden selected value="">Piso Pedido de Trabajo</option>
                 </select>
                 <span asp-validation-for="PedidoTrabajo.Piso_Oficina_PT" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.Numero_Oficina_PT" class="control-label"></label>
-                <input asp-for="PedidoTrabajo.Numero_Oficina_PT" class="form-control" />
+                <input asp-for="PedidoTrabajo.Numero_Oficina_PT" class="form-control bordered" /> <!-- Añadido aquí -->
                 <span asp-validation-for="PedidoTrabajo.Numero_Oficina_PT" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.Color_Oficina_PT" class="control-label"></label>
-                <select asp-for="PedidoTrabajo.Color_Oficina_PT" class="form-control" asp-items="Model.ColoresOficina">
+                <select asp-for="PedidoTrabajo.Color_Oficina_PT" class="form-control bordered" asp-items="Model.ColoresOficina">
+                    <!-- Añadido aquí -->
                     <option hidden selected value="">Seleccione un color</option>
                 </select>
                 <span asp-validation-for="PedidoTrabajo.Color_Oficina_PT" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.Observacion" class="control-label"></label>
-                <textarea asp-for="PedidoTrabajo.Observacion" class="form-control custom-textarea"></textarea>
+                <textarea asp-for="PedidoTrabajo.Observacion" class="form-control bordered custom-textarea"></textarea> <!-- Añadido aquí -->
                 <span asp-validation-for="PedidoTrabajo.Observacion" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Crear" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-page="Index">Volver a la lista</a>
-</div>
+<div class="centered-button"><a href="/" class="btn-action">Volver al Menu</a></div>
 
 @section Scripts {
     @{
@@ -201,5 +202,177 @@
                 });
             });
         </script>
+    <style>
+        body {
+            background-color: #e0e8f1;
+        }
+
+        a.btn-action {
+            display: inline-block;
+            text-decoration: none;
+            padding: 8px 12px;
+            margin: 4px;
+            border: 1px solid #003d6b;
+            border-radius: 5px;
+            background-color: #003d6b;
+            color: white;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+            a.btn-action:hover {
+                background-color: #002e5d;
+                transform: translateY(-2px);
+            }
+
+
+        input[type=submit] {
+            display: inline-block;
+            text-decoration: none;
+            padding: 8px 12px;
+            margin: 4px;
+            border: 1px solid #003d6b;
+            border-radius: 5px;
+            background-color: #003d6b;
+            color: white;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+            input[type=submit]:hover {
+                background-color: #002e5d;
+                transform: translateY(-2px);
+            }
+
+        form {
+            align-items: center;
+            justify-content: center;
+            width: 145%;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #e0e8f1;
+            border: 1px solid #003d6b;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2);
+        }
+
+        legend {
+            font-size: 1.2em;
+            color: #003d6b;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .submit {
+            background-color: #003d6b;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .submit:hover {
+                background-color: #002e5d;
+            }
+
+        h4 {
+            color: #003d6b;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        asap-for {
+            color: #003d6b;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        h3 {
+            font-size: 3em;
+            color: #003d6b;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .custom-textarea {
+            width: 100%;
+            height: 150px;
+            resize: none;
+        }
+
+        a.btn-action:hover {
+            background-color: #002e5d; /* Color en hover */
+            transform: translateY(-2px);
+        }
+
+        label,
+        input[type="text"],
+        select,
+        .submit,
+        h4 {
+            font-size: 1em;
+            font-weight: bold;
+            color: #003d6b; /* Asegurarte de que las etiquetas label y h4 compartan el mismo color */
+        }
+
+        input[type="number"],
+        select,
+        .submit,
+        h4 {
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #003d6b;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #003d6b;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #003d6b;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .centered-button {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .bordered {
+            border: 1px solid #003d6b;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .row {
+            align-items: center;
+            justify-content: center;
+        }
+
+    </style>
 }
 
