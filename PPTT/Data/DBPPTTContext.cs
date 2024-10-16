@@ -66,8 +66,11 @@ namespace PPTT.Data
         public async Task<List<Admin>> GetUsuariosAsync()
         {
             return await Usuario.FromSqlRaw("EXEC [dbo].[Retorna_Usuarios]").ToListAsync();
-        }                
-
+        }
+        public async Task<List<Admin>> GetUsuarioPorPtAsync(int PT) 
+        {
+            return await Usuario.FromSqlRaw("EXEC [dbo].[RetornaUsuarioPorPT] @p0", PT).ToListAsync();
+        }
         // IDENTITYS
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

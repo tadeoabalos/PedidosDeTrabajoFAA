@@ -43,13 +43,16 @@ namespace PPTT.Pages.Administradores
         {
             var usuarios = await _context.GetUsuariosFiltradosAsync(int.Parse(division));
             return new JsonResult(usuarios);
-        }       
-
+        }
+        public async Task<JsonResult> OnGetUsuarioPorPtAsync(string PT) 
+        {
+            var usuario = await _context.GetUsuarioPorPtAsync(int.Parse(PT));
+            return new JsonResult(usuario);
+        }
         public async Task<IActionResult> OnPostAsignarUsuarioAsync(int UsuarioId, int OrdenTrabajoId)
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC AsignarUsuarioAOrden @p0, @p1", UsuarioId, OrdenTrabajoId);
             return RedirectToPage("./Index");
-        }
-
+        }        
     }
 }
