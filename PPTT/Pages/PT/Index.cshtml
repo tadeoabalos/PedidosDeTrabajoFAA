@@ -44,7 +44,7 @@
                 @Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Estado_Fk)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Prioridad)
+                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Prioridad_Fk)
             </th>
             <th>
                 <span>Asignar Personal</span>
@@ -84,8 +84,8 @@
                 </td>
                 <td>
                     @Html.Raw(item.Tarea.Descripcion_Tarea.Length > 3 ?
-                             item.Tarea.Descripcion_Tarea.Substring(3).ToLower() :
-                             item.Tarea.Descripcion_Tarea.ToLower())
+                             item.Tarea.Descripcion_Tarea.Substring(3) :
+                             item.Tarea.Descripcion_Tarea)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Observacion)
@@ -93,8 +93,8 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Estado.Descripcion_Estado)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Prioridad)
+                <td>                   
+                    @Html.DisplayFor(modelItem => item.Prioridad.Descripcion_Prioridad)                                       
                 </td>
                 <td>
                     <div class="form-group">                        
@@ -105,7 +105,7 @@
                 </td>
                 <td>
                     <span id="personalAsignado_@item.ID_Orden_Trabajo_Pk" data-orden-id="@item.ID_Orden_Trabajo_Pk">
-                        Aquí se capturará item.ID_Orden_Trabajo_Pk
+                        Personal asignado
                     </span>
                 </td>
                 <td>
@@ -173,8 +173,6 @@
     });
 </script> <!-- SCRIPTS PARA EXPORTAR A EXCEL -->
 
-
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script type="text/javascript">
@@ -208,14 +206,23 @@
                     url: '@Url.Page("./Index", "UsuarioPorPt")',
                     type: 'GET',
                     data: { PT: ordenTrabajoId }, 
-                    success: function (data) {                        
-                        personalAsignado.empty(); 
-                        personalAsignado.append('<span>' + data[0].nombre + ' ' + data[0].apellido + '</span>'); 
+                    success: function (data) {      
+                        console.log(data);
+                        if (data[0] == null) 
+                        {
+                            personalAsignado.empty();
+                            personalAsignado.append('<span>No se asignó personal</span>');
+                        }
+                        else 
+                        {
+                            personalAsignado.empty();
+                            personalAsignado.append('<span>' + data[0].nombre + ' ' + data[0].apellido + '</span>');
+                        }                        
                     },
                     error: function (error) {
                         console.log('Error en la carga de información del usuario asignado:', error);
                     }
-                });
+                }); //SE COLOCA EL USUARIO ASIGNADO EN EL SPAN
             }
         }); //LISTADO DE USUARIOS
     
@@ -248,14 +255,12 @@
                     console.log('Error:', error);
                 }
             });
-
         }); //EVENTO ONCLICK CONFIRMAR ASIGNACION EN LA VENTANA MODAL
 
-        $('#cancelaAsignacion').click(function () {
-            
-        $('#confirmModal').modal('hide');
-                }); //EVENTO ONCLICK CANCELAR ASIGNACION EN LA VENTANA MODAL
-            });
+        $('#cancelaAsignacion').click(function () {            
+            $('#confirmModal').modal('hide');
+        }); //EVENTO ONCLICK CANCELAR ASIGNACION EN LA VENTANA MODAL
+        });
 
 </script>
 
@@ -267,10 +272,7 @@
         width: 105%;
         margin: 30px auto;
         padding: 20px;
-        background-color: #e0e8f1;
-        border: 1px solid #003d6b;
-        border-radius: 8px;
-        box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2);
+        background-color: #e0e8f1;       
     }
 
     a.btn-action {

@@ -24,9 +24,9 @@ namespace PPTT.Data
         public DbSet<Organismo> Organismo { get; set; }
         public DbSet<Dependencia_Interna> Dependencia_Interna { get; set; }
         public DbSet<Estado> Estado { get; set; }
+        public DbSet<Prioridad> Prioridad { get; set; }
         public DbSet<Prueba> Prueba { get; set; }
         public DbSet<PTUsuario> PTUsuarios { get; set; }
-
         public DbSet<Tarea> Tarea { get; set; }
         public DbSet<Orden_Asignada> Orden_Asignada { get; set; }
 
@@ -42,6 +42,10 @@ namespace PPTT.Data
         public async Task<List<Grado>> GetGradosAsync()
         {
             return await Grados.FromSqlRaw("EXEC [dbo].[Retorna_Grado]").ToListAsync();
+        }
+        public async Task<List<Prioridad>> GetPrioridadAsync()
+        {
+            return await Prioridad.FromSqlRaw("EXEC [dbo].[Retorna_Prioridades]").ToListAsync();
         }
         public async Task<List<Servicio>> GetServiciosSinFiltrarAsync()
         {
@@ -106,6 +110,9 @@ namespace PPTT.Data
 
             modelBuilder.Entity<Orden_Asignada>()
             .HasKey(d => d.ID_Trabajo_Asignado_Pk);
+
+            modelBuilder.Entity<Prioridad>()
+            .HasKey(d => d.ID_Prioridad_Pk);
         }
     }
 }

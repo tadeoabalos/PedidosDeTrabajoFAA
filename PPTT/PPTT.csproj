@@ -27,4 +27,8 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Operativos\" />
+  </ItemGroup>
+
 </Project>
