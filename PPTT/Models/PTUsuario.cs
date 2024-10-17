@@ -9,7 +9,7 @@ namespace PPTT.Models
     {
         [Display(Name = "ID Orden de Trabajo")]
         public int ID_Orden_Trabajo_Pk { get; set; } = 0;
-        [Display(Name = "ID Orden de Trabajo")]
+        [Display(Name = "ID")]
         [ForeignKey("ID_Orden_Fk")]
         public int ID_Orden_Fk { get; set; } = 0;
         [Display(Name = "Fecha de Alta")]
@@ -30,7 +30,7 @@ namespace PPTT.Models
         [ForeignKey("ID_Grado_Fk")]
         public Grado? Grado { get; set; }
 
-        [Display(Name = "Correo Institucional")]
+        [Display(Name = "Correo")]
         public string? Correo { get; set; } = string.Empty;
 
         [Display(Name = "Organismo")]
@@ -44,7 +44,7 @@ namespace PPTT.Models
         [Display(Name = "Color del sector")]
         public string? Color_Oficina_PT { get; set; } = string.Empty;
 
-        [Display(Name = "Número de Oficina")]
+        [Display(Name = "N° Oficina")]
         public string? Numero_Oficina_PT { get; set; } = string.Empty;
 
         [Display(Name = "Piso de la Oficina")]
@@ -88,6 +88,10 @@ namespace PPTT.Models
         public int ID_Tarea_Fk { get; set; }
         [ForeignKey("ID_Tarea_Fk")]
         public Tarea? Tarea { get; set; }
+        [Display(Name = "Division")]
+        public int ID_Division_Fk { get; set; }
+        [ForeignKey("ID_Division_Fk")]
+        public Division? Division { get; set; }
         [Display(Name = "Observaciones")]
         public string? Observacion { get; set; }
     }

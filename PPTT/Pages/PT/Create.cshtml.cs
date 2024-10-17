@@ -50,6 +50,7 @@ namespace PPTT.Pages.PT
 
         [BindProperty]
         public PTUsuario PedidoTrabajo { get; set; } = default!;
+        public List<Division> Division { get; set; } = new List<Division>();
         public List<Grado> Grados { get; set; } = new List<Grado>();
         public List<Organismo> Organismos { get; set; } = new List<Organismo>();
         public List<Servicio> Servicios { get; set; } = new List<Servicio>();
@@ -156,12 +157,16 @@ namespace PPTT.Pages.PT
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Grados = await _context.GetGradosAsync();
-            Servicios = await _context.GetServiciosSinFiltrarAsync();
+            Division = await _context.GetDivisionAsync();
+            Grados = await _context.GetGradosAsync();            
             Organismos = await _context.GetOrganismoAsync();
             return Page();
         }
-
+        public async Task<JsonResult> OnGetServiciosByDivisionAsync(string division)
+        {
+            var servicios = await _context.GetServiciosAsync(int.Parse(division));
+            return new JsonResult(servicios);
+        }
         public async Task<JsonResult> OnGetTareaByServicioAsync(string servicio)
         {
             var tareas = await _context.GetTareasFiltradasAsync(int.Parse(servicio));

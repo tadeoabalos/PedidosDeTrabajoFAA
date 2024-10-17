@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Formats.Asn1;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore;
 using PPTT.Models;
@@ -26,14 +28,13 @@ namespace PPTT.Data
         public DbSet<PTUsuario> PTUsuarios { get; set; }
 
         public DbSet<Tarea> Tarea { get; set; }
-
+        public DbSet<Orden_Asignada> Orden_Asignada { get; set; }
 
         // Sector funciones //
         public async Task<List<Division>> GetDivisionAsync()
         {
             return await Divisions.FromSqlRaw("EXEC [dbo].[Retorna_Division]").ToListAsync();
         }
-
         public async Task<List<Servicio>> GetServiciosAsync(int division)
         {
             return await Servicios.FromSqlRaw("EXEC [dbo].[Servicios_Filtrados] @p0", division).ToListAsync();
@@ -58,11 +59,18 @@ namespace PPTT.Data
         {
             return await Dependencia_Interna.FromSqlRaw("EXEC [dbo].[Dependencia_Filtrada] @p0", organismo).ToListAsync();
         }
+        public async Task<List<Admin>> GetUsuariosFiltradosAsync(int division)
+        {
+            return await Usuario.FromSqlRaw("EXEC [dbo].[Usuarios_Filtrados]  @p0", division).ToListAsync();
+        }
         public async Task<List<Admin>> GetUsuariosAsync()
         {
             return await Usuario.FromSqlRaw("EXEC [dbo].[Retorna_Usuarios]").ToListAsync();
         }
-
+        public async Task<List<Admin>> GetUsuarioPorPtAsync(int PT) 
+        {
+            return await Usuario.FromSqlRaw("EXEC [dbo].[RetornaUsuarioPorPT] @p0", PT).ToListAsync();
+        }
         // IDENTITYS
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -95,6 +103,9 @@ namespace PPTT.Data
 
             modelBuilder.Entity<Prueba>()
             .HasKey(d => d.ID);
+
+            modelBuilder.Entity<Orden_Asignada>()
+            .HasKey(d => d.ID_Trabajo_Asignado_Pk);
         }
     }
 }
