@@ -12,14 +12,7 @@ namespace PPTT.Pages.Administradores
 {
     public class IndexPPTT : PageModel
     {
-        private readonly PPTT.Data.DBPPTTContext _context;
-        public enum Prioridad
-        {
-            Baja,
-            Normal,
-            Alta,
-            Urgente           
-        }
+        private readonly PPTT.Data.DBPPTTContext _context;        
         public IndexPPTT(PPTT.Data.DBPPTTContext context)
         {
             _context = context;
@@ -35,6 +28,7 @@ namespace PPTT.Pages.Administradores
                 .Include(pt => pt.Organismo)           
                 .Include(pt => pt.Tarea)
                 .Include(pt => pt.Estado)
+                .Include(pt => pt.Prioridad)
                 .Include(pt => pt.Dependencia_Interna)
                 .Include(pt => pt.Grado)
                 .ToListAsync();

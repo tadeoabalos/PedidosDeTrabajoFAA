@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-
 namespace PPTT.Models;
 
 public partial class DBPPTTContext : DbContext

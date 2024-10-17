@@ -156,12 +156,10 @@
     }
 
         <script type="text/javascript">
-            $(document).ready(function () {
-                console.log("Cargó!");
+            $(document).ready(function () {               
             const divisionSelect = document.getElementById('divisionSelect');           
             divisionSelect.addEventListener('change', function () {                
-                const selectedDivisionId = this.value;                
-                console.log('ID de la división seleccionada:', selectedDivisionId);
+                const selectedDivisionId = this.value;                                
             });
                 $('#servicioLabel').hide();
                 $('#servicioSelect').hide();

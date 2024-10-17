@@ -109,7 +109,7 @@ namespace PPTT.Pages.PT
 
             PedidoTrabajo.Fecha_Subida = DateTime.Now;
             PedidoTrabajo.IP_Solicitante = HttpContext.Connection.RemoteIpAddress?.ToString();
-            PedidoTrabajo.Prioridad = 1;
+            PedidoTrabajo.ID_Prioridad_Fk = 1;
 
             // Almacena el valor retornado del stored procedure en la propiedad ID_Orden_Fk
             PedidoTrabajo.ID_Orden_Fk = await EjecutarDiferentesIDs(PedidoTrabajo.ID_Tarea_Fk);

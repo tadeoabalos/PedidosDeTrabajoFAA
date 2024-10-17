@@ -78,16 +78,20 @@ namespace PPTT.Models
         public DateTime? Fecha_Inicio_Suspendido { get; set; } = DateTime.Now;
 
         [Display(Name = "Prioridad")]
-        public int Prioridad { get; set; } = 1;
+        public int ID_Prioridad_Fk { get; set; } = 1;
+        [ForeignKey("ID_Prioridad_Fk")]
+        public Prioridad? Prioridad { get; set; }
 
         [Display(Name = "Estado")]
-        public int ID_Estado_Fk { get; set; } = 1002;
+        public int ID_Estado_Fk { get; set; } = 1002;        
         [ForeignKey("ID_Estado_Fk")]
         public Estado? Estado { get; set; }
+
         [Display(Name = "Tarea")]
         public int ID_Tarea_Fk { get; set; }
         [ForeignKey("ID_Tarea_Fk")]
         public Tarea? Tarea { get; set; }
+
         [Display(Name = "Division")]
         public int ID_Division_Fk { get; set; }
         [ForeignKey("ID_Division_Fk")]
