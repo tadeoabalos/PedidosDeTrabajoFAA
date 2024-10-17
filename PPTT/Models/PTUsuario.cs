@@ -83,7 +83,7 @@ namespace PPTT.Models
         public Prioridad? Prioridad { get; set; }
 
         [Display(Name = "Estado")]
-        public int ID_Estado_Fk { get; set; } = 1002;        
+        public int ID_Estado_Fk { get; set; } = 1;        
         [ForeignKey("ID_Estado_Fk")]
         public Estado? Estado { get; set; }
 
