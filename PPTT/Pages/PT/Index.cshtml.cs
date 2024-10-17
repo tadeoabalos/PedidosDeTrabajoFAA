@@ -16,14 +16,16 @@ namespace PPTT.Pages.Administradores
         public IndexPPTT(PPTT.Data.DBPPTTContext context)
         {
             _context = context;
-        }
-
+        }      
         public IList<PTUsuario> PedidoTrabajo { get;set; } = default!;
         [BindProperty]
-        public Orden_Asignada Orden_Asignada { get; set; }
         public List<Admin> Usuarios { get; set; } = new List<Admin>();
+        public Orden_Asignada Orden_Asignada { get; set; }
+        public PTUsuario PT { get; set; } = default!;
+        public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();        
         public async Task OnGetAsync()
-        {            
+        {
+            Prioridad = await _context.GetPrioridadAsync();
             PedidoTrabajo = await _context.PTUsuario
                 .Include(pt => pt.Organismo)           
                 .Include(pt => pt.Tarea)
@@ -47,6 +49,11 @@ namespace PPTT.Pages.Administradores
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC AsignarUsuarioAOrden @p0, @p1", UsuarioId, OrdenTrabajoId);
             return RedirectToPage("./Index");
-        }        
+        }
+        public async Task<JsonResult> OnGetPrioridadesAsync()
+        {
+            var prioridades = await _context.GetPrioridadAsync();
+            return new JsonResult(prioridades);
+        }
     }
 }

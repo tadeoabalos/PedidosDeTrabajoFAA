@@ -93,8 +93,20 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Estado.Descripcion_Estado)
                 </td>
-                <td>                   
-                    @Html.DisplayFor(modelItem => item.Prioridad.Descripcion_Prioridad)                                       
+                <td>
+                    <div class="form-group">                        
+                        <select asp-for="PT.ID_Prioridad_Fk"
+                                asp-items="Model.Prioridad.Select(d=> new SelectListItem
+                        {
+                            Value = d.ID_Prioridad_Pk.ToString(),
+                            Text = d.Descripcion_Prioridad
+                        })"
+                                id="PrioridadSelect"
+                                class="formControl">
+                            <option hidden selected value="">@item.Prioridad.Descripcion_Prioridad</option>
+                        </select>
+                        <span asp-validation-for="PT.ID_Prioridad_Fk" class="text-danger"></span>
+                    </div>
                 </td>
                 <td>
                     <div class="form-group">                        
@@ -255,13 +267,12 @@
                     console.log('Error:', error);
                 }
             });
-        }); //EVENTO ONCLICK CONFIRMAR ASIGNACION EN LA VENTANA MODAL
+        }); //EVENTO ONCLICK CONFIRMAR ASIGNACION EN LA VENTANA MODAL       
 
         $('#cancelaAsignacion').click(function () {            
             $('#confirmModal').modal('hide');
         }); //EVENTO ONCLICK CANCELAR ASIGNACION EN LA VENTANA MODAL
         });
-
 </script>
 
 
