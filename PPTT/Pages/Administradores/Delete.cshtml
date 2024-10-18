@@ -91,7 +91,7 @@
     </div>
 </form>
 <div class="centered-button">
-    <a asp-page="./Index" class="btn-action">Volver a la Lista</a>
+    <a asp-page="./Index" type="boton" class="btn-action">Volver a la Lista</a>
 </div>
 
 <style>
@@ -124,6 +124,18 @@
         text-decoration: none;
         padding: 8px 12px;
         margin: 4px;
+        border: 1px solid #8B0000;
+        border-radius: 5px;
+        background-color: #8B0000;
+        color: white;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+    a.btn-action, input[type=boton] {
+        display: inline-block;
+        text-decoration: none;
+        padding: 8px 12px;
+        margin: 4px;
         border: 1px solid #003d6b;
         border-radius: 5px;
         background-color: #003d6b;
@@ -132,7 +144,12 @@
     }
 
         a.btn-action:hover, input[type=submit]:hover {
-            background-color: #002e5d;
+            background-color: #8B0000;
+            transform: translateY(-2px);
+        }
+
+        a.btn-action:hover, input[type=boton]:hover {
+            background-color: #003d6b;
             transform: translateY(-2px);
         }
 
@@ -156,7 +173,7 @@
     }
 
     .submit {
-        background-color: #003d6b;
+        background-color: #8B0000;
         color: white;
         padding: 10px 20px;
         border: none;
@@ -166,7 +183,7 @@
     }
 
         .submit:hover {
-            background-color: #002e5d;
+            background-color: #8B0000;
         }
 
     .custom-textarea {
