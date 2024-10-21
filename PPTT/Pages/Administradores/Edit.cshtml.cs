@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PPTT.Data;
 using PPTT.Models;
-
+using Microsoft.Data.SqlClient; // Asegúrate de importar Microsoft.Data.SqlClient
 namespace PPTT.Pages.Administradores
 {
     public class EditModel : PageModel
@@ -79,35 +79,56 @@ namespace PPTT.Pages.Administradores
                 return NotFound();
             }
 
-            Admin.ID_Servicio_Fk = adminFromDb.ID_Servicio_Fk;
-            Admin.ID_Password_Fk = adminFromDb.ID_Password_Fk;
+            // Asignar las propiedades del objeto Admin basadas en el formulario
+            adminFromDb.Nombre = Admin.Nombre;
+            adminFromDb.Apellido = Admin.Apellido;
+            adminFromDb.DNI = Admin.DNI;
+            adminFromDb.Numero_Control = Admin.Numero_Control;
+            adminFromDb.Correo = Admin.Correo;
+            adminFromDb.ID_Rol_Fk = Admin.ID_Rol_Fk ?? 0; // Establecer ID_Rol_Fk con un valor predeterminado si es nulo
+            adminFromDb.ID_Servicio_Fk = Admin.ID_Servicio_Fk ?? 1; // Asegúrate de que el ID_Servicio_Fk tenga un valor válido
+            adminFromDb.ID_Division_Fk = Admin.ID_Division_Fk ?? 1; // Asegúrate de que el ID_Division_Fk tenga un valor válido
 
-            // Guardar el rol nuevo en la propiedad ID_Rol_Fk del objeto Admin
-            Admin.ID_Rol_Fk = Admin.ID_Rol_Fk ?? 0; // Asegúrate de que ID_Rol_Fk tenga un valor predeterminado si es nulo
-
-            // Marcar las propiedades que han sido modificadas
-            _context.Attach(Admin).Property(a => a.Nombre).IsModified = true;
-            _context.Attach(Admin).Property(a => a.DNI).IsModified = true;
-            _context.Attach(Admin).Property(a => a.ID_Rol_Fk).IsModified = true; // Marcar ID_Rol_Fk como modificado
+            // Actualizar el contexto
+            _context.Usuario.Update(adminFromDb);
 
             try
             {
+                // Llamar al stored procedure
+                var parameters = new[]
+                {
+            new Microsoft.Data.SqlClient.SqlParameter("@IDUSUARIO", adminFromDb.ID_Usuario_Pk),
+            new Microsoft.Data.SqlClient.SqlParameter("@IDROL", adminFromDb.ID_Rol_Fk),
+            new Microsoft.Data.SqlClient.SqlParameter("@IDSERVICIO", adminFromDb.ID_Servicio_Fk),
+            new Microsoft.Data.SqlClient.SqlParameter("@IDDIVISION", adminFromDb.ID_Division_Fk)
+        };
+
+                await _context.Database.ExecuteSqlRawAsync(
+                    "EXEC Auditar @IDUSUARIO, @IDROL, @IDSERVICIO, @IDDIVISION",
+                    parameters
+                );
+
                 await _context.SaveChangesAsync(); // Guardar los cambios en la base de datos
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AdminExists(Admin.ID_Usuario_Pk))
+                if (!AdminExists(adminFromDb.ID_Usuario_Pk))
                 {
                     return NotFound();
                 }
                 else
                 {
-                    throw; // Lanzar la excepción para manejarla más arriba si es necesario
+                    throw;
                 }
             }
 
-            return RedirectToPage("./Index"); // Redirigir a la página de índice después de guardar
+            return RedirectToPage("./Index");
         }
+
+
+
+
+
 
 
         private bool AdminExists(int id)
