@@ -52,6 +52,9 @@
             <th>
                 <span>Personal Asignado</span>
             </th>
+            <th>
+                Detalle/Estado
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -93,16 +96,11 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Estado.Descripcion_Estado)
                 </td>
-                <td>
-                    <div class="form-group">                        
+                <td data-orden-trabajo-id="@item.ID_Orden_Trabajo_Pk">
+                    <div class="form-group">
                         <select asp-for="PT.ID_Prioridad_Fk"
-                                asp-items="Model.Prioridad.Select(d=> new SelectListItem
-                        {
-                            Value = d.ID_Prioridad_Pk.ToString(),
-                            Text = d.Descripcion_Prioridad
-                        })"
-                                id="PrioridadSelect"
-                                class="formControl">
+                                asp-items="@(new SelectList(Model.Prioridad, "ID_Prioridad_Pk", "Descripcion_Prioridad"))"
+                                class="PrioridadSelect formControl">
                             <option hidden selected value="">@item.Prioridad.Descripcion_Prioridad</option>
                         </select>
                         <span asp-validation-for="PT.ID_Prioridad_Fk" class="text-danger"></span>
@@ -111,7 +109,7 @@
                 <td>
                     <div class="form-group">                        
                         <select id="usuarioSelect_@item.ID_Orden_Trabajo_Pk" class="formControl" data-division-id="@item.ID_Division_Fk">
-                            <option hidden selected value="">Seleccione usuario a asignar</option>
+                            <option hidden selected value="">@item.ID_Division_Fk</option>
                         </select>
                     </div>
                 </td>
@@ -121,7 +119,7 @@
                     </span>
                 </td>
                 <td>
-                    <a asp-page="./Details" asp-route-id="@item.ID_Orden_Trabajo_Pk">Details</a>
+                    <a asp-page="./Details" asp-route-id="@item.ID_Orden_Trabajo_Pk">Ir</a>
                 </td>
             </tr>
         }
@@ -150,7 +148,28 @@
             </form>
         </div>
     </div>
-</div>  <!-- VENTANA MODAL -->
+</div>  <!-- VENTANA MODAL ASIGNACION -->
+<div class="modal fade" id="confirmPrioridadModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="SetPrioridad">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">Confirmar Modificación</h5>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro de cambiar la prioridad a <b id="prioridadDisplay"></b> para esta tarea?</p>
+                    <input type="hidden" id="ordenTrabajo" name="OrdenTrabajoId" />
+                    <input type="hidden" id="prioridadInput" name="PrioridadId" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelaPrioridad" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Aceptar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> <!-- VENTANA MODAL PRIORIDAD -->
+
 
 <!-- SCRIPTS PARA EXPORTAR AL EXCEL -->
 <script src="https://unpkg.com/xlsx@0.16.9/dist/xlsx.full.min.js"></script>
@@ -189,89 +208,84 @@
 
 <script type="text/javascript">
         $(document).ready(function () {
-        $('select[id^="usuarioSelect_"]').each(function () {
-            var usuarioSelect = $(this); 
-            var selectedDivision = usuarioSelect.data('division-id');
-            var ordenTrabajoId = usuarioSelect.closest('tr').find('span[id^="personalAsignado_"]').data('orden-id');
-            var personalAsignado = $('#personalAsignado_' + ordenTrabajoId);
+            $('select[id^="usuarioSelect_"]').each(function () {
+                var usuarioSelect = $(this); 
+                var selectedDivision = usuarioSelect.data('division-id');
+                var ordenTrabajoId = usuarioSelect.closest('tr').find('span[id^="personalAsignado_"]').data('orden-id');
+                var personalAsignado = $('#personalAsignado_' + ordenTrabajoId);
         
-            if (selectedDivision && usuarioSelect.find('option').length <= 1) {
-                $.ajax({
-                    url: '@Url.Page("./Index", "UsuariosFiltrados")',
-                    type: 'GET',
-                    data: { division: selectedDivision },
-                    success: function (data) {                        
-                        usuarioSelect.empty(); 
-                        usuarioSelect.append('<option hidden selected value="">Seleccione el usuario</option>');
-                        $.each(data, function (index, usuario) {
-                            usuarioSelect.append('<option value="' + usuario.iD_Usuario_Pk + '">' + usuario.nombre + ' ' + usuario.apellido + '</option>');
-                        });
-                    },
-                    error: function (error) {
-                        console.log('Error:', error);
-                    }
-                });
-            }
-                                 
-            if (ordenTrabajoId) {
-                $.ajax({
-                    url: '@Url.Page("./Index", "UsuarioPorPt")',
-                    type: 'GET',
-                    data: { PT: ordenTrabajoId }, 
-                    success: function (data) {      
-                        console.log(data);
-                        if (data[0] == null) 
-                        {
-                            personalAsignado.empty();
-                            personalAsignado.append('<span>No se asignó personal</span>');
+                if (selectedDivision && usuarioSelect.find('option').length <= 1) {
+                    $.ajax({
+                        url: '@Url.Page("./Index", "UsuariosFiltrados")',
+                        type: 'GET',
+                        data: { division: selectedDivision },
+                        success: function (data) {                        
+                            usuarioSelect.empty(); 
+                            usuarioSelect.append('<option hidden selected value="">Seleccione el usuario</option>');
+                            usuarioSelect.append('<option value="-1">Sin asignación</option>');
+                            $.each(data, function (index, usuario) {
+                                usuarioSelect.append('<option value="' + usuario.iD_Usuario_Pk + '">' + usuario.nombre + ' ' + usuario.apellido + '</option>');
+                            });
+                        },
+                        error: function (error) {
+                            console.log('Error:', error);
                         }
-                        else 
-                        {
-                            personalAsignado.empty();
-                            personalAsignado.append('<span>' + data[0].nombre + ' ' + data[0].apellido + '</span>');
-                        }                        
-                    },
-                    error: function (error) {
-                        console.log('Error en la carga de información del usuario asignado:', error);
-                    }
-                }); //SE COLOCA EL USUARIO ASIGNADO EN EL SPAN
-            }
-        }); //LISTADO DE USUARIOS
-    
-        $('select[id^="usuarioSelect_"]').change(function () {
-            var selectedOption = $(this).find("option:selected");
-            var selectedUsuarioId = selectedOption.val();
-            var selectedOrdenTrabajoId = $(this).attr("id").split("_")[1];             
-            $('#usuarioNombre').text(selectedOption.text()); 
-            $('#usuarioId').val(selectedUsuarioId); 
-            $('#ordenTrabajoId').val(selectedOrdenTrabajoId); 
-
-            $('#confirmModal').modal('show'); 
-        }); //EVENTO ONCHANGE EN EL SELECT
-
-        $('#confirmarAsignacion').click(function () {
-            var usuarioId = $('#usuarioId').val();
-            var ordenTrabajoId = $('#ordenTrabajoId').val();
-            console.log(usuarioId);
-            console.log(ordenTrabajoId);
-            $.ajax({
-                url: '@Url.Page("./Index", "AsignarUsuario")',
-                type: 'POST',
-                data: { UsuarioId: usuarioId, OrdenTrabajoId: ordenTrabajoId },
-                success: function (response) {
-                    $('#confirmModal').modal('hide');
-                    alert("Usuario asignado con éxito");
-                    location.reload();
-                },
-                error: function (error) {
-                    console.log('Error:', error);
+                    });
                 }
-            });
-        }); //EVENTO ONCLICK CONFIRMAR ASIGNACION EN LA VENTANA MODAL       
+                                 
+                if (ordenTrabajoId) {
+                    $.ajax({
+                        url: '@Url.Page("./Index", "UsuarioPorPt")',
+                        type: 'GET',
+                        data: { PT: ordenTrabajoId }, 
+                        success: function (data) {                              
+                            if (data[0] == null) 
+                            {
+                                personalAsignado.empty();
+                                personalAsignado.append('<span>No se asignó personal</span>');
+                            }
+                            else 
+                            {
+                                personalAsignado.empty();
+                                personalAsignado.append('<span>' + data[0].nombre + ' ' + data[0].apellido + '</span>');
+                            }                        
+                        },
+                        error: function (error) {
+                            console.log('Error en la carga de información del usuario asignado:', error);
+                        }
+                    }); //SE COLOCA EL USUARIO ASIGNADO EN EL SPAN
+                }
+            }); //LISTADO DE USUARIOS
+    
+            $('select[id^="usuarioSelect_"]').change(function () {
+                var selectedOption = $(this).find("option:selected");
+                var selectedUsuarioId = selectedOption.val();
+                var selectedOrdenTrabajoId = $(this).attr("id").split("_")[1];             
+                $('#usuarioNombre').text(selectedOption.text()); 
+                $('#usuarioId').val(selectedUsuarioId); 
+                $('#ordenTrabajoId').val(selectedOrdenTrabajoId); 
 
-        $('#cancelaAsignacion').click(function () {            
-            $('#confirmModal').modal('hide');
-        }); //EVENTO ONCLICK CANCELAR ASIGNACION EN LA VENTANA MODAL
+                $('#confirmModal').modal('show'); 
+            }); //EVENTO ONCHANGE EN EL SELECT
+
+            $('.PrioridadSelect').change(function () {
+                var selectedPrioridad = parseInt($(this).val());
+                var ordenTrabajoId = parseInt($(this).closest('td').data('orden-trabajo-id'));                      
+                $('#prioridadInput').val(selectedPrioridad);  
+                $('#prioridadDisplay').text(selectedPrioridad);  
+                $('#ordenTrabajo').val(ordenTrabajoId);         
+                console.log(ordenTrabajoId, typeof (ordenTrabajoId));
+            
+                $('#confirmPrioridadModal').modal('show');
+            });                            
+
+            $('#cancelaAsignacion').click(function () {            
+                $('#confirmModal').modal('hide');
+            });
+
+            $('#cancelaPrioridad').click(function () {
+                $('#confirmPrioridadModal').modal('hide');            
+            });
         });
 </script>
 

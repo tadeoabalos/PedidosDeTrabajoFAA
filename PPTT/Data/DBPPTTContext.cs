@@ -31,6 +31,10 @@ namespace PPTT.Data
         public DbSet<Orden_Asignada> Orden_Asignada { get; set; }
 
         // Sector funciones //
+        public async Task<List<Estado>> GetEstadosAsync() 
+        {
+            return await Estado.FromSqlRaw("EXEC [dbo].[Retorna_Estados]").ToListAsync();
+        }
         public async Task<List<Division>> GetDivisionAsync()
         {
             return await Divisions.FromSqlRaw("EXEC [dbo].[Retorna_Division]").ToListAsync();
