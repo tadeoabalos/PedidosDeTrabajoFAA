@@ -5,72 +5,80 @@
     ViewData["Title"] = "Editar Usuario";
 }
 <h3>Editar</h3>
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Admin.ID_Usuario_Pk" />
-            <div class="form-group">
-                <label asp-for="Admin.Nombre" class="control-label"></label>
-                <input asp-for="Admin.Nombre" class="form-control" />
-                <span asp-validation-for="Admin.Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Admin.Apellido" class="control-label"></label>
-                <input asp-for="Admin.Apellido" class="form-control" />
-                <span asp-validation-for="Admin.Apellido" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Admin.DNI" class="control-label"></label>
-                <input asp-for="Admin.DNI" class="form-control" />
-                <span asp-validation-for="Admin.DNI" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Admin.Numero_Control" class="control-label"></label>
-                <input asp-for="Admin.Numero_Control" class="form-control" />
-                <span asp-validation-for="Admin.Numero_Control" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Admin.Correo" class="control-label"></label>
-                <input asp-for="Admin.Correo" class="form-control" />
-                <span asp-validation-for="Admin.Correo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Admin.ID_Division_Fk" class="control-label"></label>
-                <select asp-for="Admin.ID_Division_Fk"
-                        asp-items="Model.Divisions.Select(d => new SelectListItem
-                        {
-                            Value = d.ID_Division_Pk.ToString(),
-                            Text = d.Descripcion_Division
-                        })"
-                        id="deptSelect"
-                        class="formControl">
-                    <option hidden selected value="">Seleccione el Organismo</option>
-                </select>
-                <span asp-validation-for="Admin.ID_Division_Fk" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Admin.ID_Servicio_Fk" id="servicioLabel" class="control-label"></label>
-                <select asp-for="Admin.ID_Servicio_Fk" id="servicioSelect" class="formControl">
-                    <option hidden value="">Seleccione el servicio correspondiente</option>
-                </select>
-                <span asp-validation-for="Admin.ID_Servicio_Fk" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Admin.ID_Rol_Fk" class="control-label"></label>
-                <select asp-for="Admin.ID_Rol_Fk"
-                        asp-items="Model.Roles"
-                        class="formControl">
-                    <option hidden selected value="">Seleccione un rol</option>
-                </select>
-                <span asp-validation-for="Admin.ID_Rol_Fk" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Guardar" class="btn btn-primary" />
-            </div>
-        </form>
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Admin.ID_Usuario_Pk" />
+
+    <div class="form-group">
+        <label asp-for="Admin.Nombre" class="control-label"></label>
+        <input asp-for="Admin.Nombre" class="form-control" />
+        <span asp-validation-for="Admin.Nombre" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Admin.Apellido" class="control-label"></label>
+        <input asp-for="Admin.Apellido" class="form-control" />
+        <span asp-validation-for="Admin.Apellido" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Admin.DNI" class="control-label"></label>
+        <input asp-for="Admin.DNI" class="form-control" />
+        <span asp-validation-for="Admin.DNI" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Admin.Numero_Control" class="control-label"></label>
+        <input asp-for="Admin.Numero_Control" class="form-control" />
+        <span asp-validation-for="Admin.Numero_Control" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Admin.Correo" class="control-label"></label>
+        <input asp-for="Admin.Correo" class="form-control" />
+        <span asp-validation-for="Admin.Correo" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Admin.ID_Division_Fk" class="control-label"></label>
+        <select asp-for="Admin.ID_Division_Fk"
+                asp-items="Model.Divisions.Select(d => new SelectListItem
+                {
+                    Value = d.ID_Division_Pk.ToString(),
+                    Text = d.Descripcion_Division
+                })"
+                id="deptSelect"
+                class="formControl">
+            <option hidden selected value="">Seleccione el Organismo</option>
+        </select>
+        <span asp-validation-for="Admin.ID_Division_Fk" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Admin.ID_Servicio_Fk" id="servicioLabel" class="control-label"></label>
+        <select asp-for="Admin.ID_Servicio_Fk" id="servicioSelect" class="formControl" required>
+            <option hidden value="">Seleccione el servicio correspondiente</option>
+        </select>
+        <span asp-validation-for="Admin.ID_Servicio_Fk" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Admin.ID_Rol_Fk" class="control-label"></label>
+        <select asp-for="Admin.ID_Rol_Fk"
+                asp-items="Model.Roles"
+                class="formControl">
+            <option hidden selected value="">Seleccione un rol</option>
+        </select>
+        <span asp-validation-for="Admin.ID_Rol_Fk" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Guardar" class="btn btn-primary" />
+    </div>
+</form>
 <div class="centered-button">
     <a asp-page="./Index" class="btn-action">Volver a la Lista</a>
 </div>
-
 
 @section Scripts {
     @{
@@ -81,28 +89,42 @@
         $(document).ready(function () {
             $('#servicioLabel').hide();
             $('#servicioSelect').hide();
+
+            // Función para cargar los servicios automáticamente al cargar la página
+            function loadServicios(divisionId) {
+                $.ajax({
+                    url: '@Url.Page("./Edit", "ServiciosByDivision")',
+                    type: 'GET',
+                    data: { division: divisionId },
+                    success: function (data) {
+                        var servicioSelect = $('#servicioSelect');
+                        servicioSelect.empty();
+                        servicioSelect.append('<option hidden value="">Seleccione el servicio correspondiente</option>');
+                        $.each(data, function (index, servicio) {
+                            servicioSelect.append('<option value="' + servicio.iD_Servicio_Pk + '">' + servicio.descripcion_Servicio + '</option>');
+                        });
+                        $('#servicioLabel').fadeIn(500);
+                        $('#servicioSelect').fadeIn(500);
+                    }
+                });
+            }
+
+            // Al cambiar la división
             $('#deptSelect').change(function () {
                 var selectedDivision = $(this).val();
                 if (selectedDivision) {
-                    $.ajax({
-                        url: '@Url.Page("./Edit", "ServiciosByDivision")',
-                        type: 'GET',
-                        data: { division: selectedDivision },
-                        success: function (data) {
-                            var servicioSelect = $('#servicioSelect');
-                            servicioSelect.empty();
-                            servicioSelect.append('<option hidden value="">Seleccione el servicio correspondiente</option>');
-                            $.each(data, function (index, servicio) {
-                                servicioSelect.append('<option value="' + servicio.iD_Servicio_Pk + '">' + servicio.descripcion_Servicio + '</option>');
-                            });
-                            $('#servicioLabel').fadeIn(500);
-                            $('#servicioSelect').fadeIn(500);
-                        }
-                    });
+                    loadServicios(selectedDivision);
                 }
             });
+
+            // Cargar servicios automáticamente al cargar la página si ya hay una división seleccionada
+            var initialDivisionId = $('#deptSelect').val(); // Obtiene el valor seleccionado
+            if (initialDivisionId) {
+                loadServicios(initialDivisionId);
+            }
         });
     </script>
+
     <style>
         body {
             background-color: #e0e8f1;
@@ -124,7 +146,6 @@
                 background-color: #002e5d;
                 transform: translateY(-2px);
             }
-
 
         input[type=submit] {
             display: inline-block;
@@ -162,28 +183,7 @@
             font-weight: bold;
         }
 
-        .submit {
-            background-color: #003d6b;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-            .submit:hover {
-                background-color: #002e5d;
-            }
-
         h4 {
-            color: #003d6b;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        asap-for {
             color: #003d6b;
             margin-top: 20px;
             margin-bottom: 10px;
@@ -198,72 +198,11 @@
             font-weight: bold;
         }
 
-        .custom-textarea {
-            width: 100%;
-            height: 150px;
-            resize: none;
-        }
-
-        a.btn-action:hover {
-            background-color: #002e5d; /* Color en hover */
-            transform: translateY(-2px);
-        }
-
-        label,
-        input[type="text"],
-        select,
-        .submit,
-        h4 {
-            font-size: 1em;
-            font-weight: bold;
-            color: #003d6b; /* Asegurarte de que las etiquetas label y h4 compartan el mismo color */
-        }
-
-        input[type="number"],
-        select,
-        .submit,
-        h4 {
-            font-size: 1em;
-            font-weight: bold;
-        }
-
-        input[type="password"],
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #003d6b;
-            border-radius: 4px;
-            background-color: white;
-        }
-
-        input[type="text"],
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #003d6b;
-            border-radius: 4px;
-            background-color: white;
-        }
-
-        input[type="number"],
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #003d6b;
-            border-radius: 4px;
-            background-color: white;
-        }
-
         .centered-button {
             display: flex;
             margin-top: 20px;
             align-items: center;
             justify-content: center;
         }
-
     </style>
 }
-

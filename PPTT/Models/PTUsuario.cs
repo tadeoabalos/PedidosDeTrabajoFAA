@@ -98,5 +98,8 @@ namespace PPTT.Models
         public Division? Division { get; set; }
         [Display(Name = "Observaciones")]
         public string? Observacion { get; set; }
+        
+        [Required(ErrorMessage = "Debes seleccionar un servicio.")]
+        public int? ID_Servicio_Fk { get; set; }
     }
 }
