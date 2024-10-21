@@ -20,7 +20,7 @@ namespace PPTT.Pages.PT
         }
         public List<Admin> Usuarios { get; set; } = new List<Admin>();
         public PTUsuario? PedidoTrabajo { get; set; } = default!;
-        
+        public List<Estado> Estado { get; set; } = default!;
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             Usuarios = await _context.GetUsuariosAsync();
@@ -29,12 +29,15 @@ namespace PPTT.Pages.PT
                 return NotFound();
             }
 
+            Estado = await _context.GetEstadosAsync();
+
             PedidoTrabajo = await _context.PTUsuario
                 .Include(pt => pt.Organismo) 
                 .Include(pt => pt.Tarea) 
                 .Include(pt => pt.Estado) 
                 .Include(pt => pt.Dependencia_Interna) 
-                .Include(pt => pt.Grado) 
+                .Include(pt => pt.Grado)
+                .Include(pt => pt.Prioridad)
                 .FirstOrDefaultAsync(m => m.ID_Orden_Trabajo_Pk == id); 
 
             if (PedidoTrabajo == null)
