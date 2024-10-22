@@ -7,6 +7,17 @@
 
 <h3>Pedidos de Trabajo</h3>
 
+<!-- Inputs para seleccionar rango de fechas -->
+<div class="form-group">
+    <label for="startDate">Fecha de Inicio:</label>
+    <input type="date" id="startDate" class="form-control" />
+</div>
+<div class="form-group">
+    <label for="endDate">Fecha de Fin:</label>
+    <input type="date" id="endDate" class="form-control" />
+</div>
+<button id="filterDates" class="btn btn-primary">Filtrar</button>
+
 <table class="table" id="tabla">
     <thead>
         <tr>
@@ -60,12 +71,20 @@
     <tbody>
         @foreach (var item in Model.PedidoTrabajo)
         {
-            <tr>
+            <tr data-fecha="@item.Fecha_Subida?.ToString("dd-MM-yyyy") ?? " 01-01-0001"">
+                <!-- Añadir atributo de fecha -->
                 <td>
                     @Html.DisplayFor(modelItem => item.ID_Orden_Fk)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Fecha_Subida)
+                    @if (item.Fecha_Subida.HasValue)
+                    {
+                        @item.Fecha_Subida.Value.ToString("dd-MM-yyyy")
+                    }
+                    else
+                    {
+                        @:1/1/0001
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Grado.Descripcion_Grado)
@@ -88,7 +107,6 @@
                 <td>
                     @Html.Raw(item.Tarea.Descripcion_Tarea) <!-- Mostrar la descripción completa -->
                 </td>
-
                 <td>
                     @Html.DisplayFor(modelItem => item.Observacion)
                 </td>
@@ -106,7 +124,7 @@
                     </div>
                 </td>
                 <td>
-                    <div class="form-group">                        
+                    <div class="form-group">
                         <select id="usuarioSelect_@item.ID_Orden_Trabajo_Pk" class="formControl" data-division-id="@item.ID_Division_Fk">
                             <option hidden selected value="">@item.ID_Division_Fk</option>
                         </select>
@@ -124,10 +142,8 @@
         }
     </tbody>
 </table>
-
 <a class="btn-action" asp-page="/Administradores/Menu">Volver al Menu</a>
 <button id="btnExportar">Exportar Excel</button>
-
 <!-- VENTANA MODAL ASIGNACION -->
 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -177,7 +193,6 @@
 <script src="https://unpkg.com/file-saverjs@latest/FileSaver.min.js"></script>
 <script src="https://unpkg.com/tableexport@latest/dist/js/tableexport.min.js"></script>
 
-
 <!-- Script para exportar a Excel -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -204,34 +219,31 @@
             });
             exportTbody.appendChild(newRow);
 
-            // Recorrer las filas de la tabla original y agregar los datos a la tabla exportada
-            Array.from($tabla.querySelectorAll('tbody tr')).forEach(row => {
-                let newRow = document.createElement('tr');
-                Array.from(row.querySelectorAll('td')).forEach((cell, index) => {
-                    // Ignorar las columnas que no deseas exportar
+            // Agregar las filas de datos a la tabla exportada (excluyendo las columnas ignoradas)
+            const rows = Array.from($tabla.querySelectorAll('tbody tr'));
+
+            rows.forEach(row => {
+                const newRow = document.createElement('tr');
+                const cells = Array.from(row.querySelectorAll('td'));
+
+                cells.forEach((cell, index) => {
+                    // Ignorar los índices 12 y 14 (o los que desees ignorar)
                     if (index !== 12 && index !== 14) {
                         let td = document.createElement('td');
-                        if (index === 11) { // Supongamos que la columna de Prioridad es la número 12 (índice 11)
-                            // Obtener el valor del select
-                            const select = cell.querySelector('select');
-                            td.innerText = select ? select.options[select.selectedIndex].text : ''; // Solo el texto de la opción seleccionada
-                        } else {
-                            td.innerText = cell.innerText; // Texto normal
-                        }
+                        td.innerText = cell.innerText;
                         newRow.appendChild(td);
                     }
                 });
                 exportTbody.appendChild(newRow);
             });
 
-            // Exportar a Excel
-            let wb = XLSX.utils.table_to_book(exportTable, {
-                sheet: "Trabajos"
-            });
-            XLSX.writeFile(wb, 'Reporte de Pedidos de Trabajo.xlsx');
+            // Usar SheetJS para crear un archivo Excel
+            const wb = XLSX.utils.table_to_book(exportTable, { sheet: "Sheet1" });
+            XLSX.writeFile(wb, 'exported_data.xlsx');
         });
     });
 </script>
+
 
 
 
@@ -407,3 +419,10 @@
         }
 
 </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Moment.js -->
+<script src="https://cdn.jsdelivr.net/momentjs/2.29.1/moment.min.js"></script>
+<!-- Daterangepicker -->
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
