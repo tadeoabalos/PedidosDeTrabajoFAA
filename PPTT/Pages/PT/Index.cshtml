@@ -86,8 +86,9 @@
                     @Html.DisplayFor(modelItem => item.Correo)
                 </td>
                 <td>
-                    @Html.Raw(item.Tarea.Descripcion_Tarea.Length > 3 ? item.Tarea.Descripcion_Tarea.Substring(3) : item.Tarea.Descripcion_Tarea)
+                    @Html.Raw(item.Tarea.Descripcion_Tarea) <!-- Mostrar la descripción completa -->
                 </td>
+
                 <td>
                     @Html.DisplayFor(modelItem => item.Observacion)
                 </td>
@@ -184,28 +185,56 @@
             $tabla = document.querySelector("#tabla");
 
         $btnExportar.addEventListener("click", function () {
-            let tableExport = new TableExport($tabla, {
-                exportButtons: false, // No queremos botones adicionales
-                filename: "Reporte de Pedidos de Trabajo", // Nombre del archivo de Excel
-                sheetname: "Trabajos", // Título de la hoja
-                ignoreCols: [12,13,14] // Ignorar la décima columna (índice 9)
+            // Crear una nueva tabla para la exportación
+            let exportTable = document.createElement('table');
+            let exportTbody = document.createElement('tbody');
+            exportTable.appendChild(exportTbody);
+
+            // Agregar encabezados a la tabla exportada (excluyendo las columnas ignoradas)
+            const headers = Array.from($tabla.querySelectorAll('thead th'));
+            const newRow = document.createElement('tr');
+
+            headers.forEach((header, index) => {
+                // Ignorar los índices 12 y 14 (o los que desees ignorar)
+                if (index !== 12 && index !== 14) {
+                    let th = document.createElement('th');
+                    th.innerText = header.innerText;
+                    newRow.appendChild(th);
+                }
+            });
+            exportTbody.appendChild(newRow);
+
+            // Recorrer las filas de la tabla original y agregar los datos a la tabla exportada
+            Array.from($tabla.querySelectorAll('tbody tr')).forEach(row => {
+                let newRow = document.createElement('tr');
+                Array.from(row.querySelectorAll('td')).forEach((cell, index) => {
+                    // Ignorar las columnas que no deseas exportar
+                    if (index !== 12 && index !== 14) {
+                        let td = document.createElement('td');
+                        if (index === 11) { // Supongamos que la columna de Prioridad es la número 12 (índice 11)
+                            // Obtener el valor del select
+                            const select = cell.querySelector('select');
+                            td.innerText = select ? select.options[select.selectedIndex].text : ''; // Solo el texto de la opción seleccionada
+                        } else {
+                            td.innerText = cell.innerText; // Texto normal
+                        }
+                        newRow.appendChild(td);
+                    }
+                });
+                exportTbody.appendChild(newRow);
             });
 
-            let datos = tableExport.getExportData();
-            let preferenciasDocumento = datos.tabla.xlsx;
-
-            tableExport.export2file(
-                preferenciasDocumento.data,
-                preferenciasDocumento.mimeType,
-                preferenciasDocumento.filename,
-                preferenciasDocumento.fileExtension,
-                preferenciasDocumento.merges,
-                preferenciasDocumento.RTL,
-                preferenciasDocumento.sheetname
-            );
+            // Exportar a Excel
+            let wb = XLSX.utils.table_to_book(exportTable, {
+                sheet: "Trabajos"
+            });
+            XLSX.writeFile(wb, 'Reporte de Pedidos de Trabajo.xlsx');
         });
     });
 </script>
+
+
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -295,70 +324,86 @@
 
 <style>
     body {
-        align-items: center;
-        justify-content: center;
-        width: 105%;
-        margin: 30px auto;
-        padding: 20px;
-        background-color: #e0e8f1;       
+        margin: 0; /* Sin márgenes en el body */
+        padding: 20px; /* Aumentar el espacio interno */
+        background-color: #e0e8f1; /* Color de fondo */
+        border: 1px solid #003d6b; /* Borde alrededor del body */
+        border-radius: 8px; /* Bordes redondeados */
+        box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2); /* Sombra */
+        overflow-x: hidden; /* Evitar desbordamiento horizontal */
+        max-width: 95%; /* Aumentar el ancho máximo del body */
+        margin-left: auto; /* Centrar horizontalmente */
+        margin-right: auto; /* Centrar horizontalmente */
+        width: 100%; /* Asegurar que el body ocupe todo el ancho */
     }
 
-    a.btn-action {
+    h3 {
+        font-size: 3em; /* Tamaño de fuente */
+        color: #003d6b;
+        margin: 5px 0; /* Ajustar márgenes */
+        font-weight: bold;
+    }
+
+    a.btn-action, button {
         display: inline-block;
         text-decoration: none;
-        padding: 8px 12px;
-        margin: 4px;
-        border: 1px solid #003d6b;
-        border-radius: 5px;
-        background-color: #003d6b;
+        padding: 4px 6px; /* Ajustar el padding */
+        margin: 2px; /* Reducir margen */
+        border: 1px solid #003d6b; /* Bordes de botones */
+        border-radius: 4px; /* Bordes más redondeados */
+        background-color: #003d6b; /* Color de fondo de los botones */
         color: white;
         transition: background-color 0.3s, transform 0.3s;
+        font-size: 0.8em; /* Tamaño de fuente reducido */
     }
 
-        a.btn-action:hover {
-            background-color: #002e5d;
-            transform: translateY(-2px);
+        a.btn-action:hover, button:hover {
+            background-color: #002e5d; /* Color al pasar el mouse */
+            transform: translateY(-1px); /* Sutil efecto al pasar el mouse */
         }
+
+    table {
+        width: 100%; /* Asegura que la tabla ocupe todo el ancho */
+        margin-top: 10px; /* Margen superior de la tabla */
+        border-collapse: collapse; /* Colapsa los bordes de la tabla */
+        font-size: 0.75em; /* Tamaño de fuente más pequeño */
+    }
+
+    th, td {
+        padding: 4px; /* Ajustar espaciado interno */
+        text-align: left; /* Alinear texto a la izquierda */
+        border-bottom: 1px solid #ddd; /* Bordes inferiores */
+    }
+
+    th {
+        background-color: #e0e8f1; /* Fondo de los encabezados */
+        color: #003d6b; /* Color del texto de los encabezados */
+    }
+
+    /* Estilos para el modal */
+    .modal-content {
+        padding: 5px; /* Espaciado interno del contenido del modal */
+    }
+
+    .modal-header, .modal-footer {
+        border: none; /* Sin borde en el encabezado y pie del modal */
+    }
 
     button {
         display: inline-block;
         text-decoration: none;
-        padding: 8px 12px;
-        margin: 4px;
-        border: 1px solid #4caf50;
-        border-radius: 5px;
-        background-color: #4caf50;
+        padding: 4px 6px; /* Ajustar el padding */
+        margin: 2px; /* Reducir margen */
+        border: 1px solid #4caf50; /* Bordes de botones */
+        border-radius: 4px; /* Bordes más redondeados */
+        background-color: #4caf50; /* Color de fondo de los botones */
         color: white;
         transition: background-color 0.3s, transform 0.3s;
+        font-size: 0.8em; /* Tamaño de fuente reducido */
     }
-
         button:hover {
-            background-color: #002e5d;
-            transform: translateY(-2px);
+            background-color: #4caf50; /* Mantener el color al pasar el mouse */
+            transform: translateY(-2px); /* Efecto al pasar el mouse */
         }
 
-    table {
-        width: 100%;
-        margin-top: 20px;
-        border-collapse: collapse;
-    }
-
-    th, td {
-        padding: 10px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;   
-    }
-
-    th {
-        background-color: #e0e8f1;
-        color: #003d6b;
-    }
-
-    h3 {
-        font-size: 3em;
-        color: #003d6b;
-        margin-top: 20px;
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
-</style> 
+</style>
