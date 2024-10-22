@@ -86,9 +86,7 @@
                     @Html.DisplayFor(modelItem => item.Correo)
                 </td>
                 <td>
-                    @Html.Raw(item.Tarea.Descripcion_Tarea.Length > 3 ?
-                             item.Tarea.Descripcion_Tarea.Substring(3) :
-                             item.Tarea.Descripcion_Tarea)
+                    @Html.Raw(item.Tarea.Descripcion_Tarea.Length > 3 ? item.Tarea.Descripcion_Tarea.Substring(3) : item.Tarea.Descripcion_Tarea)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Observacion)
@@ -125,10 +123,11 @@
         }
     </tbody>
 </table>
+
 <a class="btn-action" asp-page="/Administradores/Menu">Volver al Menu</a>
 <button id="btnExportar">Exportar Excel</button>
 
-
+<!-- VENTANA MODAL ASIGNACION -->
 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -148,7 +147,9 @@
             </form>
         </div>
     </div>
-</div>  <!-- VENTANA MODAL ASIGNACION -->
+</div>
+
+<!-- VENTANA MODAL PRIORIDAD -->
 <div class="modal fade" id="confirmPrioridadModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -168,14 +169,15 @@
             </form>
         </div>
     </div>
-</div> <!-- VENTANA MODAL PRIORIDAD -->
+</div>
 
-
-<!-- SCRIPTS PARA EXPORTAR AL EXCEL -->
+<!-- Scripts para exportar a Excel -->
 <script src="https://unpkg.com/xlsx@0.16.9/dist/xlsx.full.min.js"></script>
 <script src="https://unpkg.com/file-saverjs@latest/FileSaver.min.js"></script>
 <script src="https://unpkg.com/tableexport@latest/dist/js/tableexport.min.js"></script>
 
+
+<!-- Script para exportar a Excel -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const $btnExportar = document.querySelector("#btnExportar"),
@@ -184,9 +186,9 @@
         $btnExportar.addEventListener("click", function () {
             let tableExport = new TableExport($tabla, {
                 exportButtons: false, // No queremos botones adicionales
-                ignoreColumns: [12, 13],
-                filename: "Reporte de Peticiones de Trabajo", // Nombre del archivo de Excel
-                sheetname: "Peticiones", // Título de la hoja
+                filename: "Reporte de Pedidos de Trabajo", // Nombre del archivo de Excel
+                sheetname: "Trabajos", // Título de la hoja
+                ignoreCols: [12,13,14] // Ignorar la décima columna (índice 9)
             });
 
             let datos = tableExport.getExportData();
@@ -203,7 +205,7 @@
             );
         });
     });
-</script> <!-- SCRIPTS PARA EXPORTAR A EXCEL -->
+</script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
