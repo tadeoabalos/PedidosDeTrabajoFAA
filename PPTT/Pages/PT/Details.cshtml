@@ -102,40 +102,122 @@
             @Html.DisplayNameFor(model => model.PedidoTrabajo.ID_Prioridad_Fk)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PedidoTrabajo.ID_Prioridad_Fk)
+            @Html.DisplayFor(model => model.PedidoTrabajo.Prioridad.Descripcion_Prioridad)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PedidoTrabajo.ID_Estado_Fk)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PedidoTrabajo.Estado.Descripcion_Estado)
-            <button id="modalEstado">Cambiar estado</button>
-        </dd>
-    </dl>
-    </form>
-    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <form method="post" asp-page-handler="ModiEstado">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="confirmModalLabel">Cambiar Estado</h5>
-                    </div>  
-                    <div class="modal-content">
-                        <label asp-for="PedidoTrabajo.ID_Estado_Fk" class="control-label"></label>
-                        <select asp-for="PedidoTrabajo.ID_Estado_Fk"
-                                asp-items="Model.Estado.Select(d=> new SelectListItem
+        <dd class="col-sm-10">                      
+            <select asp-for="PedidoTrabajo.ID_Estado_Fk"
+                    asp-items="Model.Estado.Select(d=> new SelectListItem
                                 {
                                     Value = d.ID_Estado_PK.ToString(),
                                     Text = d.Descripcion_Estado.ToString()
                                 })"
-                                id="deptSelect"
-                                class="formControl">
-                            <option hidden selected value="">model.PedidoTrabajo.Estado.Descripcion_Estado</option>
-                        </select>                        
-                        <input type="date" id="fechaEstimadaFin"/>
-                        <input type="date" id="fechaInicioSuspendido"/>
-                        <textarea class="form-control custom-textarea" id="textBoxCancel"></textarea>
-                        <span asp-validation-for="PedidoTrabajo.ID_Estado_Fk" class="text-danger"></span>                    
+                    id="deptSelect"
+                    class="formControl">
+                <option hidden selected value="">@Model.PedidoTrabajo.Estado.Descripcion_Estado</option>
+            </select>
+        </dd>
+    </dl>
+    @{/*<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <form method="post" asp-page-handler="ModiEstado">
+        <div class="modal-header">
+        <h5 class="modal-title" id="confirmModalLabel">Cambiar Estado</h5>
+        </div>
+        <div class="modal-content">
+        <!-- INPUTS SUSPENDIDO -->
+        <label id="labelFechaInicioSuspension">Fecha inicio de la suspension:</label>
+        <input type="date" id="fechaInicioSuspendido" disabled />
+        <label id="labelFechaSuspension">Fecha estimada de retomo de trabajo:</label>
+        <input type="date" id="fechaEstimadaFin"/>
+        <label id="labelMotivoSuspension">Motivo de suspensión:</label>
+        <select id="motivo" name="motivo">
+        <option value="faltaMaterial">Falta de material</option>
+        <option value="faltaPersonal">Falta de personal</option>
+        <option value="faltaHerramientas">Falta de herramientas</option>
+        <option value="condicionRiesgosa">Condición riesgosa</option>
+        <option value="esperaMaterial">A la espera de material</option>
+        </select>
+        <!-- INPUTS CANCELADO -->
+        <label id="labelFechaCancelado">Fecha de cancelación:</label>
+        <input type="date" id="fechaCancelado" disabled />
+        <label id="labelTextArea">Detalle el motivo de la cancelación:</label>
+        <textarea class="form-control custom-textarea" id="textBoxCancel"></textarea>
+        <span id="warningMessageCan" class="alert alert-warning" style="display:none;">
+        ⚠️ <b>Advertencia</b>: Este cambio de estado dará por finalizada la orden de trabajo y no podrá revertirse.
+        </span>
+        <!-- INPUTS FINALIZACIÓN -->
+        <label id="labelFechaFinalizado">Fecha de finalización:</label>
+        <input type="date" id="fechaFinalización" disabled />
+        <span id="warningMessage" class="alert alert-warning" style="display:none;">
+        ⚠️ <b>Advertencia</b>: Este cambio de estado dará por finalizada la orden de trabajo y no podrá revertirse.
+        </span>
+        <!-- INPUTS PENDIENTE -->
+        <span id="warningMessagePen" class="alert alert-warning" style="display:none;">
+        ⚠️ <b>Advertencia</b>: Cambiar cualquier estado a <b>PENDIENTE</b> modificará los datos previamente registrados en otros estados.
+        </span>
+        <!-- INPUTS EN PROCESO -->
+        <span id="infoMessage" class="alert alert-info">
+        ℹ️ <b>Información</b>: Si ya había un usuario asignado a esta tarea, será reemplazado por el que asigne ahora.
+        </span>
+        <span asp-validation-for="PedidoTrabajo.ID_Estado_Fk" class="text-danger"></span>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary" onclick="disableUnusedInputs()">Aceptar</button>
+        </div>
+        </form>
+        </div>
+        </div>
+        </div> <!-- VENTANA MODAL -->
+</div>*/}
+    
+    <div class="modal fade" id="ModalEstFin" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="post" asp-page-handler="FinalizarEstado">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="FinModalLabel">Finalizar Estado</h5>
+                    </div>
+                    <div class="modal-body">
+                        <label id="labelFechaFinalizado">Fecha de finalización:</label>
+                        <input type="date" id="fechaFinalizacion" disabled />
+                        <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Aceptar</button>
+                    </div>
+                </form>                
+            </div>
+        </div>
+    </div><!-- VENTANA MODAL DE ESTADO FINALIZADO -->
+    <div class="modal fade" id="ModalEstSus" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="post" asp-page-handler="SuspenderEstado">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="SusModalLabel">Suspender Estado</h5>
+                    </div>
+                    <div class="modal-body">
+                        <label id="labelFechaInicioSuspension">Fecha inicio de la suspensión:</label>
+                        <input type="date" id="fechaInicioSuspendido" disabled />
+                        <label id="labelFechaSuspension">Fecha estimada de retomo de trabajo:</label>
+                        <br/>
+                        <input type="date" id="fechaEstimadaFin" name="fechaEstimadaFin" />
+                        <br />
+                        <label id="labelMotivoSuspension">Motivo de suspensión:</label>
+                        <select id="motivo">
+                            <option value="faltaMaterial">Falta de material</option>
+                            <option value="faltaPersonal">Falta de personal</option>
+                            <option value="faltaHerramientas">Falta de herramientas</option>
+                            <option value="condicionRiesgosa">Condición riesgosa</option>
+                            <option value="esperaMaterial">A la espera de material</option>
+                        </select>
+                        <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
@@ -152,34 +234,27 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $('#fechaEstimadaFin').hide()
-        $('#fechaInicioSuspendido').hide();
-        $('#textBoxCancel').hide();
-        
-        $('#modalEstado').click(function () {            
-            $('#confirmModal').modal('show');
-        });
-        $('#cancelaAsignacion').click(function () {
-            $('#confirmModal').modal('hide');
-        });
+    $(document).ready(function () {        
+        function getTodayDate() {
+            var today = new Date();
+            var day = ("0" + today.getDate()).slice(-2);
+            var month = ("0" + (today.getMonth() + 1)).slice(-2);
+            var year = today.getFullYear();
+            return year + "-" + month + "-" + day;
+        }
 
-        $('#dependenciaLabel').hide();
-        $('#dependenciaSelect').hide();
-
-        $('#deptSelect').change(function () {
-            var selectedEstado = $(this).val();
-            // 3 CASOS:
-            // 1) EL ADMINISTRADOR DECIDE PONER ESTADO FINALIZADO: 
-            // ESTO HARA QUE EN LA BASE DE DATOS SE ACTUALICE LA FECHA DE FIN.
-            // SE DEBERA LIBERAR AL OPERADOR DE LA ORDEN DE TRABAJO
-            // 2) EL ADMINISTRADOR DECIDE PONER ESTADO SUSPENDIDO:
-            // ESTO HARA QUE EN LA BASE DE DATOS SE ACTULICE LA FECHA DE SUSPENDIDO Y FECHA ESTIMADA DE REANUDACION DE OBRA
-            // 3) EL ADMINISTRADOR DECIDE CANCELAR LA TAREA, ESTO HARÁ QUE SE TENGRA QUE PONER FECHA DE FIN 
-            // Y ADEMAS COLOCAR MOTIVO DE LA SUSPENSION EN UN CUADRO DE TEXTO
-            if (selectedEstado) {
-                console.log(selectedEstado);
+        $('#deptSelect').change(function (){
+            var selectedOption = $(this).val();             
+            if (selectedOption == 1004) 
+            {
+                $('#ModalEstFin').modal('show');
+                $('#fechaFinalizacion').val(getTodayDate());
             }
+            if (selectedOption == 1005) 
+            {
+                $('#ModalEstSus').modal('show');
+                $('#fechaInicioSuspendido').val(getTodayDate());
+            }  
         });
     });
 </script>
