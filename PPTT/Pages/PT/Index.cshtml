@@ -7,17 +7,6 @@
 
 <h3>Pedidos de Trabajo</h3>
 
-<!-- Inputs para seleccionar rango de fechas -->
-<div class="form-group">
-    <label for="startDate">Fecha de Inicio:</label>
-    <input type="date" id="startDate" class="form-control" />
-</div>
-<div class="form-group">
-    <label for="endDate">Fecha de Fin:</label>
-    <input type="date" id="endDate" class="form-control" />
-</div>
-<button id="filterDates" class="btn btn-primary">Filtrar</button>
-
 <table class="table" id="tabla">
     <thead>
         <tr>
@@ -71,8 +60,7 @@
     <tbody>
         @foreach (var item in Model.PedidoTrabajo)
         {
-            <tr data-fecha="@item.Fecha_Subida?.ToString("dd-MM-yyyy") ?? " 01-01-0001"">
-                <!-- Añadir atributo de fecha -->
+            <tr data-fecha="@item.Fecha_Subida?.ToString("yyyy-MM-dd") ?? " 0001-01-01"">
                 <td>
                     @Html.DisplayFor(modelItem => item.ID_Orden_Fk)
                 </td>
@@ -83,7 +71,7 @@
                     }
                     else
                     {
-                        @:1/1/0001
+                        @:01-01-0001
                     }
                 </td>
                 <td>
@@ -105,7 +93,7 @@
                     @Html.DisplayFor(modelItem => item.Correo)
                 </td>
                 <td>
-                    @Html.Raw(item.Tarea.Descripcion_Tarea) <!-- Mostrar la descripción completa -->
+                    @Html.Raw(item.Tarea.Descripcion_Tarea)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Observacion)
@@ -136,14 +124,72 @@
                     </span>
                 </td>
                 <td>
-                    <a asp-page="./Details" asp-route-id="@item.ID_Orden_Trabajo_Pk">Ir</a>
+                    <a class="btn-action" asp-page="./Details" asp-route-id="@item.ID_Orden_Trabajo_Pk">Detalles</a>
                 </td>
             </tr>
         }
     </tbody>
+
 </table>
 <a class="btn-action" asp-page="/Administradores/Menu">Volver al Menu</a>
 <button id="btnExportar">Exportar Excel</button>
+
+ <div>
+        <label for="fechaInicio">Fecha Inicio:</label>
+        <input type="text" id="fechaInicio" placeholder="dd-mm-yyyy" maxlength="10" />
+
+        <label for="fechaFin">Fecha Fin:</label>
+        <input type="text" id="fechaFin" placeholder="dd-mm-yyyy" maxlength="10" />
+
+        <button id="filtrar" class="filtrar">Filtrar</button>
+    </div>
+
+<script>
+    // Función para formatear la entrada del campo de texto
+    function formatDateInput(input) {
+        let value = input.value.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
+        if (value.length >= 2) {
+            value = value.slice(0, 2) + '-' + value.slice(2); // Añadir el primer guion
+        }
+        if (value.length >= 5) {
+            value = value.slice(0, 5) + '-' + value.slice(5); // Añadir el segundo guion
+        }
+        input.value = value;
+    }
+
+    // Añadir eventos de entrada para formatear la fecha
+    document.getElementById('fechaInicio').addEventListener('input', function () {
+        formatDateInput(this);
+    });
+
+    document.getElementById('fechaFin').addEventListener('input', function () {
+        formatDateInput(this);
+    });
+
+    document.getElementById('filtrar').addEventListener('click', function () {
+        const startDateInput = document.getElementById('fechaInicio').value;
+        const endDateInput = document.getElementById('fechaFin').value;
+
+        // Convertir las fechas de entrada en formato dd-mm-yyyy a objeto Date
+        const startDate = new Date(startDateInput.split('-').reverse().join('-'));
+        const endDate = new Date(endDateInput.split('-').reverse().join('-'));
+
+        const rows = document.querySelectorAll('#tabla tbody tr');
+
+        rows.forEach(row => {
+            const fechaSubida = row.getAttribute('data-fecha');
+            const fecha = new Date(fechaSubida);
+
+            // Mostrar o ocultar la fila según el rango de fechas
+            if ((isNaN(startDate) || fecha >= startDate) && (isNaN(endDate) || fecha <= endDate)) {
+                row.style.display = ''; // Mostrar fila
+            } else {
+                row.style.display = 'none'; // Ocultar fila
+            }
+        });
+    });
+</script>
+
 <!-- VENTANA MODAL ASIGNACION -->
 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -219,30 +265,35 @@
             });
             exportTbody.appendChild(newRow);
 
-            // Agregar las filas de datos a la tabla exportada (excluyendo las columnas ignoradas)
-            const rows = Array.from($tabla.querySelectorAll('tbody tr'));
-
-            rows.forEach(row => {
-                const newRow = document.createElement('tr');
-                const cells = Array.from(row.querySelectorAll('td'));
-
-                cells.forEach((cell, index) => {
-                    // Ignorar los índices 12 y 14 (o los que desees ignorar)
+            // Recorrer las filas de la tabla original y agregar los datos a la tabla exportada
+            Array.from($tabla.querySelectorAll('tbody tr')).forEach(row => {
+                let newRow = document.createElement('tr');
+                Array.from(row.querySelectorAll('td')).forEach((cell, index) => {
+                    // Ignorar las columnas que no deseas exportar
                     if (index !== 12 && index !== 14) {
                         let td = document.createElement('td');
-                        td.innerText = cell.innerText;
+                        if (index === 11) { // Supongamos que la columna de Prioridad es la número 12 (índice 11)
+                            // Obtener el valor del select
+                            const select = cell.querySelector('select');
+                            td.innerText = select ? select.options[select.selectedIndex].text : ''; // Solo el texto de la opción seleccionada
+                        } else {
+                            td.innerText = cell.innerText; // Texto normal
+                        }
                         newRow.appendChild(td);
                     }
                 });
                 exportTbody.appendChild(newRow);
             });
 
-            // Usar SheetJS para crear un archivo Excel
-            const wb = XLSX.utils.table_to_book(exportTable, { sheet: "Sheet1" });
-            XLSX.writeFile(wb, 'exported_data.xlsx');
+            // Exportar a Excel
+            let wb = XLSX.utils.table_to_book(exportTable, {
+                sheet: "Trabajos"
+            });
+            XLSX.writeFile(wb, 'Reporte de Pedidos de Trabajo.xlsx');
         });
     });
 </script>
+
 
 
 
@@ -418,6 +469,25 @@
             transform: translateY(-2px); /* Efecto al pasar el mouse */
         }
 
+    .filtrar {
+        display: inline-block;
+        text-decoration: none;
+        padding: 4px 6px; /* Ajustar el padding */
+        margin: 2px; /* Reducir margen */
+        border: 1px solid #ff9800; /* Bordes de botones */
+        border-radius: 4px; /* Bordes más redondeados */
+        background-color: #ff9800; /* Color de fondo de los botones */
+        color: white;
+        transition: background-color 0.3s, transform 0.3s;
+        font-size: 0.8em; /* Tamaño de fuente reducido */
+    }
+
+        .filtrar:hover {
+            background-color: #ff9800; /* Mantener el color al pasar el mouse */
+            transform: translateY(-2px); /* Efecto al pasar el mouse */
+        }
+
+    
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 <!-- jQuery -->
