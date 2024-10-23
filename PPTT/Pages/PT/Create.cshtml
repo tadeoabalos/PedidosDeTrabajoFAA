@@ -12,7 +12,7 @@
 <div class="row">
     <div class="col-md-4">
         <form method="post">
-            <h3>Datos del solicitante: </h3>
+            <h2>Datos del solicitante: </h2>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.ID_Grado_Fk" class="control-label"></label>
@@ -84,7 +84,7 @@
             @{
                 // DATOS DEL TRABAJO
             }
-            <h3>Datos del trabajo: </h3>
+            <h2>Datos del trabajo: </h2>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.ID_Division_Fk" class="control-label"></label>
                 <select asp-for="PedidoTrabajo.ID_Division_Fk"
@@ -141,6 +141,9 @@
             </div>
         </form>
     </div>
+</div>
+<div class="centered-button">
+    <a href="/" class="vol">Volver al Menu</a>
 </div>
 @section Scripts {
     @{
@@ -266,10 +269,26 @@
                 transform: translateY(-2px);
             }
 
+        .vol {
+            display: inline-block;
+            text-decoration: none;
+            padding: 8px 12px;
+            margin: 4px;
+            border: 1px solid #003d6b;
+            border-radius: 5px;
+            background-color: #003d6b;
+            color: white;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+            .vol:hover {
+                background-color: #002e5d;
+                transform: translateY(-2px);
+            }
         form {
             align-items: center;
             justify-content: center;
-            width: 145%;
+            width: 155%;
             margin: 30px auto;
             padding: 20px;
             background-color: #e0e8f1;
@@ -315,6 +334,14 @@
 
         h3 {
             font-size: 3em;
+            color: #003d6b;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: 2.5em;
             color: #003d6b;
             margin-top: 20px;
             margin-bottom: 10px;
