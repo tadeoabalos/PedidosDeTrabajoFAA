@@ -25,6 +25,7 @@ namespace PPTT.Pages.PT
         public PTUsuario? PedidoTrabajo { get; set; } = default!;
         public List<Estado> Estado { get; set; } = default!;
         public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();
+        public int IdUsuario;
 
         public async Task<JsonResult> OnGetUsuariosFiltradosAsync(string division)
         {
@@ -37,64 +38,66 @@ namespace PPTT.Pages.PT
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
             HttpContext.Session.SetInt32("UserRole", _rol);
             if (_rol == 2)
-        
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {            
-            if (id == null)
             {
-                Usuarios = await _context.GetUsuariosAsync();
                 if (id == null)
                 {
-                    return NotFound();
+                    Usuarios = await _context.GetUsuariosAsync();
+                    if (id == null)
+                    {
+                        return NotFound();
+                    }
+
+                    Estado = await _context.GetEstadosAsync();
+                    Prioridad = await _context.GetPrioridadAsync();
+                    PedidoTrabajo = await _context.PTUsuario
+                        .Include(pt => pt.Organismo)
+                        .Include(pt => pt.Tarea)
+                        .Include(pt => pt.Estado)
+                        .Include(pt => pt.Dependencia_Interna)
+                        .Include(pt => pt.Grado)
+                        .Include(pt => pt.Prioridad)
+                        .FirstOrDefaultAsync(m => m.ID_Orden_Trabajo_Pk == id);
+
+                    if (PedidoTrabajo == null)
+                    {
+                        return NotFound();
+                    }
+
+                    HttpContext.Session.SetString("CorreoUsuario", PedidoTrabajo.Correo);
+                    var idEstadoSeleccionado = PedidoTrabajo.ID_Estado_Fk;
+                    HttpContext.Session.SetInt32("ID_Estado_Fk", idEstadoSeleccionado);
+                    return Page();
                 }
-
-                Estado = await _context.GetEstadosAsync();
-                Prioridad = await _context.GetPrioridadAsync();
-                PedidoTrabajo = await _context.PTUsuario
-                    .Include(pt => pt.Organismo)
-                    .Include(pt => pt.Tarea)
-                    .Include(pt => pt.Estado)
-                    .Include(pt => pt.Dependencia_Interna)
-                    .Include(pt => pt.Grado)
-                    .Include(pt => pt.Prioridad)
-                    .FirstOrDefaultAsync(m => m.ID_Orden_Trabajo_Pk == id);
-
-                if (PedidoTrabajo == null)
+                else
                 {
-                    return NotFound();
+                    RedirectToPage("/Vistas/MenuLog");
                 }
-
-                HttpContext.Session.SetString("CorreoUsuario", PedidoTrabajo.Correo);
-                var idEstadoSeleccionado = PedidoTrabajo.ID_Estado_Fk;
-                HttpContext.Session.SetInt32("ID_Estado_Fk", idEstadoSeleccionado);
-
-                Console.WriteLine(Estado);
                 return Page();
+
+
             }
-            else 
+            else
             {
                 Usuarios = await _context.GetUsuariosFiltradosByOrdenAsync(id);
             }
-            
+
             Estado = await _context.GetEstadosAsync();
             Prioridad = await _context.GetPrioridadAsync();
             PedidoTrabajo = await _context.PTUsuario
-                .Include(pt => pt.Organismo) 
-                .Include(pt => pt.Tarea) 
-                .Include(pt => pt.Estado) 
-                .Include(pt => pt.Dependencia_Interna) 
+                .Include(pt => pt.Organismo)
+                .Include(pt => pt.Tarea)
+                .Include(pt => pt.Estado)
+                .Include(pt => pt.Dependencia_Interna)
                 .Include(pt => pt.Grado)
                 .Include(pt => pt.Prioridad)
-                .FirstOrDefaultAsync(m => m.ID_Orden_Trabajo_Pk == id); 
+                .FirstOrDefaultAsync(m => m.ID_Orden_Trabajo_Pk == id);
 
             if (PedidoTrabajo == null)
             {
                 return RedirectToPage("/Vistas/MenuLog");
             }
+            return Page();
         }
-
-        public int IdUsuario;
-
         public async Task<JsonResult> OnGetPrioridadesAsync()
         {
             var prioridades = await _context.GetPrioridadAsync();
@@ -127,7 +130,7 @@ namespace PPTT.Pages.PT
         }
         public async Task<IActionResult> OnPostEnProcesoEstadoAsync(int OrdenTrabajoId, int IdUsuario)
         {
-            await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[AsignarUsuarioAOrden] @p0, @p1", IdUsuario ,OrdenTrabajoId);
+            await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[AsignarUsuarioAOrden] @p0, @p1", IdUsuario, OrdenTrabajoId);
             return RedirectToPage("./Index");
         }
         public async Task<IActionResult> OnPostCancelarEstadoAsync(int OrdenTrabajoId)
