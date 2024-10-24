@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Formats.Asn1;
 using System.Linq;
 using System.Threading.Tasks;
@@ -71,6 +72,10 @@ namespace PPTT.Data
         {
             return await Usuario.FromSqlRaw("EXEC [dbo].[Usuarios_Filtrados]  @p0", division).ToListAsync();
         }
+        public async Task<List<Admin>> GetUsuariosFiltradosByOrdenAsync(int? id)
+        {
+            return await Usuario.FromSqlRaw("EXEC [dbo].[UsuariosFiltrados]  @p0", id).ToListAsync();
+        }
         public async Task<List<Admin>> GetUsuariosAsync()
         {
             return await Usuario.FromSqlRaw("EXEC [dbo].[Retorna_Usuarios]").ToListAsync();
@@ -117,6 +122,11 @@ namespace PPTT.Data
 
             modelBuilder.Entity<Prioridad>()
             .HasKey(d => d.ID_Prioridad_Pk);
+        }
+
+        internal object FromSqlRaw(string v, SqlParameter sqlParameter)
+        {
+            throw new NotImplementedException();
         }
     }
 }

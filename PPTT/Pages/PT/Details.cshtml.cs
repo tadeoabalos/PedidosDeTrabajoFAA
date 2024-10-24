@@ -22,19 +22,18 @@ namespace PPTT.Pages.PT
         public PTUsuario? PedidoTrabajo { get; set; } = default!;      
         public List<Estado> Estado { get; set; } = default!;
         public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();
-        public async Task<JsonResult> OnGetUsuariosFiltradosAsync(string division)
-        {
-            var usuarios = await _context.GetUsuariosFiltradosAsync(int.Parse(division));
-            return new JsonResult(usuarios);
-        }
+        
         public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            Usuarios = await _context.GetUsuariosAsync();
+        {            
             if (id == null)
             {
                 return NotFound();
             }
-
+            else 
+            {
+                Usuarios = await _context.GetUsuariosFiltradosByOrdenAsync(id);
+            }
+            
             Estado = await _context.GetEstadosAsync();
             Prioridad = await _context.GetPrioridadAsync();
             PedidoTrabajo = await _context.PTUsuario
@@ -53,12 +52,15 @@ namespace PPTT.Pages.PT
 
             return Page();
         }
+
+        public int IdUsuario;
+
         public async Task<JsonResult> OnGetPrioridadesAsync()
         {
             var prioridades = await _context.GetPrioridadAsync();
             return new JsonResult(prioridades);
-        }
-        
+        }        
+
         public async Task<IActionResult> OnPostFinalizarEstadoAsync(int OrdenTrabajoId)
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[FinalizarPedidoTrabajo] @p0", OrdenTrabajoId);
@@ -67,6 +69,11 @@ namespace PPTT.Pages.PT
         public async Task<IActionResult> OnPostSuspenderEstadoAsync(int OrdenTrabajoId, DateTime fechaEstimadaFin)
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[SuspenderPedidoTrabajo] @p0, @p1", OrdenTrabajoId, fechaEstimadaFin);
+            return RedirectToPage("./Index");
+        }
+        public async Task<IActionResult> OnPostEnProcesoEstadoAsync(int OrdenTrabajoId, int IdUsuario)
+        {
+            await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[AsignarUsuarioAOrden] @p0, @p1", IdUsuario ,OrdenTrabajoId);
             return RedirectToPage("./Index");
         }
         public async Task<IActionResult> OnPostCancelarEstadoAsync(int OrdenTrabajoId)

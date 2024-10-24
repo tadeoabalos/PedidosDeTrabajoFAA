@@ -37,5 +37,6 @@ namespace PPTT.Models
         [Display(Name = "Fecha de Baja")]
         public DateTime? Fecha_Baja { get; set; }
 
+        public string? NombreCompleto => Apellido + ", " + Nombre;
     }
 }

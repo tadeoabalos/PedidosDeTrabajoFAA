@@ -133,6 +133,10 @@
                         <label id="labelFechaFinalizado">Fecha de finalización:</label>
                         <input type="date" id="fechaFinalizacion" disabled />
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
+                        <br/>
+                        <span id="warningMessagePen" class="alert alert-warning">
+                            <b>Advertencia</b>: Cambiar el estado de la orden de trabajo a <b>FINALIZADO</b> dará por concluida la orden, y no podrá ser modificada posteriormente.
+                        </span>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
@@ -157,6 +161,10 @@
                         <br />
                         <textarea id="motivoCancelacion" name="motivoCancelacion"></textarea>
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
+                        <br />
+                        <span id="warningMessagePen" class="alert alert-warning">
+                            <b>Advertencia</b>: Cambiar el estado de la orden de trabajo a <b>CANCELADO</b> anulará la orden, y no se podrán realizar más cambios en ella.
+                        </span>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
@@ -203,12 +211,14 @@
             <div class="modal-content">
                 <form method="post" asp-page-handler="EnProcesoEstado">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="CanModalLabel">Asignar a usuario para pedido de trabajo</h5>
+                        <h5 class="modal-title" id="CanModalLabel">Asignar usuario a pedido de trabajo</h5>
                     </div>
-                    <div class="modal-body">
-                        <select>
-                            <option>Soy un usuario</option>
+                   <div class="modal-body">
+                        <p class="text-muted">Por favor, seleccione un usuario para asignar a este pedido de trabajo.</p>
+                        <select class="form-control" asp-for="IdUsuario" asp-items="@(new SelectList(Model.Usuarios, "ID_Usuario_Pk", "NombreCompleto"))">
+                            <option hidden selected value="">Seleccione un usuario</option>
                         </select>
+                        <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
@@ -223,11 +233,11 @@
             <div class="modal-content">
                 <form method="post" asp-page-handler="PendienteEstado">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="CanModalLabel">Pasar a estado pendiente</h5>
+                        <h5 class="modal-title" id="CanModalLabel">Cambiar estado a <b>PENDIENTE</b></h5>
                     </div>
-                    <div class="modal-body">
-                        <span id="warningMessagePen" class="alert alert-warning" style="display:none;">
-                            ⚠️ <b>Advertencia</b>: Cambiar cualquier estado a <b>PENDIENTE</b> modificará los datos previamente registrados en otros estados.
+                    <div class="modal-body">                       
+                        <span id="warningMessagePen" class="alert alert-warning">
+                            <b>Advertencia</b>: Cambiar cualquier orden de trabajo a <b>PENDIENTE</b> modificará los datos previamente registrados.
                         </span>
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
                     </div>
@@ -244,6 +254,8 @@
         <a asp-page="./Index">Back to List</a>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function () {
             function getTodayDate() {
@@ -255,6 +267,7 @@
             }
 
             $('#deptSelect').change(function () {
+                alert("Advertencia: El usuario que solicito el pedido de trabajo será notificado del cambio de estado.");
                 var selectedOption = $(this).val();
                 if (selectedOption == 1002) {
                     $('#ModalEstPen').modal('show');
@@ -262,7 +275,6 @@
                 if (selectedOption == 1003) {
                     $('#ModalEstPro').modal('show');
                 }
-
                 if (selectedOption == 1004) {
                     $('#ModalEstFin').modal('show');
                     $('#fechaFinalizacion').val(getTodayDate());
@@ -278,3 +290,10 @@
             });
         });
     </script>
+   <style>
+        #warningMessagePen {
+            display: block;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+   </style> 
