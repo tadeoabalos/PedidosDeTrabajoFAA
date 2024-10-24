@@ -18,6 +18,7 @@ using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Configuration;
+using PPTT.Pages.Vistas;
 namespace PPTT.Pages.PT
 {
     public class CreatePPTT : PageModel
@@ -163,10 +164,10 @@ namespace PPTT.Pages.PT
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Division = await _context.GetDivisionAsync();
-            Grados = await _context.GetGradosAsync();            
-            Organismos = await _context.GetOrganismoAsync();
-            return Page();
+                Division = await _context.GetDivisionAsync();
+                Grados = await _context.GetGradosAsync();
+                Organismos = await _context.GetOrganismoAsync();
+                return Page();
         }
         public async Task<JsonResult> OnGetServiciosByDivisionAsync(string division)
         {

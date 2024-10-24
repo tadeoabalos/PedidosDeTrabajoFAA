@@ -60,16 +60,6 @@ namespace PPTT.Pages.PT
             CorreoUsuario = HttpContext.Session.GetString("CorreoUsuario");
             FechaEstimada = HttpContext.Session.GetString("FechaEstimadaFin");
             motivo = HttpContext.Session.GetString("motivo");
-            Console.WriteLine(ID_Estado_Fk);
-            Console.WriteLine(ID_Estado_Fk);
-            Console.WriteLine(ID_Estado_Fk);
-            Console.WriteLine(ID_Estado_Fk);
-            Console.WriteLine(ID_Estado_Fk);
-            Console.WriteLine(ID_Estado_Fk);
-            Console.WriteLine(ID_Estado_Fk);
-            Console.WriteLine(ID_Estado_Fk);
-            Console.WriteLine(ID_Estado_Fk);
-            Console.WriteLine(ID_Estado_Fk);
             string asunto = "Cambio de estado de su pedido de trabajo";
             string body = "";
             if (ID_Estado_Fk == 1003)

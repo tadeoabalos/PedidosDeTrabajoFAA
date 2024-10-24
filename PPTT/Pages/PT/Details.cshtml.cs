@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using PPTT.Data;
 using PPTT.Models;
+using static PPTT.Models.Admin;
 
 namespace PPTT.Pages.PT
 {
@@ -33,34 +34,43 @@ namespace PPTT.Pages.PT
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            Usuarios = await _context.GetUsuariosAsync();
-            if (id == null)
+            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+            HttpContext.Session.SetInt32("UserRole", _rol);
+            if (_rol == 2)
             {
-                return NotFound();
+                Usuarios = await _context.GetUsuariosAsync();
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                Estado = await _context.GetEstadosAsync();
+                Prioridad = await _context.GetPrioridadAsync();
+                PedidoTrabajo = await _context.PTUsuario
+                    .Include(pt => pt.Organismo)
+                    .Include(pt => pt.Tarea)
+                    .Include(pt => pt.Estado)
+                    .Include(pt => pt.Dependencia_Interna)
+                    .Include(pt => pt.Grado)
+                    .Include(pt => pt.Prioridad)
+                    .FirstOrDefaultAsync(m => m.ID_Orden_Trabajo_Pk == id);
+
+                if (PedidoTrabajo == null)
+                {
+                    return NotFound();
+                }
+
+                HttpContext.Session.SetString("CorreoUsuario", PedidoTrabajo.Correo);
+                var idEstadoSeleccionado = PedidoTrabajo.ID_Estado_Fk;
+                HttpContext.Session.SetInt32("ID_Estado_Fk", idEstadoSeleccionado);
+
+                Console.WriteLine(Estado);
+                return Page();
             }
-
-            Estado = await _context.GetEstadosAsync();
-            Prioridad = await _context.GetPrioridadAsync();
-            PedidoTrabajo = await _context.PTUsuario
-                .Include(pt => pt.Organismo)
-                .Include(pt => pt.Tarea)
-                .Include(pt => pt.Estado)
-                .Include(pt => pt.Dependencia_Interna)
-                .Include(pt => pt.Grado)
-                .Include(pt => pt.Prioridad)
-                .FirstOrDefaultAsync(m => m.ID_Orden_Trabajo_Pk == id);
-
-            if (PedidoTrabajo == null)
+            else
             {
-                return NotFound();
+                return RedirectToPage("/Vistas/MenuLog");
             }
-
-            HttpContext.Session.SetString("CorreoUsuario", PedidoTrabajo.Correo);
-            var idEstadoSeleccionado = PedidoTrabajo.ID_Estado_Fk;
-            HttpContext.Session.SetInt32("ID_Estado_Fk", idEstadoSeleccionado);
-
-            Console.WriteLine(Estado);
-            return Page();
         }
 
         public async Task<JsonResult> OnGetPrioridadesAsync()

@@ -25,15 +25,17 @@ namespace PPTT.Pages.Administradores
         public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();        
         public async Task OnGetAsync()
         {
-            Prioridad = await _context.GetPrioridadAsync();
-            PedidoTrabajo = await _context.PTUsuario
-                .Include(pt => pt.Organismo)           
-                .Include(pt => pt.Tarea)
-                .Include(pt => pt.Estado)
-                .Include(pt => pt.Prioridad)
-                .Include(pt => pt.Dependencia_Interna)
-                .Include(pt => pt.Grado)
-                .ToListAsync();
+                Prioridad = await _context.GetPrioridadAsync();
+                PedidoTrabajo = await _context.PTUsuario
+                    .Include(pt => pt.Organismo)
+                    .Include(pt => pt.Tarea)
+                    .Include(pt => pt.Estado)
+                    .Include(pt => pt.Prioridad)
+                    .Include(pt => pt.Dependencia_Interna)
+                    .Include(pt => pt.Grado)
+                    .ToListAsync();
+
+           
         }
         public async Task<JsonResult> OnGetUsuariosFiltradosAsync(string division)
         {
