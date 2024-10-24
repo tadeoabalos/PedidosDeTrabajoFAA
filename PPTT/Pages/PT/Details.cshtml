@@ -109,16 +109,16 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PedidoTrabajo.ID_Estado_Fk)
         </dt>
-        <dd class="col-sm-10">                      
+        <dd class="col-sm-10">
             <select asp-for="PedidoTrabajo.ID_Estado_Fk"
-                    asp-items="Model.Estado.Select(d=> new SelectListItem
-                                {
-                                    Value = d.ID_Estado_PK.ToString(),
-                                    Text = d.Descripcion_Estado.ToString()
-                                })"
+                    asp-items="Model.Estado.Select(d => new SelectListItem
+            {
+                Value = d.ID_Estado_PK.ToString(),
+                Text = d.Descripcion_Estado
+            })"
                     id="deptSelect"
                     class="formControl">
-                <option hidden selected value="">@Model.PedidoTrabajo.Estado.Descripcion_Estado</option>
+                <option value="" disabled selected hidden>@Model.PedidoTrabajo.Estado.Descripcion_Estado</option>
             </select>
         </dd>
     </dl>

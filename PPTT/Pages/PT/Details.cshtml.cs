@@ -55,9 +55,11 @@ namespace PPTT.Pages.PT
                 return NotFound();
             }
 
-            // Guardar el valor de ID_Tarea_Fk y Correo en la sesión
-            HttpContext.Session.SetInt32("ID_Tarea_Fk", PedidoTrabajo.ID_Tarea_Fk);
             HttpContext.Session.SetString("CorreoUsuario", PedidoTrabajo.Correo);
+            var idEstadoSeleccionado = PedidoTrabajo.ID_Estado_Fk;
+            HttpContext.Session.SetInt32("ID_Estado_Fk", idEstadoSeleccionado);
+
+            Console.WriteLine(Estado);
             return Page();
         }
 
@@ -70,12 +72,11 @@ namespace PPTT.Pages.PT
         public async Task<IActionResult> OnPostFinalizarEstadoAsync(int OrdenTrabajoId)
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[FinalizarPedidoTrabajo] @p0", OrdenTrabajoId);
-            return RedirectToPage("./Index");
+            return RedirectToPage("./MandarMailCambioEstado");
         }
 
         public async Task<IActionResult> OnPostSuspenderEstadoAsync(int OrdenTrabajoId, DateTime fechaEstimadaFin, string motivo)
         {
-            // Convertir la fecha a string
             string fechaComoString = fechaEstimadaFin.ToString("dd/MM/yyyy");
             HttpContext.Session.SetString("FechaEstimadaFin", fechaComoString);
 
@@ -90,19 +91,19 @@ namespace PPTT.Pages.PT
             }
 
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[SuspenderPedidoTrabajo] @p0, @p1", OrdenTrabajoId, fechaEstimadaFin);
-            return RedirectToPage("./Index");
+            return RedirectToPage("./MandarMailCambioEstado");
         }
 
         public async Task<IActionResult> OnPostCancelarEstadoAsync(int OrdenTrabajoId)
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[CancelarPedidoTrabajo] @p0", OrdenTrabajoId);
-            return RedirectToPage("./Index");
+            return RedirectToPage("./MandarMailCambioEstado");
         }
 
         public async Task<IActionResult> OnPostPendienteEstadoAsync(int OrdenTrabajoId)
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[PendientePedidoTrabajo] @p0", OrdenTrabajoId);
-            return RedirectToPage("./Index");
+            return RedirectToPage("./MandarMailCambioEstado");
         }
     }
 }

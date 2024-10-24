@@ -15,9 +15,10 @@ namespace PPTT.Pages.PT
         {
             _configuration = configuration;
         }
-        public int? ID_Tarea_Fk { get; set; }
+        public int? ID_Estado_Fk { get; set; }
         public string? FechaEstimada { get; set; }
         public string? CorreoUsuario { get; set; }
+        public string? desestado { get; set; }
         public string? motivo { get; set; }
         private bool SendMail(string to, string asunto, string body)
         {
@@ -25,7 +26,6 @@ namespace PPTT.Pages.PT
             string mailPassword = _configuration["MailSettings:MailPassword"];
             string from = mailUser; // Asegúrate de que esta sea una dirección válida
             string displayName = "Soporte Turnos Web Fuerza Aerea Argentina";
-
             try
             {
                 MailMessage mail = new MailMessage();
@@ -54,34 +54,46 @@ namespace PPTT.Pages.PT
                 return false;
             }
         }
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            ID_Tarea_Fk = HttpContext.Session.GetInt32("ID_Tarea_Fk");
+            ID_Estado_Fk = HttpContext.Session.GetInt32("ID_Estado_Fk");
             CorreoUsuario = HttpContext.Session.GetString("CorreoUsuario");
             FechaEstimada = HttpContext.Session.GetString("FechaEstimadaFin");
             motivo = HttpContext.Session.GetString("motivo");
+            Console.WriteLine(ID_Estado_Fk);
+            Console.WriteLine(ID_Estado_Fk);
+            Console.WriteLine(ID_Estado_Fk);
+            Console.WriteLine(ID_Estado_Fk);
+            Console.WriteLine(ID_Estado_Fk);
+            Console.WriteLine(ID_Estado_Fk);
+            Console.WriteLine(ID_Estado_Fk);
+            Console.WriteLine(ID_Estado_Fk);
+            Console.WriteLine(ID_Estado_Fk);
+            Console.WriteLine(ID_Estado_Fk);
             string asunto = "Cambio de estado de su pedido de trabajo";
             string body = "";
-            if (ID_Tarea_Fk == 1003)
+            if (ID_Estado_Fk == 1003)
             {
                 body = "Su pedido de trabajo está en proceso.";
                 SendMail(CorreoUsuario, asunto, body);
             }
-            else if (ID_Tarea_Fk == 1004)
+            else if (ID_Estado_Fk == 1004)
             {
                 body = "Su pedido de trabajo ha sido finalizado.";
                 SendMail(CorreoUsuario, asunto, body);
             }
-            else if (ID_Tarea_Fk == 1005)
+            else if (ID_Estado_Fk == 1005)
             {
                 body = $"Su pedido de trabajo ha sido suspendido. Fecha de inicio estimada: {FechaEstimada}.    Motivo: {motivo} ";
                 SendMail(CorreoUsuario, asunto, body);
             }
-            else if (ID_Tarea_Fk == 1006)
+            else if (ID_Estado_Fk == 1006)
             {
-                body = $"Su pedido de trabajo ha sido cancelado. Fecha de inicio estimada: ${motivo}";
+                body = $"Su pedido de trabajo ha sido cancelado.";
                 SendMail(CorreoUsuario, asunto, body);
             }
+            else { }
+            return RedirectToPage("/PT/Index");
         }
 
     }   
