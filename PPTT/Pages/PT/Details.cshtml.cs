@@ -37,6 +37,7 @@ namespace PPTT.Pages.PT
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
             HttpContext.Session.SetInt32("UserRole", _rol);
             if (_rol == 2)
+        
         public async Task<IActionResult> OnGetAsync(int? id)
         {            
             if (id == null)
@@ -70,7 +71,8 @@ namespace PPTT.Pages.PT
                 Console.WriteLine(Estado);
                 return Page();
             }
-            else
+            else 
+            {
                 Usuarios = await _context.GetUsuariosFiltradosByOrdenAsync(id);
             }
             

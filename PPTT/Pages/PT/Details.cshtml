@@ -32,7 +32,6 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PedidoTrabajo.Apellido_Solicitante)
-        </dd>        
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PedidoTrabajo.DNI_Solicitante)
@@ -74,7 +73,7 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PedidoTrabajo.Fecha_Subida)
-        </dd>      
+        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PedidoTrabajo.ID_Tarea_Fk)
         </dt>
@@ -128,18 +127,20 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="FinModalLabel">Finalizar pedido de trabajo</h5>
                     </div>
-                    <div class="modal-body">
                     <div class="modal-body">                        
                         <label id="labelFechaFinalizado">Fecha de finalización:</label>
                         <input type="date" id="fechaFinalizacion" disabled />
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
+                        <br/>
                         <span id="warningMessagePen" class="alert alert-warning">
                             <b>Advertencia</b>: Cambiar el estado de la orden de trabajo a <b>FINALIZADO</b> dará por concluida la orden, y no podrá ser modificada posteriormente.
+                        </span>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Aceptar</button>
                     </div>
+                </form>
             </div>
         </div>
     </div><!-- VENTANA MODAL DE ESTADO FINALIZADO -->
@@ -154,9 +155,14 @@
                         <label id="labelFechaFinalizado">Fecha de cancelacion:</label>
                         <input type="date" id="fechaCan" disabled />
                         <br/>
+                        <label id="labelDetalleCancelado">Detalle de la cancelacion:</label>
+                        <br />
                         <textarea id="motivoCancelacion" name="motivoCancelacion"></textarea>
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
                         <br />
+                        <span id="warningMessagePen" class="alert alert-warning">
+                            <b>Advertencia</b>: Cambiar el estado de la orden de trabajo a <b>CANCELADO</b> anulará la orden, y no se podrán realizar más cambios en ella.
+                        </span>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
@@ -177,7 +183,6 @@
                         <label id="labelFechaInicioSuspension">Fecha inicio de la suspensión:</label>
                         <input type="date" id="fechaInicioSuspendido" disabled />
                         <label id="labelFechaSuspension">Fecha estimada de retomo de trabajo:</label>
-                        <br/>
                         <br />
                         <input type="date" id="fechaEstimadaFin" name="fechaEstimadaFin" />
                         <br />
@@ -204,10 +209,10 @@
             <div class="modal-content">
                 <form method="post" asp-page-handler="EnProcesoEstado">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="CanModalLabel">Asignar a usuario para pedido de trabajo</h5>
+                        <h5 class="modal-title" id="CanModalLabel">Asignar usuario a pedido de trabajo</h5>
                     </div>
-                        <select>
-                            <option>Soy un usuario</option>
+                   <div class="modal-body">
+                        <p class="text-muted">Por favor, seleccione un usuario para asignar a este pedido de trabajo.</p>
                         <select class="form-control" asp-for="IdUsuario" asp-items="@(new SelectList(Model.Usuarios, "ID_Usuario_Pk", "NombreCompleto"))">
                             <option hidden selected value="">Seleccione un usuario</option>
                         </select>
@@ -228,7 +233,9 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="CanModalLabel">Cambiar estado a <b>PENDIENTE</b></h5>
                     </div>
+                    <div class="modal-body">                       
                         <span id="warningMessagePen" class="alert alert-warning">
+                            <b>Advertencia</b>: Cambiar cualquier orden de trabajo a <b>PENDIENTE</b> modificará los datos previamente registrados.
                         </span>
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
                     </div>
@@ -255,11 +262,10 @@
             return year + "-" + month + "-" + day;
         }
 
-        $('#deptSelect').change(function (){
-            
-            if (selectedOption == 1004) 
-                $('#ModalEstFin').modal('show');
-                $('#fechaFinalizacion').val(getTodayDate());
+    <div>
+        <a asp-page="./Index">Back to List</a>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -267,14 +273,33 @@
             function getTodayDate() {
                 var today = new Date();
                 var day = ("0" + today.getDate()).slice(-2);
+                var month = ("0" + (today.getMonth() + 1)).slice(-2);
                 var year = today.getFullYear();
                 return year + "-" + month + "-" + day;
             }
-            }  
-            if (selectedOption == 1006) 
-                $('#ModalEstCan').modal('show');
-                $('#fechaCan').val(getTodayDate());
-            }  
+
+            $('#deptSelect').change(function () {
+                alert("Advertencia: El usuario que solicito el pedido de trabajo será notificado del cambio de estado.");
+                var selectedOption = $(this).val();
+                if (selectedOption == 1002) {
+                    $('#ModalEstPen').modal('show');
+                }
+                if (selectedOption == 1003) {
+                    $('#ModalEstPro').modal('show');
+                }
+                if (selectedOption == 1004) {
+                    $('#ModalEstFin').modal('show');
+                    $('#fechaFinalizacion').val(getTodayDate());
+                }
+                if (selectedOption == 1005) {
+                    $('#ModalEstSus').modal('show');
+                    $('#fechaInicioSuspendido').val(getTodayDate());
+                }
+                if (selectedOption == 1006) {
+                    $('#ModalEstCan').modal('show');
+                    $('#fechaCan').val(getTodayDate());
+                }
+            });
         });
     });
 </script>
