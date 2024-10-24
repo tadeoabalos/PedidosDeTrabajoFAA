@@ -54,6 +54,7 @@ namespace PPTT.Pages.PT
         public List<Grado> Grados { get; set; } = new List<Grado>();
         public List<Organismo> Organismos { get; set; } = new List<Organismo>();
         public List<Servicio> Servicios { get; set; } = new List<Servicio>();
+        public List<Tarea> Tareas { get; set; } = new List<Tarea>();
         public List<SelectListItem> ColoresOficina { get; set; }
         public List<SelectListItem> PisosOficina { get; set; }
         public enum ColorOficina
@@ -104,6 +105,13 @@ namespace PPTT.Pages.PT
         {
             if (!ModelState.IsValid)
             {
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        _logger.LogError($"Error en {state.Key}: {error.ErrorMessage}");
+                    }
+                }
                 return Page();
             }
             PedidoTrabajo.Fecha_Subida = DateTime.Now;
@@ -119,7 +127,6 @@ namespace PPTT.Pages.PT
 
             return RedirectToPage("/Index");
         }
-
 
         private async Task<int> EjecutarDiferentesIDs(int idTarea)
         {
