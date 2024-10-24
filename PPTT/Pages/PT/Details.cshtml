@@ -122,67 +122,12 @@
             </select>
         </dd>
     </dl>
-    @{/*<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-        <div class="modal-content">
-        <form method="post" asp-page-handler="ModiEstado">
-        <div class="modal-header">
-        <h5 class="modal-title" id="confirmModalLabel">Cambiar Estado</h5>
-        </div>
-        <div class="modal-content">
-        <!-- INPUTS SUSPENDIDO -->
-        <label id="labelFechaInicioSuspension">Fecha inicio de la suspension:</label>
-        <input type="date" id="fechaInicioSuspendido" disabled />
-        <label id="labelFechaSuspension">Fecha estimada de retomo de trabajo:</label>
-        <input type="date" id="fechaEstimadaFin"/>
-        <label id="labelMotivoSuspension">Motivo de suspensión:</label>
-        <select id="motivo" name="motivo">
-        <option value="faltaMaterial">Falta de material</option>
-        <option value="faltaPersonal">Falta de personal</option>
-        <option value="faltaHerramientas">Falta de herramientas</option>
-        <option value="condicionRiesgosa">Condición riesgosa</option>
-        <option value="esperaMaterial">A la espera de material</option>
-        </select>
-        <!-- INPUTS CANCELADO -->
-        <label id="labelFechaCancelado">Fecha de cancelación:</label>
-        <input type="date" id="fechaCancelado" disabled />
-        <label id="labelTextArea">Detalle el motivo de la cancelación:</label>
-        <textarea class="form-control custom-textarea" id="textBoxCancel"></textarea>
-        <span id="warningMessageCan" class="alert alert-warning" style="display:none;">
-        ⚠️ <b>Advertencia</b>: Este cambio de estado dará por finalizada la orden de trabajo y no podrá revertirse.
-        </span>
-        <!-- INPUTS FINALIZACIÓN -->
-        <label id="labelFechaFinalizado">Fecha de finalización:</label>
-        <input type="date" id="fechaFinalización" disabled />
-        <span id="warningMessage" class="alert alert-warning" style="display:none;">
-        ⚠️ <b>Advertencia</b>: Este cambio de estado dará por finalizada la orden de trabajo y no podrá revertirse.
-        </span>
-        <!-- INPUTS PENDIENTE -->
-        <span id="warningMessagePen" class="alert alert-warning" style="display:none;">
-        ⚠️ <b>Advertencia</b>: Cambiar cualquier estado a <b>PENDIENTE</b> modificará los datos previamente registrados en otros estados.
-        </span>
-        <!-- INPUTS EN PROCESO -->
-        <span id="infoMessage" class="alert alert-info">
-        ℹ️ <b>Información</b>: Si ya había un usuario asignado a esta tarea, será reemplazado por el que asigne ahora.
-        </span>
-        <span asp-validation-for="PedidoTrabajo.ID_Estado_Fk" class="text-danger"></span>
-        </div>
-        <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
-        <button type="submit" class="btn btn-primary" onclick="disableUnusedInputs()">Aceptar</button>
-        </div>
-        </form>
-        </div>
-        </div>
-        </div> <!-- VENTANA MODAL -->
-</div>*/}
-    
     <div class="modal fade" id="ModalEstFin" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form method="post" asp-page-handler="FinalizarEstado">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="FinModalLabel">Finalizar Estado</h5>
+                        <h5 class="modal-title" id="FinModalLabel">Finalizar pedido de trabajo</h5>
                     </div>
                     <div class="modal-body">
                         <label id="labelFechaFinalizado">Fecha de finalización:</label>
@@ -197,12 +142,32 @@
             </div>
         </div>
     </div><!-- VENTANA MODAL DE ESTADO FINALIZADO -->
+    <div class="modal fade" id="ModalEstCan" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="post" asp-page-handler="CancelarEstado">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="CanModalLabel">Cancelar pedido de trabajo</h5>
+                    </div>
+                    <div class="modal-body">
+                        <label id="labelFechaFinalizado">Fecha de cancelacion:</label>
+                        <input type="date" id="fechaCan" disabled />
+                        <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Aceptar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- VENTANA MODAL DE ESTADO CANCELAR -->
     <div class="modal fade" id="ModalEstSus" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form method="post" asp-page-handler="SuspenderEstado">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="SusModalLabel">Suspender Estado</h5>
+                        <h5 class="modal-title" id="SusModalLabel">Suspender Pedido de trabajo</h5>
                     </div>
                     <div class="modal-body">
                         <label id="labelFechaInicioSuspension">Fecha inicio de la suspensión:</label>
@@ -229,6 +194,48 @@
             </div>
         </div>
     </div><!-- VENTANA MODAL DE ESTADO SUSPENDIDO -->
+    <div class="modal fade" id="ModalEstPro" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="post" asp-page-handler="EnProcesoEstado">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="CanModalLabel">Asignar a usuario para pedido de trabajo</h5>
+                    </div>
+                    <div class="modal-body">
+                        <select>
+                            <option>Soy un usuario</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Aceptar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- VENTANA MODAL DE ESTADO EN PROCESO -->
+    <div class="modal fade" id="ModalEstPen" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="post" asp-page-handler="PendienteEstado">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="CanModalLabel">Pasar a estado pendiente</h5>
+                    </div>
+                    <div class="modal-body">
+                        <span id="warningMessagePen" class="alert alert-warning" style="display:none;">
+                        ⚠️ <b>Advertencia</b>: Cambiar cualquier estado a <b>PENDIENTE</b> modificará los datos previamente registrados en otros estados.
+                        </span>
+                        <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Aceptar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- VENTANA MODAL DE ESTADO PENDIENTE -->
+    
     <div>
     <a asp-page="./Index">Back to List</a>
 </div>
@@ -244,7 +251,14 @@
         }
 
         $('#deptSelect').change(function (){
-            var selectedOption = $(this).val();             
+            var selectedOption = $(this).val();
+            if (selectedOption == 1002) {
+                $('#ModalEstPen').modal('show');                
+            }
+            if (selectedOption == 1003) {
+                $('#ModalEstPro').modal('show');                
+            }
+            
             if (selectedOption == 1004) 
             {
                 $('#ModalEstFin').modal('show');
@@ -254,6 +268,11 @@
             {
                 $('#ModalEstSus').modal('show');
                 $('#fechaInicioSuspendido').val(getTodayDate());
+            }  
+            if (selectedOption == 1006) 
+            {
+                $('#ModalEstCan').modal('show');
+                $('#fechaCan').val(getTodayDate());
             }  
         });
     });

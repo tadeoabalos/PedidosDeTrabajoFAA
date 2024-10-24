@@ -69,6 +69,18 @@ namespace PPTT.Pages.PT
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[SuspenderPedidoTrabajo] @p0, @p1", OrdenTrabajoId, fechaEstimadaFin);
             return RedirectToPage("./Index");
         }
+        public async Task<IActionResult> OnPostCancelarEstadoAsync(int OrdenTrabajoId)
+        {
+            await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[CancelarPedidoTrabajo] @p0", OrdenTrabajoId);
+            return RedirectToPage("./Index");
+        }
+        public async Task<IActionResult> OnPostPendienteEstadoAsync(int OrdenTrabajoId)
+        {
+            await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[PendientePedidoTrabajo] @p0", OrdenTrabajoId);
+            return RedirectToPage("./Index");
+        }
+        
+
     }
 }
 
