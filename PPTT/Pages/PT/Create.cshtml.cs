@@ -106,7 +106,6 @@ namespace PPTT.Pages.PT
             {
                 return Page();
             }
-
             PedidoTrabajo.Fecha_Subida = DateTime.Now;
             PedidoTrabajo.IP_Solicitante = HttpContext.Connection.RemoteIpAddress?.ToString();
             PedidoTrabajo.ID_Prioridad_Fk = 1;
