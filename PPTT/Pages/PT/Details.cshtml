@@ -2,12 +2,15 @@
 @model PPTT.Pages.PT.DetailsPPTT
 
 @{
-
+    ViewData["Title"] = "Detalles Pedido de trabajos";
 }
 
+<h1>Detalle</h1>
+
 <div>
+    <h2>Pedidos de trabajo</h2>
+    <hr />
     <h3>Datos del solicitante</h3>
-    <form>
     <dl class="row">          
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PedidoTrabajo.IP_Solicitante)
@@ -64,9 +67,8 @@
             @Html.DisplayFor(model => model.PedidoTrabajo.Dependencia_Interna.Descripcion_Dependencia)
         </dd>
     </dl>
-    </form>
-    <h3>Datos del Trabajo</h3>       
-    <form>
+    <hr/>
+    <h3>Datos del Trabajo</h3>        
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PedidoTrabajo.Fecha_Subida)
@@ -120,68 +122,12 @@
             </select>
         </dd>
     </dl>
-    </form>
-    @{/*<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-        <div class="modal-content">
-        <form method="post" asp-page-handler="ModiEstado">
-        <div class="modal-header">
-        <h5 class="modal-title" id="confirmModalLabel">Cambiar Estado</h5>
-        </div>
-        <div class="modal-content">
-        <!-- INPUTS SUSPENDIDO -->
-        <label id="labelFechaInicioSuspension">Fecha inicio de la suspension:</label>
-        <input type="date" id="fechaInicioSuspendido" disabled />
-        <label id="labelFechaSuspension">Fecha estimada de retomo de trabajo:</label>
-        <input type="date" id="fechaEstimadaFin"/>
-        <label id="labelMotivoSuspension">Motivo de suspensión:</label>
-        <select id="motivo" name="motivo">
-        <option value="faltaMaterial">Falta de material</option>
-        <option value="faltaPersonal">Falta de personal</option>
-        <option value="faltaHerramientas">Falta de herramientas</option>
-        <option value="condicionRiesgosa">Condición riesgosa</option>
-        <option value="esperaMaterial">A la espera de material</option>
-        </select>
-        <!-- INPUTS CANCELADO -->
-        <label id="labelFechaCancelado">Fecha de cancelación:</label>
-        <input type="date" id="fechaCancelado" disabled />
-        <label id="labelTextArea">Detalle el motivo de la cancelación:</label>
-        <textarea class="form-control custom-textarea" id="textBoxCancel"></textarea>
-        <span id="warningMessageCan" class="alert alert-warning" style="display:none;">
-        ⚠️ <b>Advertencia</b>: Este cambio de estado dará por finalizada la orden de trabajo y no podrá revertirse.
-        </span>
-        <!-- INPUTS FINALIZACIÓN -->
-        <label id="labelFechaFinalizado">Fecha de finalización:</label>
-        <input type="date" id="fechaFinalización" disabled />
-        <span id="warningMessage" class="alert alert-warning" style="display:none;">
-        ⚠️ <b>Advertencia</b>: Este cambio de estado dará por finalizada la orden de trabajo y no podrá revertirse.
-        </span>
-        <!-- INPUTS PENDIENTE -->
-        <span id="warningMessagePen" class="alert alert-warning" style="display:none;">
-        ⚠️ <b>Advertencia</b>: Cambiar cualquier estado a <b>PENDIENTE</b> modificará los datos previamente registrados en otros estados.
-        </span>
-        <!-- INPUTS EN PROCESO -->
-        <span id="infoMessage" class="alert alert-info">
-        ℹ️ <b>Información</b>: Si ya había un usuario asignado a esta tarea, será reemplazado por el que asigne ahora.
-        </span>
-        <span asp-validation-for="PedidoTrabajo.ID_Estado_Fk" class="text-danger"></span>
-        </div>
-        <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
-        <button type="submit" class="btn btn-primary" onclick="disableUnusedInputs()">Aceptar</button>
-        </div>
-        </form>
-        </div>
-        </div>
-        </div> <!-- VENTANA MODAL -->
-</div>*/}
-    
     <div class="modal fade" id="ModalEstFin" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form method="post" asp-page-handler="FinalizarEstado">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="FinModalLabel">Finalizar Estado</h5>
+                        <h5 class="modal-title" id="FinModalLabel">Finalizar pedido de trabajo</h5>
                     </div>
                     <div class="modal-body">
                         <label id="labelFechaFinalizado">Fecha de finalización:</label>
@@ -196,12 +142,32 @@
             </div>
         </div>
     </div><!-- VENTANA MODAL DE ESTADO FINALIZADO -->
+    <div class="modal fade" id="ModalEstCan" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="post" asp-page-handler="CancelarEstado">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="CanModalLabel">Cancelar pedido de trabajo</h5>
+                    </div>
+                    <div class="modal-body">
+                        <label id="labelFechaFinalizado">Fecha de cancelacion:</label>
+                        <input type="date" id="fechaCan" disabled />
+                        <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Aceptar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- VENTANA MODAL DE ESTADO CANCELAR -->
     <div class="modal fade" id="ModalEstSus" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form method="post" asp-page-handler="SuspenderEstado">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="SusModalLabel">Suspender Estado</h5>
+                        <h5 class="modal-title" id="SusModalLabel">Suspender Pedido de trabajo</h5>
                     </div>
                     <div class="modal-body">
                         <label id="labelFechaInicioSuspension">Fecha inicio de la suspensión:</label>
@@ -227,11 +193,51 @@
                 </form>
             </div>
         </div>
-    </div> <!-- VENTANA MODAL -->
-</div>
-<div class="centered-button">
-    @*<a asp-page="./Edit" asp-route-id="@Model.Pelicula.Id">Edit</a> |*@
-    <a asp-page="./Index" class="btn-action">Volver a la lista</a>
+    </div><!-- VENTANA MODAL DE ESTADO SUSPENDIDO -->
+    <div class="modal fade" id="ModalEstPro" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="post" asp-page-handler="EnProcesoEstado">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="CanModalLabel">Asignar a usuario para pedido de trabajo</h5>
+                    </div>
+                    <div class="modal-body">
+                        <select>
+                            <option>Soy un usuario</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Aceptar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- VENTANA MODAL DE ESTADO EN PROCESO -->
+    <div class="modal fade" id="ModalEstPen" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="post" asp-page-handler="PendienteEstado">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="CanModalLabel">Pasar a estado pendiente</h5>
+                    </div>
+                    <div class="modal-body">
+                        <span id="warningMessagePen" class="alert alert-warning" style="display:none;">
+                        ⚠️ <b>Advertencia</b>: Cambiar cualquier estado a <b>PENDIENTE</b> modificará los datos previamente registrados en otros estados.
+                        </span>
+                        <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Aceptar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- VENTANA MODAL DE ESTADO PENDIENTE -->
+    
+    <div>
+    <a asp-page="./Index">Back to List</a>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -245,7 +251,14 @@
         }
 
         $('#deptSelect').change(function (){
-            var selectedOption = $(this).val();             
+            var selectedOption = $(this).val();
+            if (selectedOption == 1002) {
+                $('#ModalEstPen').modal('show');                
+            }
+            if (selectedOption == 1003) {
+                $('#ModalEstPro').modal('show');                
+            }
+            
             if (selectedOption == 1004) 
             {
                 $('#ModalEstFin').modal('show');
@@ -256,127 +269,11 @@
                 $('#ModalEstSus').modal('show');
                 $('#fechaInicioSuspendido').val(getTodayDate());
             }  
+            if (selectedOption == 1006) 
+            {
+                $('#ModalEstCan').modal('show');
+                $('#fechaCan').val(getTodayDate());
+            }  
         });
     });
 </script>
-<style>
-    button {
-        display: inline-block;
-        text-decoration: none;
-        padding: 4px 6px; /* Ajustar el padding */
-        margin: 2px; /* Reducir margen */
-        border: 1px solid #4caf50; /* Bordes de botones */
-        border-radius: 4px; /* Bordes más redondeados */
-        background-color: #4caf50; /* Color de fondo de los botones */
-        color: white;
-        transition: background-color 0.3s, transform 0.3s;
-        font-size: 0.8em; /* Tamaño de fuente reducido */
-    }
-
-        button:hover {
-            background-color: #4caf50; /* Mantener el color al pasar el mouse */
-            transform: translateY(-2px); /* Efecto al pasar el mouse */
-        }
-    body {
-        background-color: #e0e8f1;
-    }
-
-    h4 {
-        color: #003d6b; /* Color azul para h4 y detalles */
-        margin-top: 20px;
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
-
-    h3 {
-        font-size: 3em;
-        color: #003d6b;
-        margin-top: 20px;
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
-
-
-    dt {
-        color: #003d6b; /* Color azul para los dt */
-        font-weight: bold;
-    }
-
-    a.btn-action, input[type=submit] {
-        display: inline-block;
-        text-decoration: none;
-        padding: 8px 12px;
-        margin: 4px;
-        border: 1px solid #003d6b;
-        border-radius: 5px;
-        background-color: #003d6b;
-        color: white;
-        transition: background-color 0.3s, transform 0.3s;
-    }
-
-        a.btn-action:hover, input[type=submit]:hover {
-            background-color: #002e5d;
-            transform: translateY(-2px);
-        }
-
-    form {
-        align-items: center;
-        justify-content: center;
-        width: 65%;
-        margin: 30px auto;
-        padding: 20px;
-        background-color: #e0e8f1;
-        border: 1px solid #003d6b;
-        border-radius: 8px;
-        box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2);
-    }
-
-    legend {
-        font-size: 1.2em;
-        color: #003d6b;
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
-
-    .submit {
-        background-color: #003d6b;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-        .submit:hover {
-            background-color: #002e5d;
-        }
-
-    .custom-textarea {
-        width: 100%;
-        height: 150px;
-        resize: none;
-    }
-
-    label, input[type="text"], select, .submit, h4 {
-        font-size: 1em;
-        font-weight: bold;
-        color: #003d6b;
-    }
-
-    input[type="password"], input[type="text"], input[type="number"], select {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 15px;
-        border: 1px solid #003d6b;
-        border-radius: 4px;
-        background-color: white;
-    }
-
-    .centered-button {
-        display: flex;
-        margin-top: 20px;
-        align-items: center;
-        justify-content: center;
-    }
-</style>
