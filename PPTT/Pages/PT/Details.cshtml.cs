@@ -37,6 +37,9 @@ namespace PPTT.Pages.PT
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
             HttpContext.Session.SetInt32("UserRole", _rol);
             if (_rol == 2)
+        public async Task<IActionResult> OnGetAsync(int? id)
+        {            
+            if (id == null)
             {
                 Usuarios = await _context.GetUsuariosAsync();
                 if (id == null)
@@ -68,10 +71,27 @@ namespace PPTT.Pages.PT
                 return Page();
             }
             else
+                Usuarios = await _context.GetUsuariosFiltradosByOrdenAsync(id);
+            }
+            
+            Estado = await _context.GetEstadosAsync();
+            Prioridad = await _context.GetPrioridadAsync();
+            PedidoTrabajo = await _context.PTUsuario
+                .Include(pt => pt.Organismo) 
+                .Include(pt => pt.Tarea) 
+                .Include(pt => pt.Estado) 
+                .Include(pt => pt.Dependencia_Interna) 
+                .Include(pt => pt.Grado)
+                .Include(pt => pt.Prioridad)
+                .FirstOrDefaultAsync(m => m.ID_Orden_Trabajo_Pk == id); 
+
+            if (PedidoTrabajo == null)
             {
                 return RedirectToPage("/Vistas/MenuLog");
             }
         }
+
+        public int IdUsuario;
 
         public async Task<JsonResult> OnGetPrioridadesAsync()
         {
@@ -103,7 +123,11 @@ namespace PPTT.Pages.PT
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[SuspenderPedidoTrabajo] @p0, @p1", OrdenTrabajoId, fechaEstimadaFin);
             return RedirectToPage("./MandarMailCambioEstado");
         }
-
+        public async Task<IActionResult> OnPostEnProcesoEstadoAsync(int OrdenTrabajoId, int IdUsuario)
+        {
+            await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[AsignarUsuarioAOrden] @p0, @p1", IdUsuario ,OrdenTrabajoId);
+            return RedirectToPage("./Index");
+        }
         public async Task<IActionResult> OnPostCancelarEstadoAsync(int OrdenTrabajoId)
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[CancelarPedidoTrabajo] @p0", OrdenTrabajoId);

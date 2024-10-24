@@ -33,6 +33,7 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PedidoTrabajo.Apellido_Solicitante)
         </dd>        
+        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PedidoTrabajo.DNI_Solicitante)
         </dt>
@@ -70,7 +71,7 @@
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PedidoTrabajo.Fecha_Subida)
-        </dt>        
+        </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PedidoTrabajo.Fecha_Subida)
         </dd>      
@@ -79,7 +80,7 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PedidoTrabajo.Tarea.Descripcion_Tarea)
-        </dd>   
+        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PedidoTrabajo.Piso_Oficina_PT)
         </dt>
@@ -128,15 +129,17 @@
                         <h5 class="modal-title" id="FinModalLabel">Finalizar pedido de trabajo</h5>
                     </div>
                     <div class="modal-body">
+                    <div class="modal-body">                        
                         <label id="labelFechaFinalizado">Fecha de finalización:</label>
                         <input type="date" id="fechaFinalizacion" disabled />
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
+                        <span id="warningMessagePen" class="alert alert-warning">
+                            <b>Advertencia</b>: Cambiar el estado de la orden de trabajo a <b>FINALIZADO</b> dará por concluida la orden, y no podrá ser modificada posteriormente.
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Aceptar</button>
                     </div>
-                </form>                
             </div>
         </div>
     </div><!-- VENTANA MODAL DE ESTADO FINALIZADO -->
@@ -150,7 +153,10 @@
                     <div class="modal-body">
                         <label id="labelFechaFinalizado">Fecha de cancelacion:</label>
                         <input type="date" id="fechaCan" disabled />
+                        <br/>
+                        <textarea id="motivoCancelacion" name="motivoCancelacion"></textarea>
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
+                        <br />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
@@ -172,6 +178,7 @@
                         <input type="date" id="fechaInicioSuspendido" disabled />
                         <label id="labelFechaSuspension">Fecha estimada de retomo de trabajo:</label>
                         <br/>
+                        <br />
                         <input type="date" id="fechaEstimadaFin" name="fechaEstimadaFin" />
                         <br />
                         <label id="labelMotivoSuspension">Motivo de suspensión:</label>
@@ -199,10 +206,12 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="CanModalLabel">Asignar a usuario para pedido de trabajo</h5>
                     </div>
-                    <div class="modal-body">
                         <select>
                             <option>Soy un usuario</option>
+                        <select class="form-control" asp-for="IdUsuario" asp-items="@(new SelectList(Model.Usuarios, "ID_Usuario_Pk", "NombreCompleto"))">
+                            <option hidden selected value="">Seleccione un usuario</option>
                         </select>
+                        <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
@@ -217,11 +226,9 @@
             <div class="modal-content">
                 <form method="post" asp-page-handler="PendienteEstado">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="CanModalLabel">Pasar a estado pendiente</h5>
+                        <h5 class="modal-title" id="CanModalLabel">Cambiar estado a <b>PENDIENTE</b></h5>
                     </div>
-                    <div class="modal-body">
-                        <span id="warningMessagePen" class="alert alert-warning" style="display:none;">
-                        ⚠️ <b>Advertencia</b>: Cambiar cualquier estado a <b>PENDIENTE</b> modificará los datos previamente registrados en otros estados.
+                        <span id="warningMessagePen" class="alert alert-warning">
                         </span>
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
                     </div>
@@ -249,26 +256,22 @@
         }
 
         $('#deptSelect').change(function (){
-            var selectedOption = $(this).val();
-            if (selectedOption == 1002) {
-                $('#ModalEstPen').modal('show');                
-            }
-            if (selectedOption == 1003) {
-                $('#ModalEstPro').modal('show');                
-            }
             
             if (selectedOption == 1004) 
-            {
                 $('#ModalEstFin').modal('show');
                 $('#fechaFinalizacion').val(getTodayDate());
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            function getTodayDate() {
+                var today = new Date();
+                var day = ("0" + today.getDate()).slice(-2);
+                var year = today.getFullYear();
+                return year + "-" + month + "-" + day;
             }
-            if (selectedOption == 1005) 
-            {
-                $('#ModalEstSus').modal('show');
-                $('#fechaInicioSuspendido').val(getTodayDate());
             }  
             if (selectedOption == 1006) 
-            {
                 $('#ModalEstCan').modal('show');
                 $('#fechaCan').val(getTodayDate());
             }  
