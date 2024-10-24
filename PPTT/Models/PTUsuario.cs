@@ -90,7 +90,7 @@ namespace PPTT.Models
         [Display(Name = "Tarea")]
         public int ID_Tarea_Fk { get; set; }
         [ForeignKey("ID_Tarea_Fk")]
-        public Tarea Tarea { get; set; }
+        public Tarea? Tarea { get; set; }
 
         [Display(Name = "Division")]
         public int ID_Division_Fk { get; set; }
