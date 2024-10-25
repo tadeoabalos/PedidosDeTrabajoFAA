@@ -6,7 +6,6 @@
 }
 
 <h3>Pedidos de Trabajo</h3>
-
 <table class="table" id="tabla">
     <thead>
         <tr>
@@ -60,6 +59,7 @@
     <tbody>
         @foreach (var item in Model.PedidoTrabajo)
         {
+            @if (item.ID_Estado_Fk != 1004 ) { 
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.ID_Orden_Fk)
@@ -121,7 +121,7 @@
                 <td>
                     <a asp-page="./Details" asp-route-id="@item.ID_Orden_Trabajo_Pk">Ir</a>
                 </td>
-            </tr>
+            </tr>}
         }
     </tbody>
 </table>
@@ -207,7 +207,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function () {           
             $('select[id^="usuarioSelect_"]').each(function () {
                 var usuarioSelect = $(this); 
                 var selectedDivision = usuarioSelect.data('division-id');

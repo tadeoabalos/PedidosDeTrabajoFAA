@@ -60,6 +60,6 @@ namespace PPTT.Pages.Administradores
         {
             var prioridades = await _context.GetPrioridadAsync();
             return new JsonResult(prioridades);
-        }
+        }       
     }
 }
