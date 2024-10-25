@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 using PPTT.Models;
 
 namespace PPTT.Pages.PT
@@ -16,10 +15,11 @@ namespace PPTT.Pages.PT
         }
 
         public List<Admin> Usuarios { get; set; } = new List<Admin>();
-        public PTUsuario? PedidoTrabajo { get; set; } = default!;
+        public PTUsuario? PedidoTrabajo { get; set; } = null!;
         public List<Estado> Estado { get; set; } = new List<Estado>();
         public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();
-        public string MotivoSuspension { get; set; } = string.Empty; // Inicializar como cadena vacía
+        public string MotivoSuspension { get; set; } = string.Empty;
+        public int IdUsuario { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -45,7 +45,10 @@ namespace PPTT.Pages.PT
             }
 
             // Ahora es seguro acceder a las propiedades de PedidoTrabajo
-            HttpContext.Session.SetString("Correo", PedidoTrabajo.Correo ?? string.Empty);
+            if (!string.IsNullOrEmpty(PedidoTrabajo.Correo))
+            {
+                HttpContext.Session.SetString("Correo", PedidoTrabajo.Correo);
+            }
 
             // Carga los usuarios y estados
             Usuarios = await _context.GetUsuariosFiltradosByOrdenAsync(id) ?? new List<Admin>();
@@ -53,7 +56,6 @@ namespace PPTT.Pages.PT
             Prioridad = await _context.GetPrioridadAsync() ?? new List<Prioridad>();
             return Page();
         }
-        public int IdUsuario;
 
         public async Task<JsonResult> OnGetPrioridadesAsync()
         {
@@ -78,12 +80,10 @@ namespace PPTT.Pages.PT
             // Verificar que FechaEstimadaFin no sea null
             if (fechaEstimadaFin.HasValue)
             {
-                // Almacenar la fecha en formato string en la sesión
-                string fechaString = fechaEstimadaFin.Value.ToString("dd-MM-yyyy"); // Cambia el formato según tus necesidades
+                string fechaString = fechaEstimadaFin.Value.ToString("dd-MM-yyyy");
                 HttpContext.Session.SetString("FechaEstimadaFin", fechaString);
             }
 
-            // Almacenar el motivo en la sesión
             HttpContext.Session.SetString("motivo", motivoSuspension);
 
             // Almacenar ID_Estado_Fk en la sesión
@@ -92,16 +92,12 @@ namespace PPTT.Pages.PT
                 HttpContext.Session.SetInt32("ID_Estado_Fk", PedidoTrabajo.ID_Estado_Fk);
             }
 
-            // Ejecutar el stored procedure para suspender el pedido de trabajo
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[SuspenderPedidoTrabajo] @p0, @p1", ordenTrabajoId, fechaEstimadaFin);
-
-            // Redirigir a la página de confirmación o donde sea necesario
             return RedirectToPage("./MandarMailCambioEstado");
         }
 
         public async Task<IActionResult> OnPostAsignarUsuarioEstadoAsync(int ordenTrabajoId, int idUsuario)
         {
-            // Almacenar ID_Estado_Fk en la sesión
             if (PedidoTrabajo != null)
             {
                 HttpContext.Session.SetInt32("ID_Estado_Fk", PedidoTrabajo.ID_Estado_Fk);
@@ -113,25 +109,19 @@ namespace PPTT.Pages.PT
 
         public async Task<IActionResult> OnPostCancelarPedidoEstadoAsync(int ordenTrabajoId, string motivoCancelacion)
         {
-            // Almacenar el motivo de cancelación en la sesión
             HttpContext.Session.SetString("motivo", motivoCancelacion);
 
-            // Almacenar ID_Estado_Fk en la sesión
             if (PedidoTrabajo != null)
             {
                 HttpContext.Session.SetInt32("ID_Estado_Fk", PedidoTrabajo.ID_Estado_Fk);
             }
 
-            // Ejecutar el stored procedure para cancelar el pedido de trabajo
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[CancelarPedidoTrabajo] @p0", ordenTrabajoId);
-
-            // Redirigir a la página de confirmación o donde sea necesario
             return RedirectToPage("./MandarMailCambioEstado");
         }
 
         public async Task<IActionResult> OnPostPonerPendienteEstadoAsync(int ordenTrabajoId)
         {
-            // Almacenar ID_Estado_Fk en la sesión
             if (PedidoTrabajo != null)
             {
                 HttpContext.Session.SetInt32("ID_Estado_Fk", PedidoTrabajo.ID_Estado_Fk);
