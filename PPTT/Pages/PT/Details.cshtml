@@ -63,9 +63,8 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PedidoTrabajo.Dependencia_Interna.Descripcion_Dependencia)
         </dd>
-    </dl>
-    </form>
-    <h3>Datos del Trabajo</h3>  
+</form>
+    <h3>Datos del Trabajo</h3>
     <form>
     <dl class="row">
         <dt class="col-sm-2">
@@ -109,17 +108,18 @@
         </dt>
         <dd class="col-sm-10">
             <select asp-for="PedidoTrabajo.ID_Estado_Fk"
-                    asp-items="Model.Estado.Select(d => new SelectListItem
-            {
-                Value = d.ID_Estado_PK.ToString(),
-                Text = d.Descripcion_Estado
-            })"
+                    asp-items="Model.Estado.Select(d=> new SelectListItem
+                                {
+                                    Value = d.ID_Estado_PK.ToString(),
+                                    Text = d.Descripcion_Estado.ToString()
+                                })"
                     id="deptSelect"
                     class="formControl">
-                <option value="" disabled selected hidden>@Model.PedidoTrabajo.Estado.Descripcion_Estado</option>
+                <option hidden selected value="">@Model.PedidoTrabajo.Estado.Descripcion_Estado</option>
             </select>
         </dd>
     </dl>
+    </form>
     <div class="modal fade" id="ModalEstFin" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -127,11 +127,11 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="FinModalLabel">Finalizar pedido de trabajo</h5>
                     </div>
-                    <div class="modal-body">                        
+                    <div class="modal-body">
                         <label id="labelFechaFinalizado">Fecha de finalización:</label>
                         <input type="date" id="fechaFinalizacion" disabled />
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
-                        <br/>
+                        <br />
                         <span id="warningMessagePen" class="alert alert-warning">
                             <b>Advertencia</b>: Cambiar el estado de la orden de trabajo a <b>FINALIZADO</b> dará por concluida la orden, y no podrá ser modificada posteriormente.
                         </span>
@@ -154,7 +154,7 @@
                     <div class="modal-body">
                         <label id="labelFechaFinalizado">Fecha de cancelacion:</label>
                         <input type="date" id="fechaCan" disabled />
-                        <br/>
+                        <br />
                         <label id="labelDetalleCancelado">Detalle de la cancelacion:</label>
                         <br />
                         <textarea id="motivoCancelacion" name="motivoCancelacion"></textarea>
@@ -187,12 +187,12 @@
                         <input type="date" id="fechaEstimadaFin" name="fechaEstimadaFin" />
                         <br />
                         <label id="labelMotivoSuspension">Motivo de suspensión:</label>
-                        <select id="motivo" name="motivo">
-                            <option value="Falta de material">Falta de material</option>
-                            <option value="Falta de personal">Falta de personal</option>
-                            <option value="Falta de herramientas">Falta de herramientas</option>
-                            <option value="Condición riesgosa">Condición riesgosa</option>
-                            <option value="A la espera de material">A la espera de material</option>
+                        <select id="motivo">
+                            <option value="faltaMaterial">Falta de material</option>
+                            <option value="faltaPersonal">Falta de personal</option>
+                            <option value="faltaHerramientas">Falta de herramientas</option>
+                            <option value="condicionRiesgosa">Condición riesgosa</option>
+                            <option value="esperaMaterial">A la espera de material</option>
                         </select>
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
                     </div>
@@ -211,7 +211,7 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="CanModalLabel">Asignar usuario a pedido de trabajo</h5>
                     </div>
-                   <div class="modal-body">
+                    <div class="modal-body">
                         <p class="text-muted">Por favor, seleccione un usuario para asignar a este pedido de trabajo.</p>
                         <select class="form-control" asp-for="IdUsuario" asp-items="@(new SelectList(Model.Usuarios, "ID_Usuario_Pk", "NombreCompleto"))">
                             <option hidden selected value="">Seleccione un usuario</option>
@@ -233,7 +233,7 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="CanModalLabel">Cambiar estado a <b>PENDIENTE</b></h5>
                     </div>
-                    <div class="modal-body">                       
+                    <div class="modal-body">
                         <span id="warningMessagePen" class="alert alert-warning">
                             <b>Advertencia</b>: Cambiar cualquier orden de trabajo a <b>PENDIENTE</b> modificará los datos previamente registrados.
                         </span>
@@ -247,20 +247,6 @@
             </div>
         </div>
     </div><!-- VENTANA MODAL DE ESTADO PENDIENTE -->
-    </form>
-    <div>
-        <a class="btn-action" asp-page="./Index">Volver a la Lista</a>
-</div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {        
-        function getTodayDate() {
-            var today = new Date();
-            var day = ("0" + today.getDate()).slice(-2);
-            var month = ("0" + (today.getMonth() + 1)).slice(-2);
-            var year = today.getFullYear();
-            return year + "-" + month + "-" + day;
-        }
 
     <div>
         <a asp-page="./Index">Back to List</a>
@@ -301,9 +287,14 @@
                 }
             });
         });
-    });
-</script>
+    </script>
     <style>
+        #warningMessagePen {
+            display: block;
+            overflow: auto;
+            word-wrap: break-word;
+        }
+
         button {
             display: inline-block;
             text-decoration: none;
