@@ -22,7 +22,8 @@ namespace PPTT.Pages.PT
         public PTUsuario? PedidoTrabajo { get; set; } = default!;      
         public List<Estado> Estado { get; set; } = default!;
         public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();
-        
+        public string MotivoSuspension { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {            
             if (id == null)
@@ -33,7 +34,9 @@ namespace PPTT.Pages.PT
             {
                 Usuarios = await _context.GetUsuariosFiltradosByOrdenAsync(id);
             }
-            
+            HttpContext.Session.SetString("Correo", PedidoTrabajo.Correo);
+            HttpContext.Session.SetInt32("ID_Estado_Fk", PedidoTrabajo.ID_Estado_Fk);
+
             Estado = await _context.GetEstadosAsync();
             Prioridad = await _context.GetPrioridadAsync();
             PedidoTrabajo = await _context.PTUsuario
@@ -64,27 +67,47 @@ namespace PPTT.Pages.PT
         public async Task<IActionResult> OnPostFinalizarEstadoAsync(int OrdenTrabajoId)
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[FinalizarPedidoTrabajo] @p0", OrdenTrabajoId);
-            return RedirectToPage("./Index");
+            return RedirectToPage("./MandarMailCambioEstado");
         }
-        public async Task<IActionResult> OnPostSuspenderEstadoAsync(int OrdenTrabajoId, DateTime fechaEstimadaFin)
+        public async Task<IActionResult> OnPostSuspenderEstadoAsync(int OrdenTrabajoId, string MotivoSuspension, DateTime? FechaEstimadaFin)
         {
-            await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[SuspenderPedidoTrabajo] @p0, @p1", OrdenTrabajoId, fechaEstimadaFin);
-            return RedirectToPage("./Index");
+            // Verificar que FechaEstimadaFin no sea null
+            if (FechaEstimadaFin.HasValue)
+            {
+                // Almacenar la fecha en formato string en la sesión
+                string fechaString = FechaEstimadaFin.Value.ToString("dd-MM-yyyy"); // Cambia el formato según tus necesidades
+                HttpContext.Session.SetString("FechaEstimadaFin", fechaString);
+            }
+
+            // Almacenar el motivo en la sesión
+            HttpContext.Session.SetString("motivo", MotivoSuspension);
+
+            // Ejecutar el stored procedure para suspender el pedido de trabajo
+            await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[SuspenderPedidoTrabajo] @p0, @p1", OrdenTrabajoId, FechaEstimadaFin);
+
+            // Redirigir a la página de confirmación o donde sea necesario
+            return RedirectToPage("./MandarMailCambioEstadodex");
         }
         public async Task<IActionResult> OnPostEnProcesoEstadoAsync(int OrdenTrabajoId, int IdUsuario)
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[AsignarUsuarioAOrden] @p0, @p1", IdUsuario ,OrdenTrabajoId);
-            return RedirectToPage("./Index");
+            return RedirectToPage("./MandarMailCambioEstado");
         }
-        public async Task<IActionResult> OnPostCancelarEstadoAsync(int OrdenTrabajoId)
+        public async Task<IActionResult> OnPostCancelarEstadoAsync(int OrdenTrabajoId, string motivoCancelacion)
         {
+            // Almacenar el motivo de cancelación en la sesión
+            HttpContext.Session.SetString("motivo", motivoCancelacion);
+
+            // Ejecutar el stored procedure para cancelar el pedido de trabajo
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[CancelarPedidoTrabajo] @p0", OrdenTrabajoId);
-            return RedirectToPage("./Index");
+
+            // Redirigir a la página de confirmación o donde sea necesario
+            return RedirectToPage("./MandarMailCambioEstadodex");
         }
         public async Task<IActionResult> OnPostPendienteEstadoAsync(int OrdenTrabajoId)
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[PendientePedidoTrabajo] @p0", OrdenTrabajoId);
-            return RedirectToPage("./Index");
+            return RedirectToPage("./MandarMailCambioEstado");
         }
         
 

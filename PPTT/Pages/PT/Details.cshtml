@@ -33,6 +33,12 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PedidoTrabajo.Apellido_Solicitante)
         </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PedidoTrabajo.Correo)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PedidoTrabajo.Correo)
+            </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PedidoTrabajo.DNI_Solicitante)
         </dt>
@@ -188,7 +194,8 @@
                         <input type="date" id="fechaEstimadaFin" name="fechaEstimadaFin" />
                         <br />
                         <label id="labelMotivoSuspension">Motivo de suspensión:</label>
-                        <select id="motivo">
+                        <select asp-for="MotivoSuspension" class="form-control">
+                            <option value="">Seleccione un motivo</option>
                             <option value="faltaMaterial">Falta de material</option>
                             <option value="faltaPersonal">Falta de personal</option>
                             <option value="faltaHerramientas">Falta de herramientas</option>
@@ -204,6 +211,7 @@
                 </form>
             </div>
         </div>
+    </div>
     </div><!-- VENTANA MODAL DE ESTADO SUSPENDIDO -->
     <div class="modal fade" id="ModalEstPro" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
