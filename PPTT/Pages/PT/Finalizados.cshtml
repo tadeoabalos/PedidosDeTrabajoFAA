@@ -5,8 +5,8 @@
     ViewData["Title"] = "Pedidos de trabajo";
 }
 
-<h3>Pedidos de Trabajo</h3>
-<a asp-page="./Finalizados">Trabajos Finalizados</a>
+<h3>Pedidos de Trabajo Finalizados</h3>
+<a asp-page="./Index">Volver a Index de trabajos</a>
 <table class="table" id="tabla">
     <thead>
         <tr>
@@ -15,6 +15,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Fecha_Subida)
+            </th>
+            <th>
+                <span>Fecha de Finalización</span>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Grado_Fk)
@@ -42,16 +45,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Estado_Fk)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Prioridad_Fk)
-            </th>
-            <th>
-                <span>Asignar Personal</span>
-            </th>
-            <th>
-                <span>Personal Asignado</span>
-            </th>
+            </th>          
             <th>
                 Detalle/Estado
             </th>
@@ -60,13 +54,16 @@
     <tbody>
         @foreach (var item in Model.PedidoTrabajo)
         {
-            @if (item.ID_Estado_Fk != 1004 ) { 
+            @if (item.ID_Estado_Fk == 1004 ) { 
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.ID_Orden_Fk)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Fecha_Subida)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha_Estimada_Fin)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Grado.Descripcion_Grado)
@@ -96,31 +93,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Estado.Descripcion_Estado)
-                </td>
-                <td data-orden-trabajo-id="@item.ID_Orden_Trabajo_Pk">
-                    <div class="form-group">
-                        <select asp-for="PT.ID_Prioridad_Fk"
-                                asp-items="@(new SelectList(Model.Prioridad, "ID_Prioridad_Pk", "Descripcion_Prioridad"))"
-                                class="PrioridadSelect formControl">
-                            <option hidden selected value="">@item.Prioridad.Descripcion_Prioridad</option>
-                        </select>
-                        <span asp-validation-for="PT.ID_Prioridad_Fk" class="text-danger"></span>
-                    </div>
-                </td>
+                </td>              
                 <td>
-                    <div class="form-group">                        
-                        <select id="usuarioSelect_@item.ID_Orden_Trabajo_Pk" class="formControl" data-division-id="@item.ID_Division_Fk">
-                            <option hidden selected value="">@item.ID_Division_Fk</option>
-                        </select>
-                    </div>
-                </td>
-                <td>
-                    <span id="personalAsignado_@item.ID_Orden_Trabajo_Pk" data-orden-id="@item.ID_Orden_Trabajo_Pk">
-                        Personal asignado
-                    </span>
-                </td>
-                <td>
-                    <a asp-page="./Details" asp-route-id="@item.ID_Orden_Trabajo_Pk">Ir</a>
+                    <a asp-page="./Details" asp-route-id="@item.ID_Orden_Trabajo_Pk">Editar Estado</a>
                 </td>
             </tr>}
         }
