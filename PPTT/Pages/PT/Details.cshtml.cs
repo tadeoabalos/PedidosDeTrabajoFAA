@@ -42,6 +42,7 @@ namespace PPTT.Pages.PT
                 if (id == null)
                 {
                     Usuarios = await _context.GetUsuariosAsync();
+
                     Estado = await _context.GetEstadosAsync();
                     Prioridad = await _context.GetPrioridadAsync();
 
@@ -56,15 +57,20 @@ namespace PPTT.Pages.PT
 
                     if (PedidoTrabajo == null)
                     {
-                        return RedirectToPage("/Vistas/MenuLog");
+                        return NotFound();
                     }
 
+                    // Verifica si PedidoTrabajo.Correo e ID_Estado_Fk son null antes de asignar a la sesión.
                     if (PedidoTrabajo.Correo != null)
                     {
                         HttpContext.Session.SetString("CorreoUsuario", PedidoTrabajo.Correo);
                     }
 
-                    HttpContext.Session.SetInt32("ID_Estado_Fk", PedidoTrabajo.ID_Estado_Fk);
+                    if (PedidoTrabajo.ID_Estado_Fk != null)
+                    {
+                        HttpContext.Session.SetInt32("ID_Estado_Fk", PedidoTrabajo.ID_Estado_Fk);
+                    }
+
                     return Page();
                 }
                 else
@@ -96,6 +102,7 @@ namespace PPTT.Pages.PT
 
             return Page();
         }
+
 
         public async Task<JsonResult> OnGetPrioridadesAsync()
         {
