@@ -158,7 +158,7 @@
     <div class="modal fade" id="ModalEstCan" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form method="post" asp-page-handler="CancelarEstado">
+                <form method="post" asp-page-handler="CancelarEstadoConMotivo">
                     <div class="modal-header">
                         <h5 class="modal-title" id="CanModalLabel">Cancelar pedido de trabajo</h5>
                     </div>
@@ -168,7 +168,7 @@
                         <br/>
                         <label id="labelDetalleCancelado">Detalle de la cancelacion:</label>
                         <br />
-                        <textarea id="motivoCancelacion" name="motivoCancelacion"></textarea>
+                        <textarea id="motCan" name="motCan" required></textarea>                        
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
                         <br />
                         <span id="warningMessagePen" class="alert alert-warning">
@@ -198,7 +198,7 @@
                         <input type="date" id="fechaEstimadaFin" name="fechaEstimadaFin" />
                         <br />
                         <label id="labelMotivoSuspension">Motivo de suspensión:</label>
-                        <select id="motivo">
+                        <select id="motivo" name="motSus">
                             <option value="faltaMaterial">Falta de material</option>
                             <option value="faltaPersonal">Falta de personal</option>
                             <option value="faltaHerramientas">Falta de herramientas</option>
@@ -224,7 +224,7 @@
                     </div>
                    <div class="modal-body">
                         <p class="text-muted">Por favor, seleccione un usuario para asignar a este pedido de trabajo.</p>
-                        <select class="form-control" asp-items="@(new SelectList(Model.Usuarios, "ID_Usuario_Pk", "NombreCompleto"))">
+                        <select name="IdUsuario" class="form-control" asp-items="@(new SelectList(Model.Usuarios, "ID_Usuario_Pk", "NombreCompleto"))">
                             <option hidden selected value="">Seleccione un usuario</option>
                         </select>
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
