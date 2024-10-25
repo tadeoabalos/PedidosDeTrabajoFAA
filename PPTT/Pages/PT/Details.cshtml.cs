@@ -22,7 +22,7 @@ namespace PPTT.Pages.PT
         public PTUsuario? PedidoTrabajo { get; set; } = default!;      
         public List<Estado> Estado { get; set; } = default!;
         public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();
-        
+        public int PrioridadId;
         public async Task<IActionResult> OnGetAsync(int? id)
         {            
             if (id == null)
@@ -51,9 +51,7 @@ namespace PPTT.Pages.PT
             }
 
             return Page();
-        }
-
-        public int IdUsuario;
+        }        
 
         public async Task<JsonResult> OnGetPrioridadesAsync()
         {
@@ -79,6 +77,11 @@ namespace PPTT.Pages.PT
         public async Task<IActionResult> OnPostCancelarEstadoAsync(int OrdenTrabajoId)
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[CancelarPedidoTrabajo] @p0", OrdenTrabajoId);
+            return RedirectToPage("./Index");
+        }
+        public async Task<IActionResult> OnPostSetPrioridadAsync(int OrdenTrabajoId, int PrioridadId) 
+        {
+            await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[SetPrioridad] @p0, @p1", OrdenTrabajoId, PrioridadId);
             return RedirectToPage("./Index");
         }
         public async Task<IActionResult> OnPostPendienteEstadoAsync(int OrdenTrabajoId)
