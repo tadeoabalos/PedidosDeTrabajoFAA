@@ -1,17 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Configuration;
 using System.Net.Mail;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
-using static PPTT.Models.Admin;
-using System.Configuration;
 using System.Data;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
-using System.Threading.Tasks;
+
 
 namespace PPTT.Pages.Vistas
 {

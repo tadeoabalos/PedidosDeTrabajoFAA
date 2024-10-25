@@ -1,11 +1,9 @@
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Configuration;
+
 using System.Data;
 using System.Data.SqlClient;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using PPTT.Data;
 

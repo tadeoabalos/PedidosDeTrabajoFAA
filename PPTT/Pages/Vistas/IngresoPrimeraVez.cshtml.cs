@@ -1,12 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Configuration;
-using NuGet.Protocol;
-using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
-using System.Threading.Tasks;
 using System.Security.Cryptography;
 
 namespace PPTT.Pages.Vistas

@@ -113,24 +113,24 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PedidoTrabajo.ID_Estado_Fk)
         </dt>
-        <dd class="col-sm-10">
-            <select asp-for="PedidoTrabajo.ID_Estado_Fk"
-                    asp-items="Model.Estado.Select(d => new SelectListItem
-            {
-                Value = d.ID_Estado_PK.ToString(),
-                Text = d.Descripcion_Estado
-            })"
-                    id="deptSelect"
-                    class="formControl">
-                <option value="" disabled selected hidden>@Model.PedidoTrabajo.Estado.Descripcion_Estado</option>
-            </select>
-        </dd>
+            <dd class="col-sm-10">
+                <select asp-for="PedidoTrabajo.ID_Estado_Fk"
+                        asp-items="Model.Estado.Select(d => new SelectListItem
+        {
+            Value = d.ID_Estado_PK.ToString(),
+            Text = d.Descripcion_Estado
+        })"
+                        id="deptSelect"
+                        class="formControl">
+                    <option value="" disabled selected hidden>Seleccione un estado</option>
+                </select>
+            </dd>
     </dl>
     </form>
     <div class="modal fade" id="ModalEstFin" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form method="post" asp-page-handler="FinalizarEstado">
+                <form method="post" asp-page-handler="FinalizarEstadoAsync">
                     <div class="modal-header">
                         <h5 class="modal-title" id="FinModalLabel">Finalizar pedido de trabajo</h5>
                     </div>
@@ -151,18 +151,19 @@
             </div>
         </div>
     </div><!-- VENTANA MODAL DE ESTADO FINALIZADO -->
+
     <div class="modal fade" id="ModalEstCan" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form method="post" asp-page-handler="CancelarEstado">
+                <form method="post" asp-page-handler="CancelarEstadoAsync">
                     <div class="modal-header">
                         <h5 class="modal-title" id="CanModalLabel">Cancelar pedido de trabajo</h5>
                     </div>
                     <div class="modal-body">
-                        <label id="labelFechaFinalizado">Fecha de cancelacion:</label>
+                        <label id="labelFechaFinalizado">Fecha de cancelación:</label>
                         <input type="date" id="fechaCan" disabled />
                         <br />
-                        <label id="labelDetalleCancelado">Detalle de la cancelacion:</label>
+                        <label id="labelDetalleCancelado">Detalle de la cancelación:</label>
                         <br />
                         <textarea id="motivoCancelacion" name="motivoCancelacion"></textarea>
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
@@ -179,10 +180,11 @@
             </div>
         </div>
     </div><!-- VENTANA MODAL DE ESTADO CANCELAR -->
+
     <div class="modal fade" id="ModalEstSus" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form method="post" asp-page-handler="SuspenderEstado">
+                <form method="post" asp-page-handler="SuspenderEstadoAsync">
                     <div class="modal-header">
                         <h5 class="modal-title" id="SusModalLabel">Suspender Pedido de trabajo</h5>
                     </div>
@@ -196,11 +198,11 @@
                         <label id="labelMotivoSuspension">Motivo de suspensión:</label>
                         <select asp-for="MotivoSuspension" class="form-control">
                             <option value="">Seleccione un motivo</option>
-                            <option value="faltaMaterial">Falta de material</option>
-                            <option value="faltaPersonal">Falta de personal</option>
-                            <option value="faltaHerramientas">Falta de herramientas</option>
-                            <option value="condicionRiesgosa">Condición riesgosa</option>
-                            <option value="esperaMaterial">A la espera de material</option>
+                            <option value="Falta de Material">Falta de material</option>
+                            <option value="Falta de Personal">Falta de personal</option>
+                            <option value="Falta de Herramientas">Falta de herramientas</option>
+                            <option value="Condicion Riesgosa">Condición riesgosa</option>
+                            <option value="Espera de Material">A la espera de material</option>
                         </select>
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
                     </div>
@@ -211,12 +213,12 @@
                 </form>
             </div>
         </div>
-    </div>
     </div><!-- VENTANA MODAL DE ESTADO SUSPENDIDO -->
+
     <div class="modal fade" id="ModalEstPro" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form method="post" asp-page-handler="EnProcesoEstado">
+                <form method="post" asp-page-handler="EnProcesoEstadoAsync">
                     <div class="modal-header">
                         <h5 class="modal-title" id="CanModalLabel">Asignar usuario a pedido de trabajo</h5>
                     </div>
@@ -235,10 +237,11 @@
             </div>
         </div>
     </div><!-- VENTANA MODAL DE ESTADO EN PROCESO -->
+
     <div class="modal fade" id="ModalEstPen" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form method="post" asp-page-handler="PendienteEstado">
+                <form method="post" asp-page-handler="PendienteEstadoAsync">
                     <div class="modal-header">
                         <h5 class="modal-title" id="CanModalLabel">Cambiar estado a <b>PENDIENTE</b></h5>
                     </div>
@@ -256,6 +259,7 @@
             </div>
         </div>
     </div><!-- VENTANA MODAL DE ESTADO PENDIENTE -->
+
 
     <div>
         <a asp-page="./Index" class="btn-action">Back to List</a>

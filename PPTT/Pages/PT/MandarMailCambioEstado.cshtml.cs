@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net.Mail;
 using System.Net;
-using Humanizer;
+
 
 namespace PPTT.Pages.PT
 {
@@ -57,11 +57,33 @@ namespace PPTT.Pages.PT
         public IActionResult OnGet()
         {
             ID_Estado_Fk = HttpContext.Session.GetInt32("ID_Estado_Fk");
-            CorreoUsuario = HttpContext.Session.GetString("CorreoUsuario");
+            CorreoUsuario = HttpContext.Session.GetString("Correo");
             FechaEstimada = HttpContext.Session.GetString("FechaEstimadaFin");
             motivo = HttpContext.Session.GetString("motivo");
             string asunto = "Cambio de estado de su pedido de trabajo";
             string body = "";
+            Console.WriteLine(ID_Estado_Fk);
+            Console.WriteLine(ID_Estado_Fk);
+
+            Console.WriteLine(ID_Estado_Fk);
+
+            Console.WriteLine(ID_Estado_Fk);
+
+            Console.WriteLine(ID_Estado_Fk);
+
+            Console.WriteLine(ID_Estado_Fk);
+
+            Console.WriteLine(ID_Estado_Fk);
+
+            Console.WriteLine(ID_Estado_Fk);
+
+            Console.WriteLine(ID_Estado_Fk);
+
+            Console.WriteLine(ID_Estado_Fk);
+
+            Console.WriteLine(ID_Estado_Fk);
+
+
             if (ID_Estado_Fk == 1003)
             {
                 body = "Su pedido de trabajo está en proceso.";

@@ -1,24 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.ComponentModel.DataAnnotations;
 using System.Data;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Newtonsoft.Json;
-using PPTT.Data;
 using PPTT.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Configuration;
-using PPTT.Pages.Vistas;
 namespace PPTT.Pages.PT
 {
     public class CreatePPTT : PageModel
