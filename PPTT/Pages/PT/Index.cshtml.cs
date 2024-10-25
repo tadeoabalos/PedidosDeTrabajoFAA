@@ -22,9 +22,13 @@ namespace PPTT.Pages.Administradores
         public List<Admin> Usuarios { get; set; } = new List<Admin>();
         public Orden_Asignada Orden_Asignada { get; set; }
         public PTUsuario PT { get; set; } = default!;
-        public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();        
-        public async Task OnGetAsync()
+        public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();
+        public async Task<IActionResult> OnGetAsync()
         {
+            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+            
+            if (_rol == 2)
+            {
                 Prioridad = await _context.GetPrioridadAsync();
                 PedidoTrabajo = await _context.PTUsuario
                     .Include(pt => pt.Organismo)
@@ -35,7 +39,10 @@ namespace PPTT.Pages.Administradores
                     .Include(pt => pt.Grado)
                     .ToListAsync();
 
-           
+                return Page();
+            }
+            
+            return RedirectToPage("/Vistas/MenuLog");
         }
         public async Task<JsonResult> OnGetUsuariosFiltradosAsync(string division)
         {
@@ -50,12 +57,12 @@ namespace PPTT.Pages.Administradores
         public async Task<IActionResult> OnPostAsignarUsuarioAsync(int UsuarioId, int OrdenTrabajoId)
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC AsignarUsuarioAOrden @p0, @p1", UsuarioId, OrdenTrabajoId);
-            return RedirectToPage("./Index");
+            return RedirectToPage("/PT/Index");
         }
         public async Task<IActionResult> OnPostSetPrioridadAsync(int OrdenTrabajoId, int PrioridadId)
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[SetPrioridad] @p0, @p1", OrdenTrabajoId, PrioridadId);
-            return RedirectToPage("./Index");
+            return RedirectToPage("/PT/Index");
         }
 
         public async Task<JsonResult> OnGetPrioridadesAsync()

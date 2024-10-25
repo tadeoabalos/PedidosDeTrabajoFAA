@@ -19,31 +19,31 @@ namespace PPTT.Pages.PT
             _context = context;
         }
         public List<Admin> Usuarios { get; set; } = new List<Admin>();
-        public PTUsuario? PedidoTrabajo { get; set; } = default!;
+        public PTUsuario? PedidoTrabajo { get; set; } = default!;      
         public List<Estado> Estado { get; set; } = default!;
         public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();
-
+        
         public async Task<IActionResult> OnGetAsync(int? id)
-        {
+        {            
             if (id == null)
             {
                 return NotFound();
             }
-            else
+            else 
             {
                 Usuarios = await _context.GetUsuariosFiltradosByOrdenAsync(id);
             }
-
+            
             Estado = await _context.GetEstadosAsync();
             Prioridad = await _context.GetPrioridadAsync();
             PedidoTrabajo = await _context.PTUsuario
-                .Include(pt => pt.Organismo)
-                .Include(pt => pt.Tarea)
-                .Include(pt => pt.Estado)
-                .Include(pt => pt.Dependencia_Interna)
+                .Include(pt => pt.Organismo) 
+                .Include(pt => pt.Tarea) 
+                .Include(pt => pt.Estado) 
+                .Include(pt => pt.Dependencia_Interna) 
                 .Include(pt => pt.Grado)
                 .Include(pt => pt.Prioridad)
-                .FirstOrDefaultAsync(m => m.ID_Orden_Trabajo_Pk == id);
+                .FirstOrDefaultAsync(m => m.ID_Orden_Trabajo_Pk == id); 
 
             if (PedidoTrabajo == null)
             {
@@ -59,7 +59,7 @@ namespace PPTT.Pages.PT
         {
             var prioridades = await _context.GetPrioridadAsync();
             return new JsonResult(prioridades);
-        }
+        }        
 
         public async Task<IActionResult> OnPostFinalizarEstadoAsync(int OrdenTrabajoId)
         {
@@ -73,7 +73,7 @@ namespace PPTT.Pages.PT
         }
         public async Task<IActionResult> OnPostEnProcesoEstadoAsync(int OrdenTrabajoId, int IdUsuario)
         {
-            await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[AsignarUsuarioAOrden] @p0, @p1", IdUsuario, OrdenTrabajoId);
+            await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[AsignarUsuarioAOrden] @p0, @p1", IdUsuario ,OrdenTrabajoId);
             return RedirectToPage("./Index");
         }
         public async Task<IActionResult> OnPostCancelarEstadoAsync(int OrdenTrabajoId)
@@ -86,7 +86,7 @@ namespace PPTT.Pages.PT
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[PendientePedidoTrabajo] @p0", OrdenTrabajoId);
             return RedirectToPage("./Index");
         }
-
+        
 
     }
 }
