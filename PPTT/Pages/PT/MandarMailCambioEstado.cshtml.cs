@@ -56,57 +56,70 @@ namespace PPTT.Pages.PT
         }
         public IActionResult OnGet()
         {
-            ID_Estado_Fk = HttpContext.Session.GetInt32("ID_Estado_Fk");
-            CorreoUsuario = HttpContext.Session.GetString("Correo");
-            FechaEstimada = HttpContext.Session.GetString("FechaEstimadaFin");
-            motivo = HttpContext.Session.GetString("motivo");
-            string asunto = "Cambio de estado de su pedido de trabajo";
-            string body = "";
-            Console.WriteLine(ID_Estado_Fk);
-            Console.WriteLine(ID_Estado_Fk);
-
-            Console.WriteLine(ID_Estado_Fk);
-
-            Console.WriteLine(ID_Estado_Fk);
-
-            Console.WriteLine(ID_Estado_Fk);
-
-            Console.WriteLine(ID_Estado_Fk);
-
-            Console.WriteLine(ID_Estado_Fk);
-
-            Console.WriteLine(ID_Estado_Fk);
-
-            Console.WriteLine(ID_Estado_Fk);
-
-            Console.WriteLine(ID_Estado_Fk);
-
-            Console.WriteLine(ID_Estado_Fk);
-
-
-            if (ID_Estado_Fk == 1003)
+            int datos = HttpContext.Session.GetInt32("datos") ?? 0;
+            HttpContext.Session.SetInt32("datos", datos);
+            if (datos == 0)
             {
-                body = "Su pedido de trabajo está en proceso.";
-                SendMail(CorreoUsuario, asunto, body);
+                return Page();
             }
-            else if (ID_Estado_Fk == 1004)
+            else if (datos == 1)
             {
-                body = "Su pedido de trabajo ha sido finalizado.";
-                SendMail(CorreoUsuario, asunto, body);
+                return RedirectToPage("/PT/Details");
             }
-            else if (ID_Estado_Fk == 1005)
+            else
             {
-                body = $"Su pedido de trabajo ha sido suspendido. Fecha de inicio estimada: {FechaEstimada}.    Motivo: {motivo} ";
-                SendMail(CorreoUsuario, asunto, body);
+                ID_Estado_Fk = HttpContext.Session.GetInt32("ID_Estado_Fk");
+                CorreoUsuario = HttpContext.Session.GetString("CorreoUsuario");
+                FechaEstimada = HttpContext.Session.GetString("FechaEstimadaFin");
+                motivo = HttpContext.Session.GetString("motivo");
+                string asunto = "Cambio de estado de su pedido de trabajo";
+                string body = "";
+                Console.WriteLine(ID_Estado_Fk);
+                Console.WriteLine(ID_Estado_Fk);
+
+                Console.WriteLine(ID_Estado_Fk);
+
+                Console.WriteLine(ID_Estado_Fk);
+
+                Console.WriteLine(ID_Estado_Fk);
+
+                Console.WriteLine(ID_Estado_Fk);
+
+                Console.WriteLine(ID_Estado_Fk);
+
+                Console.WriteLine(ID_Estado_Fk);
+
+                Console.WriteLine(ID_Estado_Fk);
+
+                Console.WriteLine(ID_Estado_Fk);
+
+                Console.WriteLine(ID_Estado_Fk);
+
+
+                if (ID_Estado_Fk == 1003)
+                {
+                    body = "Su pedido de trabajo está en proceso.";
+                    SendMail(CorreoUsuario, asunto, body);
+                }
+                else if (ID_Estado_Fk == 1004)
+                {
+                    body = "Su pedido de trabajo ha sido finalizado.";
+                    SendMail(CorreoUsuario, asunto, body);
+                }
+                else if (ID_Estado_Fk == 1005)
+                {
+                    body = $"Su pedido de trabajo ha sido suspendido. Fecha de inicio estimada: {FechaEstimada}.    Motivo: {motivo} ";
+                    SendMail(CorreoUsuario, asunto, body);
+                }
+                else if (ID_Estado_Fk == 1006)
+                {
+                    body = $"Su pedido de trabajo ha sido cancelado.";
+                    SendMail(CorreoUsuario, asunto, body);
+                }
+                else { }
+                HttpContext.Session.SetInt32("datos", 0);
+                return RedirectToPage("/PT/Index");
             }
-            else if (ID_Estado_Fk == 1006)
-            {
-                body = $"Su pedido de trabajo ha sido cancelado.";
-                SendMail(CorreoUsuario, asunto, body);
-            }
-            else { }
-            return RedirectToPage("/PT/Index");
         }
-
     }   
 }

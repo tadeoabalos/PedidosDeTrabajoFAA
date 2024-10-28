@@ -7,7 +7,7 @@
 
 <div>
     <h3>Datos del solicitante</h3>
-    <form>
+    <div class="styled-div">
     <dl class="row">          
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PedidoTrabajo.IP_Solicitante)
@@ -70,9 +70,9 @@
             @Html.DisplayFor(model => model.PedidoTrabajo.Dependencia_Interna.Descripcion_Dependencia)
         </dd>
     </dl>
-    </form>
+    </div>
     <h3>Datos del Trabajo</h3>  
-    <form>
+    <div class="styled-div">
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PedidoTrabajo.Fecha_Subida)
@@ -113,20 +113,28 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PedidoTrabajo.ID_Estado_Fk)
         </dt>
-        <dd class="col-sm-10">
-            <select asp-for="PedidoTrabajo.ID_Estado_Fk"
-                    asp-items="Model.Estado.Select(d => new SelectListItem
+            <dd class="col-sm-10">
+                <select asp-for="ID_Estado_Fk"
+                        asp-items="Model.Estado.Select(d => new SelectListItem
             {
                 Value = d.ID_Estado_PK.ToString(),
                 Text = d.Descripcion_Estado
             })"
-                    id="deptSelect"
-                    class="formControl">
-                <option value="" disabled selected hidden>@Model.PedidoTrabajo.Estado.Descripcion_Estado</option>
-            </select>
-        </dd>
+                        id="deptSelect"
+                        class="formControl"
+                        onchange="updateSelectedValue(this.value); this.form.submit();">
+                    <option value="" disabled hidden>Seleccione un Estado</option>
+                    @if (Model.PedidoTrabajo?.Estado != null)
+                    {
+                        <option value="@Model.PedidoTrabajo.ID_Estado_Fk" selected>@Model.PedidoTrabajo.Estado.Descripcion_Estado</option>
+                    }
+                </select>
+            </dd>
+
+
+
     </dl>
-    </form>
+    </div>
     <div class="modal fade" id="ModalEstFin" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -139,6 +147,7 @@
                         <input type="date" id="fechaFinalizacion" disabled />
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
                         <br />
+                        <input type="hidden" name="idestado" value="@Model.PedidoTrabajo.ID_Estado_Fk" />
                         <span id="warningMessagePen" class="alert alert-warning">
                             <b>Advertencia</b>: Cambiar el estado de la orden de trabajo a <b>FINALIZADO</b> dará por concluida la orden, y no podrá ser modificada posteriormente.
                         </span>
@@ -167,6 +176,7 @@
                         <textarea id="motivoCancelacion" name="motivoCancelacion"></textarea>
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
                         <br />
+                        <input type="hidden" name="idestado" value="@Model.PedidoTrabajo.ID_Estado_Fk" />
                         <span id="warningMessagePen" class="alert alert-warning">
                             <b>Advertencia</b>: Cambiar el estado de la orden de trabajo a <b>CANCELADO</b> anulará la orden, y no se podrán realizar más cambios en ella.
                         </span>
@@ -203,6 +213,7 @@
                             <option value="Espera de Material">A la espera de material</option>
                         </select>
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
+                        <input type="hidden" name="idestado" value="@Model.PedidoTrabajo.ID_Estado_Fk" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
@@ -226,6 +237,7 @@
                             <option hidden selected value="">Seleccione un usuario</option>
                         </select>
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
+                    <input type="hidden" name="idestado" value="@Model.PedidoTrabajo.ID_Estado_Fk" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
@@ -247,6 +259,7 @@
                             <b>Advertencia</b>: Cambiar cualquier orden de trabajo a <b>PENDIENTE</b> modificará los datos previamente registrados.
                         </span>
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
+                    <input type="hidden" name="idestado" value="@Model.PedidoTrabajo.ID_Estado_Fk" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
@@ -364,17 +377,19 @@
                 transform: translateY(-2px);
             }
 
-        form {
-            align-items: center;
-            justify-content: center;
-            width: 65%;
-            margin: 30px auto;
-            padding: 20px;
-            background-color: #e0e8f1;
-            border: 1px solid #003d6b;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2);
-        }
+    .styled-div {
+        display: flex; /* Esto permite usar flexbox para alinear los elementos internos */
+        align-items: center; /* Centra los elementos verticalmente */
+        justify-content: center; /* Centra los elementos horizontalmente */
+        width: 65%; /* Ancho del div */
+        margin: 30px auto; /* Margen superior e inferior de 30px, y centrado horizontalmente */
+        padding: 20px; /* Relleno interno */
+        background-color: #e0e8f1; /* Color de fondo */
+        border: 1px solid #003d6b; /* Borde con color */
+        border-radius: 8px; /* Bordes redondeados */
+        box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2); /* Sombra */
+    }
+
 
         legend {
             font-size: 1.2em;
