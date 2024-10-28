@@ -2,13 +2,16 @@
 @model PPTT.Pages.PT.DetailsPPTT
 
 @{
-
+    ViewData["Title"] = "Detalles Pedido de trabajos";
 }
 
+<h1>Detalle</h1>
+
 <div>
+    <h2>Pedidos de trabajo</h2>
+    <hr />
     <h3>Datos del solicitante</h3>
-    <div class="styled-div">
-    <dl class="row">          
+    <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PedidoTrabajo.IP_Solicitante)
         </dt>
@@ -33,12 +36,6 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PedidoTrabajo.Apellido_Solicitante)
         </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PedidoTrabajo.Correo)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.PedidoTrabajo.Correo)
-            </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PedidoTrabajo.DNI_Solicitante)
         </dt>
@@ -70,9 +67,8 @@
             @Html.DisplayFor(model => model.PedidoTrabajo.Dependencia_Interna.Descripcion_Dependencia)
         </dd>
     </dl>
-    </div>
-    <h3>Datos del Trabajo</h3>  
-    <div class="styled-div">
+    <hr />
+    <h3>Datos del Trabajo</h3>
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PedidoTrabajo.Fecha_Subida)
@@ -108,33 +104,35 @@
             @Html.DisplayNameFor(model => model.PedidoTrabajo.ID_Prioridad_Fk)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PedidoTrabajo.Prioridad.Descripcion_Prioridad)
+            <select asp-for="PedidoTrabajo.ID_Prioridad_Fk"
+                    asp-items="@(Model.Prioridad.Select(d => new SelectListItem
+                        {
+                            Value = d.ID_Prioridad_Pk.ToString(),
+                            Text = d.Descripcion_Prioridad,
+                            Disabled = d.ID_Prioridad_Pk == Model.PedidoTrabajo.Prioridad.ID_Prioridad_Pk
+                        }))"
+                    id="prioSelect"
+                    class="formControl"
+                    data-orden-id="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk">                
+            </select>           
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PedidoTrabajo.ID_Estado_Fk)
         </dt>
-            <dd class="col-sm-10">
-                <select asp-for="ID_Estado_Fk"
-                        asp-items="Model.Estado.Select(d => new SelectListItem
-            {
-                Value = d.ID_Estado_PK.ToString(),
-                Text = d.Descripcion_Estado
-            })"
-                        id="deptSelect"
-                        class="formControl"
-                        onchange="updateSelectedValue(this.value); this.form.submit();">
-                    <option value="" disabled hidden>Seleccione un Estado</option>
-                    @if (Model.PedidoTrabajo?.Estado != null)
-                    {
-                        <option value="@Model.PedidoTrabajo.ID_Estado_Fk" selected>@Model.PedidoTrabajo.Estado.Descripcion_Estado</option>
-                    }
-                </select>
-            </dd>
-
-
-
+        <dd class="col-sm-10">
+            <select asp-for="PrioridadId"
+                    asp-items="Model.Estado.Select(d=> new SelectListItem
+                                {
+                                    Value = d.ID_Estado_PK.ToString(),
+                                    Text = d.Descripcion_Estado.ToString(),
+                                    Disabled = d.ID_Estado_PK == Model.PedidoTrabajo.Estado.ID_Estado_PK
+                                })"
+                    id="deptSelect"
+                    class="formControl">
+                <option hidden selected value="@Model.PedidoTrabajo.Estado.ID_Estado_PK">@Model.PedidoTrabajo.Estado.Descripcion_Estado</option>
+            </select>
+        </dd>
     </dl>
-    </div>
     <div class="modal fade" id="ModalEstFin" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -142,18 +140,17 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="FinModalLabel">Finalizar pedido de trabajo</h5>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body">                        
                         <label id="labelFechaFinalizado">Fecha de finalización:</label>
                         <input type="date" id="fechaFinalizacion" disabled />
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
-                        <br />
-                        <input type="hidden" name="idestado" value="@Model.PedidoTrabajo.ID_Estado_Fk" />
+                        <br/>
                         <span id="warningMessagePen" class="alert alert-warning">
                             <b>Advertencia</b>: Cambiar el estado de la orden de trabajo a <b>FINALIZADO</b> dará por concluida la orden, y no podrá ser modificada posteriormente.
                         </span>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-secondary" id="canFin" data-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Aceptar</button>
                     </div>
                 </form>
@@ -163,26 +160,25 @@
     <div class="modal fade" id="ModalEstCan" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form method="post" asp-page-handler="CancelarEstado">
+                <form method="post" asp-page-handler="CancelarEstadoConMotivo">
                     <div class="modal-header">
                         <h5 class="modal-title" id="CanModalLabel">Cancelar pedido de trabajo</h5>
                     </div>
                     <div class="modal-body">
                         <label id="labelFechaFinalizado">Fecha de cancelacion:</label>
                         <input type="date" id="fechaCan" disabled />
-                        <br />
+                        <br/>
                         <label id="labelDetalleCancelado">Detalle de la cancelacion:</label>
                         <br />
-                        <textarea id="motivoCancelacion" name="motivoCancelacion"></textarea>
+                        <textarea id="motCan" name="motCan" required></textarea>                        
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
                         <br />
-                        <input type="hidden" name="idestado" value="@Model.PedidoTrabajo.ID_Estado_Fk" />
                         <span id="warningMessagePen" class="alert alert-warning">
                             <b>Advertencia</b>: Cambiar el estado de la orden de trabajo a <b>CANCELADO</b> anulará la orden, y no se podrán realizar más cambios en ella.
                         </span>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-secondary" id="canCan" data-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Aceptar</button>
                     </div>
                 </form>
@@ -204,25 +200,22 @@
                         <input type="date" id="fechaEstimadaFin" name="fechaEstimadaFin" />
                         <br />
                         <label id="labelMotivoSuspension">Motivo de suspensión:</label>
-                        <select asp-for="MotivoSuspension" class="form-control">
-                            <option value="">Seleccione un motivo</option>
-                            <option value="Falta de Material">Falta de material</option>
-                            <option value="Falta de Personal">Falta de personal</option>
-                            <option value="Falta de Herramientas">Falta de herramientas</option>
-                            <option value="Condicion Riesgosa">Condición riesgosa</option>
-                            <option value="Espera de Material">A la espera de material</option>
+                        <select id="motivo" name="motSus">
+                            <option value="faltaMaterial">Falta de material</option>
+                            <option value="faltaPersonal">Falta de personal</option>
+                            <option value="faltaHerramientas">Falta de herramientas</option>
+                            <option value="condicionRiesgosa">Condición riesgosa</option>
+                            <option value="esperaMaterial">A la espera de material</option>
                         </select>
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
-                        <input type="hidden" name="idestado" value="@Model.PedidoTrabajo.ID_Estado_Fk" />
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-secondary" id="canSus" data-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Aceptar</button>
                     </div>
                 </form>
             </div>
         </div>
-    </div>
     </div><!-- VENTANA MODAL DE ESTADO SUSPENDIDO -->
     <div class="modal fade" id="ModalEstPro" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -231,16 +224,15 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="CanModalLabel">Asignar usuario a pedido de trabajo</h5>
                     </div>
-                    <div class="modal-body">
+                   <div class="modal-body">
                         <p class="text-muted">Por favor, seleccione un usuario para asignar a este pedido de trabajo.</p>
-                        <select class="form-control" asp-for="IdUsuario" asp-items="@(new SelectList(Model.Usuarios, "ID_Usuario_Pk", "NombreCompleto"))">
+                        <select name="IdUsuario" class="form-control" asp-items="@(new SelectList(Model.Usuarios, "ID_Usuario_Pk", "NombreCompleto"))">
                             <option hidden selected value="">Seleccione un usuario</option>
                         </select>
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
-                    <input type="hidden" name="idestado" value="@Model.PedidoTrabajo.ID_Estado_Fk" />
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-secondary" id="canPro" data-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Aceptar</button>
                     </div>
                 </form>
@@ -254,30 +246,59 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="CanModalLabel">Cambiar estado a <b>PENDIENTE</b></h5>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body">                       
                         <span id="warningMessagePen" class="alert alert-warning">
                             <b>Advertencia</b>: Cambiar cualquier orden de trabajo a <b>PENDIENTE</b> modificará los datos previamente registrados.
                         </span>
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
-                    <input type="hidden" name="idestado" value="@Model.PedidoTrabajo.ID_Estado_Fk" />
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-secondary" id="canPen" data-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Aceptar</button>
                     </div>
                 </form>
             </div>
         </div>
     </div><!-- VENTANA MODAL DE ESTADO PENDIENTE -->
-
+    <div class="modal fade" id="ModalPrioridad" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="post" asp-page-handler="SetPrioridad">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="PrioModalLabel">CAMBIO DE <b>PRIORIDAD</b></h5>
+                    </div>
+                    <div class="modal-body">
+                        <span id="warningMessagePen" class="alert alert-warning">
+                            <b>Advertencia:</b> Estás a punto de cambiar la prioridad de esta orden. Por favor, confirma que deseas proceder.
+                        </span>
+                        <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
+                        <input type="hidden" name="PrioridadId" id="PrioridadId" value="" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="canPrio" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Aceptar</button>
+                    </div>
+                </form>
+        </div>
+    </div>
+    </div><!-- VENTANA MODAL DE PRIORIDAD -->
     <div>
-        <a asp-page="./Index" class="btn-action">Back to List</a>
+        <a asp-page="./Index">Back to List</a>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function () {
+            let EstadoOriginalValue = deptSelect.value;
+            let PrioridadOriginalValue = prioSelect.value;
+            
+            function VolverAEstadoOriginal (){
+                document.getElementById('deptSelect').value = EstadoOriginalValue;
+            }
+            function VolverAPrioridadOriginal() {
+                document.getElementById('prioSelect').value = PrioridadOriginalValue;
+            }
             function getTodayDate() {
                 var today = new Date();
                 var day = ("0" + today.getDate()).slice(-2);
@@ -285,8 +306,15 @@
                 var year = today.getFullYear();
                 return year + "-" + month + "-" + day;
             }
-
-            $('#deptSelect').change(function () {
+            $('#prioSelect').change(function () {
+                $('#ModalPrioridad').modal('show');
+                const selectedOption = $(this).find("option:selected");
+                $('#PrioridadId').val(selectedOption.val())
+            })
+            $('#deptSelect').click(function(){
+                originalValue = deptSelect.value;                             
+            })
+            $('#deptSelect').change(function () {                
                 alert("Advertencia: El usuario que solicito el pedido de trabajo será notificado del cambio de estado.");
                 var selectedOption = $(this).val();
                 if (selectedOption == 1002) {
@@ -299,7 +327,8 @@
                     $('#ModalEstFin').modal('show');
                     $('#fechaFinalizacion').val(getTodayDate());
                 }
-                if (selectedOption == 1005) {
+                if (selectedOption == 1005 ) {
+                    console.log(selectedOption + EstadoOriginalValue);
                     $('#ModalEstSus').modal('show');
                     $('#fechaInicioSuspendido').val(getTodayDate());
                 }
@@ -307,136 +336,37 @@
                     $('#ModalEstCan').modal('show');
                     $('#fechaCan').val(getTodayDate());
                 }
+            });        
+            $('#canPen').click(function () {
+                VolverAEstadoOriginal();
+                $('#ModalEstPen').modal('hide');
+            });
+            $('#canCan').click(function () {
+                VolverAEstadoOriginal();
+                $('#ModalEstCan').modal('hide');
+            });
+            $('#canSus').click(function () {
+                VolverAEstadoOriginal();
+                $('#ModalEstSus').modal('hide');
+            });
+            $('#canFin').click(function () {                
+                VolverAEstadoOriginal();
+                $('#ModalEstFin').modal('hide');
+            });
+            $('#canPro').click(function () {
+                VolverAEstadoOriginal();
+                $('#ModalEstPro').modal('hide');
+            });
+            $('#canPrio').click(function () {
+                VolverAPrioridadOriginal()
+                $('#ModalPrioridad').modal('hide');
             });
         });
     </script>
-    <style>
+   <style>
         #warningMessagePen {
             display: block;
             overflow: auto;
             word-wrap: break-word;
         }
-
-        button {
-            display: inline-block;
-            text-decoration: none;
-            padding: 4px 6px; /* Ajustar el padding */
-            margin: 2px; /* Reducir margen */
-            border: 1px solid #4caf50; /* Bordes de botones */
-            border-radius: 4px; /* Bordes más redondeados */
-            background-color: #4caf50; /* Color de fondo de los botones */
-            color: white;
-            transition: background-color 0.3s, transform 0.3s;
-            font-size: 0.8em; /* Tamaño de fuente reducido */
-        }
-
-            button:hover {
-                background-color: #4caf50; /* Mantener el color al pasar el mouse */
-                transform: translateY(-2px); /* Efecto al pasar el mouse */
-            }
-
-        body {
-            background-color: #e0e8f1;
-        }
-
-        h4 {
-            color: #003d6b; /* Color azul para h4 y detalles */
-            margin-top: 20px;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        h3 {
-            font-size: 3em;
-            color: #003d6b;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-
-        dt {
-            color: #003d6b; /* Color azul para los dt */
-            font-weight: bold;
-        }
-
-        a.btn-action, input[type=submit] {
-            display: inline-block;
-            text-decoration: none;
-            padding: 8px 12px;
-            margin: 4px;
-            border: 1px solid #003d6b;
-            border-radius: 5px;
-            background-color: #003d6b;
-            color: white;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-            a.btn-action:hover, input[type=submit]:hover {
-                background-color: #002e5d;
-                transform: translateY(-2px);
-            }
-
-    .styled-div {
-        display: flex; /* Esto permite usar flexbox para alinear los elementos internos */
-        align-items: center; /* Centra los elementos verticalmente */
-        justify-content: center; /* Centra los elementos horizontalmente */
-        width: 65%; /* Ancho del div */
-        margin: 30px auto; /* Margen superior e inferior de 30px, y centrado horizontalmente */
-        padding: 20px; /* Relleno interno */
-        background-color: #e0e8f1; /* Color de fondo */
-        border: 1px solid #003d6b; /* Borde con color */
-        border-radius: 8px; /* Bordes redondeados */
-        box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2); /* Sombra */
-    }
-
-
-        legend {
-            font-size: 1.2em;
-            color: #003d6b;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        .submit {
-            background-color: #003d6b;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-            .submit:hover {
-                background-color: #002e5d;
-            }
-
-        .custom-textarea {
-            width: 100%;
-            height: 150px;
-            resize: none;
-        }
-
-        label, input[type="text"], select, .submit, h4 {
-            font-size: 1em;
-            font-weight: bold;
-            color: #003d6b;
-        }
-
-        input[type="password"], input[type="text"], input[type="number"], select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #003d6b;
-            border-radius: 4px;
-            background-color: white;
-        }
-
-        .centered-button {
-            display: flex;
-            margin-top: 20px;
-            align-items: center;
-            justify-content: center;
-        }
-    </style>
+   </style> 

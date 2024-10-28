@@ -68,8 +68,7 @@ namespace PPTT.Models
 
         [Display(Name = "Número de Control del Solicitante")]
         public string? Numero_Control_Solicitante { get; set; } = string.Empty;
-
-        [Display(Name = "Fecha Estimada de Finalización")]
+        
         [DisplayFormat(DataFormatString = "{0:d/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? Fecha_Estimada_Fin { get; set; } = DateTime.Now;
 
