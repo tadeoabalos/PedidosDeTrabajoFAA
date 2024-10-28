@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 using PPTT.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PPTT.Pages.Administradores
 {
@@ -23,7 +24,9 @@ namespace PPTT.Pages.Administradores
         public async Task<IActionResult> OnGetAsync()
         {
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
-            
+            int datos = 0;
+            HttpContext.Session.SetInt32("datoss", datos);
+
             if (_rol == 2)
             {
                 Prioridad = await _context.GetPrioridadAsync();
