@@ -98,14 +98,14 @@
                     @Html.DisplayFor(modelItem => item.Estado.Descripcion_Estado)
                 </td>
                 <td data-orden-trabajo-id="@item.ID_Orden_Trabajo_Pk">
-                    <div class="form-group">
-                        <select asp-for="PT.ID_Prioridad_Fk"
-                                asp-items="@(new SelectList(Model.Prioridad, "ID_Prioridad_Pk", "Descripcion_Prioridad"))"
-                                class="PrioridadSelect formControl">
-                            <option hidden selected value="">@item.Prioridad.Descripcion_Prioridad</option>
-                        </select>
-                        <span asp-validation-for="PT.ID_Prioridad_Fk" class="text-danger"></span>
-                    </div>
+                        <div class="form-group">
+                            <select asp-for="PT.ID_Prioridad_Fk"
+                                    asp-items="@(new SelectList(Model.Prioridad, "ID_Prioridad_Pk", "Descripcion_Prioridad"))"
+                                    class="PrioridadSelect formControl">
+                                <option hidden selected value="">@item.Prioridad.Descripcion_Prioridad</option>
+                            </select>
+                            <span asp-validation-for="PT.ID_Prioridad_Fk" class="text-danger"></span>
+                        </div>
                 </td>
                 <td>
                     <div class="form-group">                        
@@ -158,7 +158,9 @@
                     <h5 class="modal-title" id="confirmModalLabel">Confirmar Modificación</h5>
                 </div>
                 <div class="modal-body">
-                    <p>¿Está seguro de cambiar la prioridad a <b id="prioridadDisplay"></b> para esta tarea?</p>
+                    <span id="warningMessagePen" class="alert alert-warning">
+                        <b>Advertencia:</b> Estás a punto de cambiar la prioridad de esta orden. Por favor, confirma que deseas proceder.
+                    </span>
                     <input type="hidden" id="ordenTrabajo" name="OrdenTrabajoId" />
                     <input type="hidden" id="prioridadInput" name="PrioridadId" />
                 </div>
@@ -208,7 +210,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script type="text/javascript">
-        $(document).ready(function () {           
+        $(document).ready(function () {                       
             $('select[id^="usuarioSelect_"]').each(function () {
                 var usuarioSelect = $(this); 
                 var selectedDivision = usuarioSelect.data('division-id');
@@ -279,15 +281,18 @@
                 $('#confirmPrioridadModal').modal('show');
             });                            
 
-            $('#cancelaAsignacion').click(function () {            
+            $('#cancelaAsignacion').click(function () {
+                location.reload();
                 $('#confirmModal').modal('hide');
             });
 
             $('#cancelaPrioridad').click(function () {
+                location.reload();
                 $('#confirmPrioridadModal').modal('hide');            
             });
         });
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
 <style>
@@ -300,6 +305,11 @@
         background-color: #e0e8f1;       
     }
 
+    #warningMessagePen {
+        display: block;
+        overflow: auto;
+        word-wrap: break-word;
+    }
     a.btn-action {
         display: inline-block;
         text-decoration: none;

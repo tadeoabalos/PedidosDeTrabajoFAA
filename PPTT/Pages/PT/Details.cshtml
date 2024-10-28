@@ -108,7 +108,8 @@
                     asp-items="@(Model.Prioridad.Select(d => new SelectListItem
                         {
                             Value = d.ID_Prioridad_Pk.ToString(),
-                            Text = d.Descripcion_Prioridad
+                            Text = d.Descripcion_Prioridad,
+                            Disabled = d.ID_Prioridad_Pk == Model.PedidoTrabajo.Prioridad.ID_Prioridad_Pk
                         }))"
                     id="prioSelect"
                     class="formControl"
@@ -123,11 +124,12 @@
                     asp-items="Model.Estado.Select(d=> new SelectListItem
                                 {
                                     Value = d.ID_Estado_PK.ToString(),
-                                    Text = d.Descripcion_Estado.ToString()
+                                    Text = d.Descripcion_Estado.ToString(),
+                                    Disabled = d.ID_Estado_PK == Model.PedidoTrabajo.Estado.ID_Estado_PK
                                 })"
                     id="deptSelect"
                     class="formControl">
-                <option hidden selected value="">@Model.PedidoTrabajo.Estado.Descripcion_Estado</option>                
+                <option hidden selected value="@Model.PedidoTrabajo.Estado.ID_Estado_PK">@Model.PedidoTrabajo.Estado.Descripcion_Estado</option>
             </select>
         </dd>
     </dl>
@@ -288,6 +290,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function () {
+            let EstadoOriginalValue = deptSelect.value;
+            let PrioridadOriginalValue = prioSelect.value;
+            
+            function VolverAEstadoOriginal (){
+                document.getElementById('deptSelect').value = EstadoOriginalValue;
+            }
+            function VolverAPrioridadOriginal() {
+                document.getElementById('prioSelect').value = PrioridadOriginalValue;
+            }
             function getTodayDate() {
                 var today = new Date();
                 var day = ("0" + today.getDate()).slice(-2);
@@ -300,7 +311,10 @@
                 const selectedOption = $(this).find("option:selected");
                 $('#PrioridadId').val(selectedOption.val())
             })
-            $('#deptSelect').change(function () {
+            $('#deptSelect').click(function(){
+                originalValue = deptSelect.value;                             
+            })
+            $('#deptSelect').change(function () {                
                 alert("Advertencia: El usuario que solicito el pedido de trabajo será notificado del cambio de estado.");
                 var selectedOption = $(this).val();
                 if (selectedOption == 1002) {
@@ -313,7 +327,8 @@
                     $('#ModalEstFin').modal('show');
                     $('#fechaFinalizacion').val(getTodayDate());
                 }
-                if (selectedOption == 1005) {
+                if (selectedOption == 1005 ) {
+                    console.log(selectedOption + EstadoOriginalValue);
                     $('#ModalEstSus').modal('show');
                     $('#fechaInicioSuspendido').val(getTodayDate());
                 }
@@ -323,21 +338,27 @@
                 }
             });        
             $('#canPen').click(function () {
+                VolverAEstadoOriginal();
                 $('#ModalEstPen').modal('hide');
             });
             $('#canCan').click(function () {
+                VolverAEstadoOriginal();
                 $('#ModalEstCan').modal('hide');
             });
             $('#canSus').click(function () {
+                VolverAEstadoOriginal();
                 $('#ModalEstSus').modal('hide');
             });
             $('#canFin').click(function () {                
+                VolverAEstadoOriginal();
                 $('#ModalEstFin').modal('hide');
             });
             $('#canPro').click(function () {
+                VolverAEstadoOriginal();
                 $('#ModalEstPro').modal('hide');
             });
-            $('#canPrio').click(function () {                
+            $('#canPrio').click(function () {
+                VolverAPrioridadOriginal()
                 $('#ModalPrioridad').modal('hide');
             });
         });
