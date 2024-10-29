@@ -6,98 +6,58 @@
 }
 
 <h3>Pedidos de Trabajo</h3>
-<a asp-page="./Finalizados">Trabajos Finalizados</a>
+<a asp-page="./Finalizados" class="btn-action">Trabajos Finalizados</a>
 <table class="table" id="tabla">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Orden_Fk)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Fecha_Subida)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Grado_Fk)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Apellido_Solicitante)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Organismo_Fk)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].RTI_Solicitante)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Numero_Oficina_PT)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Correo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Tarea_Fk)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].Observacion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Estado_Fk)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Prioridad_Fk)
-            </th>
-            <th>
-                <span>Asignar Personal</span>
-            </th>
-            <th>
-                <span>Personal Asignado</span>
-            </th>
-            <th>
-                Detalle/Estado
-            </th>
+            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Orden_Fk)</th>
+            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Fecha_Subida)</th>
+            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Grado_Fk)</th>
+            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Apellido_Solicitante)</th>
+            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Organismo_Fk)</th>
+            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].RTI_Solicitante)</th>
+            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Numero_Oficina_PT)</th>
+            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Correo)</th>
+            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Tarea_Fk)</th>
+            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Observacion)</th>
+            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Estado_Fk)</th>
+            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Prioridad_Fk)</th>
+            <th><span>Asignar Personal</span></th>
+            <th><span>Personal Asignado</span></th>
+            <th>Detalle/Estado</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.PedidoTrabajo)
         {
-            @if (item.ID_Estado_Fk != 1004 ) { 
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ID_Orden_Fk)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Fecha_Subida)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Grado.Descripcion_Grado)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Apellido_Solicitante)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Organismo.Descripcion_organismo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RTI_Solicitante)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Numero_Oficina_PT)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Correo)
-                </td>
-                <td>
-                    @Html.Raw(item.Tarea.Descripcion_Tarea.Length > 3 ?
-                             item.Tarea.Descripcion_Tarea.Substring(3) :
-                             item.Tarea.Descripcion_Tarea)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Observacion)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Estado.Descripcion_Estado)
-                </td>
-                <td data-orden-trabajo-id="@item.ID_Orden_Trabajo_Pk">
+            @if (item.ID_Estado_Fk != 1004)
+            {
+                <tr data-fecha="@item.Fecha_Subida?.ToString("yyyy-MM-dd") ?? " 0001-01-01"">
+                    <td>@Html.DisplayFor(modelItem => item.ID_Orden_Fk)</td>
+                    <td>
+                        @if (item.Fecha_Subida.HasValue)
+                        {
+                            @item.Fecha_Subida.Value.ToString("dd-MM-yyyy")
+                        }
+                        else
+                        {
+                            @:01-01-0001
+                        }
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Grado.Descripcion_Grado)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Apellido_Solicitante)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Organismo.Descripcion_organismo)</td>
+                    <td>@Html.DisplayFor(modelItem => item.RTI_Solicitante)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Numero_Oficina_PT)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Correo)</td>
+                    <td>
+                        @Html.Raw(item.Tarea.Descripcion_Tarea.Length > 3 ?
+                                 item.Tarea.Descripcion_Tarea.Substring(0) :
+                                 item.Tarea.Descripcion_Tarea)
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Observacion)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Estado.Descripcion_Estado)</td>
+                    <td data-orden-trabajo-id="@item.ID_Orden_Trabajo_Pk">
                         <div class="form-group">
                             <select asp-for="PT.ID_Prioridad_Fk"
                                     asp-items="@(new SelectList(Model.Prioridad, "ID_Prioridad_Pk", "Descripcion_Prioridad"))"
@@ -106,28 +66,81 @@
                             </select>
                             <span asp-validation-for="PT.ID_Prioridad_Fk" class="text-danger"></span>
                         </div>
-                </td>
-                <td>
-                    <div class="form-group">                        
-                        <select id="usuarioSelect_@item.ID_Orden_Trabajo_Pk" class="formControl" data-division-id="@item.ID_Division_Fk">
-                            <option hidden selected value="">@item.ID_Division_Fk</option>
-                        </select>
-                    </div>
-                </td>
-                <td>
-                    <span id="personalAsignado_@item.ID_Orden_Trabajo_Pk" data-orden-id="@item.ID_Orden_Trabajo_Pk">
-                        Personal asignado
-                    </span>
-                </td>
-                <td>
-                    <a asp-page="./Details" asp-route-id="@item.ID_Orden_Trabajo_Pk">Ir</a>
-                </td>
-            </tr>}
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <select id="usuarioSelect_@item.ID_Orden_Trabajo_Pk" class="formControl" data-division-id="@item.ID_Division_Fk">
+                                <option hidden selected value="">@item.ID_Division_Fk</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <span id="personalAsignado_@item.ID_Orden_Trabajo_Pk" data-orden-id="@item.ID_Orden_Trabajo_Pk">
+                            Personal asignado
+                        </span>
+                    </td>
+                    <td>
+                        <a asp-page="./Details" class="btn-action" asp-route-id="@item.ID_Orden_Trabajo_Pk">Ir</a>
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>
 <a class="btn-action" asp-page="./Menu">Volver al Menu</a>
 <button id="btnExportar">Exportar Excel</button>
+
+<div>
+    <label for="fechaInicio">Fecha Inicio:</label>
+    <input type="text" id="fechaInicio" placeholder="dd-mm-yyyy" maxlength="10" />
+
+    <label for="fechaFin">Fecha Fin:</label>
+    <input type="text" id="fechaFin" placeholder="dd-mm-yyyy" maxlength="10" />
+
+    <button id="filtrar" class="filtrar">Filtrar</button>
+</div>
+
+<script>
+    function formatDateInput(input) {
+        let value = input.value.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
+        if (value.length >= 2) {
+            value = value.slice(0, 2) + '-' + value.slice(2); // Añadir el primer guion
+        }
+        if (value.length >= 5) {
+            value = value.slice(0, 5) + '-' + value.slice(5); // Añadir el segundo guion
+        }
+        input.value = value;
+    }
+
+    document.getElementById('fechaInicio').addEventListener('input', function () {
+        formatDateInput(this);
+    });
+
+    document.getElementById('fechaFin').addEventListener('input', function () {
+        formatDateInput(this);
+    });
+
+    document.getElementById('filtrar').addEventListener('click', function () {
+        const startDateInput = document.getElementById('fechaInicio').value;
+        const endDateInput = document.getElementById('fechaFin').value;
+
+        const startDate = new Date(startDateInput.split('-').reverse().join('-'));
+        const endDate = new Date(endDateInput.split('-').reverse().join('-'));
+
+        const rows = document.querySelectorAll('#tabla tbody tr');
+
+        rows.forEach(row => {
+            const fechaSubida = row.getAttribute('data-fecha');
+            const fecha = new Date(fechaSubida);
+
+            if ((isNaN(startDate) || fecha >= startDate) && (isNaN(endDate) || fecha <= endDate)) {
+                row.style.display = ''; // Mostrar fila
+            } else {
+                row.style.display = 'none'; // Ocultar fila
+            }
+        });
+    });
+</script>
 
 
 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
@@ -185,27 +198,53 @@
             $tabla = document.querySelector("#tabla");
 
         $btnExportar.addEventListener("click", function () {
-            let tableExport = new TableExport($tabla, {
-                exportButtons: false, // No queremos botones adicionales
-                filename: "Reporte de Peticiones de Trabajo", // Nombre del archivo de Excel
-                sheetname: "Peticiones", // Título de la hoja
+            // Crear una nueva tabla para la exportación
+            let exportTable = document.createElement('table');
+            let exportTbody = document.createElement('tbody');
+            exportTable.appendChild(exportTbody);
+
+            // Agregar encabezados a la tabla exportada (excluyendo las columnas ignoradas)
+            const headers = Array.from($tabla.querySelectorAll('thead th'));
+            const newRow = document.createElement('tr');
+
+            headers.forEach((header, index) => {
+                // Ignorar los índices 12 y 14 (o los que desees ignorar)
+                if (index !== 12 && index !== 14) {
+                    let th = document.createElement('th');
+                    th.innerText = header.innerText;
+                    newRow.appendChild(th);
+                }
+            });
+            exportTbody.appendChild(newRow);
+
+            // Recorrer las filas de la tabla original y agregar los datos a la tabla exportada
+            Array.from($tabla.querySelectorAll('tbody tr')).forEach(row => {
+                let newRow = document.createElement('tr');
+                Array.from(row.querySelectorAll('td')).forEach((cell, index) => {
+                    // Ignorar las columnas que no deseas exportar
+                    if (index !== 12 && index !== 14) {
+                        let td = document.createElement('td');
+                        if (index === 11) { // Supongamos que la columna de Prioridad es la número 12 (índice 11)
+                            // Obtener el valor del select
+                            const select = cell.querySelector('select');
+                            td.innerText = select ? select.options[select.selectedIndex].text : ''; // Solo el texto de la opción seleccionada
+                        } else {
+                            td.innerText = cell.innerText; // Texto normal
+                        }
+                        newRow.appendChild(td);
+                    }
+                });
+                exportTbody.appendChild(newRow);
             });
 
-            let datos = tableExport.getExportData();
-            let preferenciasDocumento = datos.tabla.xlsx;
-
-            tableExport.export2file(
-                preferenciasDocumento.data,
-                preferenciasDocumento.mimeType,
-                preferenciasDocumento.filename,
-                preferenciasDocumento.fileExtension,
-                preferenciasDocumento.merges,
-                preferenciasDocumento.RTL,
-                preferenciasDocumento.sheetname
-            );
+            // Exportar a Excel
+            let wb = XLSX.utils.table_to_book(exportTable, {
+                sheet: "Trabajos"
+            });
+            XLSX.writeFile(wb, 'Reporte de Pedidos de Trabajo.xlsx');
         });
     });
-</script> <!-- SCRIPTS PARA EXPORTAR A EXCEL -->
+</script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -294,78 +333,112 @@
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-
 <style>
-    body {
-        align-items: center;
-        justify-content: center;
-        width: 105%;
-        margin: 30px auto;
-        padding: 20px;
-        background-color: #e0e8f1;       
-    }
-
     #warningMessagePen {
         display: block;
         overflow: auto;
         word-wrap: break-word;
     }
-    a.btn-action {
-        display: inline-block;
-        text-decoration: none;
-        padding: 8px 12px;
-        margin: 4px;
-        border: 1px solid #003d6b;
-        border-radius: 5px;
-        background-color: #003d6b;
-        color: white;
-        transition: background-color 0.3s, transform 0.3s;
+
+    body {
+        margin: 0; /* Sin márgenes en el body */
+        padding: 20px; /* Aumentar el espacio interno */
+        background-color: #e0e8f1; /* Color de fondo */
+        border: 1px solid #003d6b; /* Borde alrededor del body */
+        border-radius: 8px; /* Bordes redondeados */
+        box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2); /* Sombra */
+        overflow-x: hidden; /* Evitar desbordamiento horizontal */
+        max-width: 95%; /* Aumentar el ancho máximo del body */
+        margin-left: auto; /* Centrar horizontalmente */
+        margin-right: auto; /* Centrar horizontalmente */
+        width: 100%; /* Asegurar que el body ocupe todo el ancho */
     }
 
-        a.btn-action:hover {
-            background-color: #002e5d;
-            transform: translateY(-2px);
+    h3 {
+        font-size: 3em; /* Tamaño de fuente */
+        color: #003d6b;
+        margin: 5px 0; /* Ajustar márgenes */
+        font-weight: bold;
+    }
+
+    a.btn-action, button {
+        display: inline-block;
+        text-decoration: none;
+        padding: 4px 6px; /* Ajustar el padding */
+        margin: 2px; /* Reducir margen */
+        border: 1px solid #003d6b; /* Bordes de botones */
+        border-radius: 4px; /* Bordes más redondeados */
+        background-color: #003d6b; /* Color de fondo de los botones */
+        color: white;
+        transition: background-color 0.3s, transform 0.3s;
+        font-size: 0.8em; /* Tamaño de fuente reducido */
+    }
+
+        a.btn-action:hover, button:hover {
+            background-color: #002e5d; /* Color al pasar el mouse */
+            transform: translateY(-1px); /* Sutil efecto al pasar el mouse */
         }
+
+    table {
+        width: 100%; /* Asegura que la tabla ocupe todo el ancho */
+        margin-top: 10px; /* Margen superior de la tabla */
+        border-collapse: collapse; /* Colapsa los bordes de la tabla */
+        font-size: 0.75em; /* Tamaño de fuente más pequeño */
+    }
+
+    th, td {
+        padding: 4px; /* Ajustar espaciado interno */
+        text-align: left; /* Alinear texto a la izquierda */
+        border-bottom: 1px solid #ddd; /* Bordes inferiores */
+    }
+
+    th {
+        background-color: #e0e8f1; /* Fondo de los encabezados */
+        color: #003d6b; /* Color del texto de los encabezados */
+    }
+
+    /* Estilos para el modal */
+    .modal-content {
+        padding: 5px; /* Espaciado interno del contenido del modal */
+    }
+
+    .modal-header, .modal-footer {
+        border: none; /* Sin borde en el encabezado y pie del modal */
+    }
 
     button {
         display: inline-block;
         text-decoration: none;
-        padding: 8px 12px;
-        margin: 4px;
-        border: 1px solid #4caf50;
-        border-radius: 5px;
-        background-color: #4caf50;
+        padding: 4px 6px; /* Ajustar el padding */
+        margin: 2px; /* Reducir margen */
+        border: 1px solid #4caf50; /* Bordes de botones */
+        border-radius: 4px; /* Bordes más redondeados */
+        background-color: #4caf50; /* Color de fondo de los botones */
         color: white;
         transition: background-color 0.3s, transform 0.3s;
+        font-size: 0.8em; /* Tamaño de fuente reducido */
     }
 
         button:hover {
-            background-color: #002e5d;
-            transform: translateY(-2px);
+            background-color: #4caf50; /* Mantener el color al pasar el mouse */
+            transform: translateY(-2px); /* Efecto al pasar el mouse */
         }
 
-    table {
-        width: 100%;
-        margin-top: 20px;
-        border-collapse: collapse;
+    .filtrar {
+        display: inline-block;
+        text-decoration: none;
+        padding: 4px 6px; /* Ajustar el padding */
+        margin: 2px; /* Reducir margen */
+        border: 1px solid #ff9800; /* Bordes de botones */
+        border-radius: 4px; /* Bordes más redondeados */
+        background-color: #ff9800; /* Color de fondo de los botones */
+        color: white;
+        transition: background-color 0.3s, transform 0.3s;
+        font-size: 0.8em; /* Tamaño de fuente reducido */
     }
 
-    th, td {
-        padding: 10px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;   
-    }
-
-    th {
-        background-color: #e0e8f1;
-        color: #003d6b;
-    }
-
-    h3 {
-        font-size: 3em;
-        color: #003d6b;
-        margin-top: 20px;
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
-</style> 
+        .filtrar:hover {
+            background-color: #ff9800; /* Mantener el color al pasar el mouse */
+            transform: translateY(-2px); /* Efecto al pasar el mouse */
+        }
+</style>

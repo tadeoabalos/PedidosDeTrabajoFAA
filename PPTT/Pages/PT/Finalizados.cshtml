@@ -6,7 +6,7 @@
 }
 
 <h3>Pedidos de Trabajo Finalizados</h3>
-<a asp-page="./Index">Volver a Index de trabajos</a>
+<a asp-page="./Index"class="btn-action">Volver a Index de trabajos</a>
 <table class="table" id="tabla">
     <thead>
         <tr>
@@ -85,7 +85,7 @@
                 </td>
                 <td>
                     @Html.Raw(item.Tarea.Descripcion_Tarea.Length > 3 ?
-                             item.Tarea.Descripcion_Tarea.Substring(3) :
+                             item.Tarea.Descripcion_Tarea.Substring(0) :
                              item.Tarea.Descripcion_Tarea)
                 </td>
                 <td>
@@ -95,13 +95,13 @@
                     @Html.DisplayFor(modelItem => item.Estado.Descripcion_Estado)
                 </td>              
                 <td>
-                    <a asp-page="./Details" asp-route-id="@item.ID_Orden_Trabajo_Pk">Editar Estado</a>
+                    <a asp-page="./Details" class="btn-action" asp-route-id="@item.ID_Orden_Trabajo_Pk">Editar Estado</a>
                 </td>
             </tr>}
         }
     </tbody>
 </table>
-<a class="btn-action" asp-page="./Menu">Volver al Menu</a>
+<a class="btn-action" asp-page="./Menu"class="btn-action">Volver al Menu</a>
 <button id="btnExportar">Exportar Excel</button>
 
 
