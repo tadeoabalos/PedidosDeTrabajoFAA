@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using PPTT.Data;
 using PPTT.Models;
 
 namespace PPTT.Pages.Administradores
@@ -23,7 +19,11 @@ namespace PPTT.Pages.Administradores
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+            HttpContext.Session.SetInt32("UserRole", _rol);
 
+            if (_rol == 2)
+            {
                 int datos = HttpContext.Session.GetInt32("datos") ?? 0;
                 HttpContext.Session.SetInt32("datos", datos);
                 if (datos == 0)
@@ -33,25 +33,29 @@ namespace PPTT.Pages.Administradores
                     Console.WriteLine(datos);
                     return RedirectToPage("/Administradores/TraerServicio");
                 }
+                else
+                {
+                    if (id == null)
+                    {
+                        return NotFound();
+                    }
+
+                    var admin = await _context.Usuario.FirstOrDefaultAsync(m => m.ID_Usuario_Pk == id);
+                    if (admin == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        Admin = admin;
+                    }
+                    return Page();
+                }
+            }
             else
             {
-            if (id == null)
-            {
-                return NotFound();
+                return RedirectToPage("/Vistas/MenuLog");
             }
-
-            var admin = await _context.Usuario.FirstOrDefaultAsync(m => m.ID_Usuario_Pk == id);
-            if (admin == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                Admin = admin;
-            }
-            return Page();
-            }
-
         }
     }
 }

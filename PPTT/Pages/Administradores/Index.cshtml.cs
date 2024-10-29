@@ -25,18 +25,33 @@ namespace PPTT.Pages.Administradores
         }
         public async Task<IActionResult> OnGetAsync()
         {
-            int datos = HttpContext.Session.GetInt32("datos") ?? 0;
-            HttpContext.Session.SetInt32("datos", datos);
-            if (datos == 0)
+            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+            HttpContext.Session.SetInt32("UserRole", _rol);
+
+            if (_rol < 2)
             {
-                datos = datos + 1;
-                HttpContext.Session.SetInt32("datos", datos);
-                Console.WriteLine(datos);
-                return RedirectToPage("/Administradores/TraerServicio");
+                return RedirectToPage("/Index");
             }
-            else  
+            else if (_rol > 1)
             {
-                Admin = await _context.Usuario.ToListAsync();
+                int datos = HttpContext.Session.GetInt32("datos") ?? 0;
+                HttpContext.Session.SetInt32("datos", datos);
+                if (datos == 0)
+                {
+                    datos = datos + 1;
+                    HttpContext.Session.SetInt32("datos", datos);
+                    Console.WriteLine(datos);
+                    return RedirectToPage("/Administradores/TraerServicio");
+                }
+                else
+                {
+                    Admin = await _context.Usuario.ToListAsync();
+                    return Page();
+                }
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Rol no reconocido.");
                 return Page();
             }
         }

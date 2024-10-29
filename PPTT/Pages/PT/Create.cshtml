@@ -5,15 +5,15 @@
     ViewData["Title"] = "Crear Orden de Trabajo";
 }
 
-<h1>@ViewData["Title"]</h1>
 
-<h4>Orden de Trabajo</h4>
-<hr />
+
+<h3>Orden de Trabajo</h3>
+
 <div class="row">
     <div class="col-md-4">
         <form method="post">
-            <h3>Datos del solicitante: </h3>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>                 
+            <h2>Datos del solicitante: </h2>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.ID_Grado_Fk" class="control-label"></label>
                 <select asp-for="PedidoTrabajo.ID_Grado_Fk"
@@ -27,13 +27,13 @@
                     <option hidden selected value="">Seleccione el Grado</option>
                 </select>
                 <span asp-validation-for="PedidoTrabajo.ID_Grado_Fk" class="text-danger"></span>
-            </div>           
+            </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.RTI_Solicitante" class="control-label"></label>
                 <input asp-for="PedidoTrabajo.RTI_Solicitante" class="form-control" />
                 <span asp-validation-for="PedidoTrabajo.RTI_Solicitante" class="text-danger"></span>
-            </div>              
-           <div class="form-group">
+            </div>
+            <div class="form-group">
                 <label asp-for="PedidoTrabajo.ID_Organismo_Fk" class="control-label"></label>
                 <select asp-for="PedidoTrabajo.ID_Organismo_Fk"
                         asp-items="Model.Organismos.Select(d=> new SelectListItem
@@ -49,17 +49,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" id="dependenciaLabel" class="control-label"></label>
-                <br/>
                 <select asp-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" id="dependenciaSelect" class="formControl">
-                    <option hidden select value="">Seleccione la dependencia correspondiente</option>                    
+                    <option hidden select value="">Seleccione la dependencia correspondiente</option>
                 </select>
                 <span asp-validation-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" class="text-danger"></span>
-            </div>      
+            </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.Correo" class="control-label"></label>
                 <input asp-for="PedidoTrabajo.Correo" class="form-control" />
                 <span asp-validation-for="PedidoTrabajo.Correo" class="text-danger"></span>
-            </div>            
+            </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.Nombre_Solicitante" class="control-label"></label>
                 <input asp-for="PedidoTrabajo.Nombre_Solicitante" class="form-control" />
@@ -69,7 +68,7 @@
                 <label asp-for="PedidoTrabajo.Apellido_Solicitante" class="control-label"></label>
                 <input asp-for="PedidoTrabajo.Apellido_Solicitante" class="form-control" />
                 <span asp-validation-for="PedidoTrabajo.Apellido_Solicitante" class="text-danger"></span>
-            </div>   
+            </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.DNI_Solicitante" class="control-label"></label>
                 <input asp-for="PedidoTrabajo.DNI_Solicitante" class="form-control" />
@@ -79,13 +78,13 @@
                 <label asp-for="PedidoTrabajo.Numero_Control_Solicitante" class="control-label"></label>
                 <input asp-for="PedidoTrabajo.Numero_Control_Solicitante" class="form-control" />
                 <span asp-validation-for="PedidoTrabajo.Numero_Control_Solicitante" class="text-danger"></span>
-            </div> 
-            <br/>
-            <hr/>
+            </div>
+            <br />
+            <hr />
             @{
                 // DATOS DEL TRABAJO
             }
-            <h3>Datos del trabajo: </h3>
+            <h2>Datos del trabajo: </h2>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.ID_Division_Fk" class="control-label"></label>
                 <select asp-for="PedidoTrabajo.ID_Division_Fk"
@@ -102,22 +101,20 @@
             </div>
             <div class="form-group">
                 <label id="servicioLabel" class="control-label">Servicio</label>
-                <br />
                 <select id="servicioSelect" class="formControl">
                     <option hidden select value="">Seleccione el servicio correspondiente</option>
                 </select>
             </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.ID_Tarea_Fk" id="tareaLabel" class="control-label"></label>
-                <br/>
                 <select asp-for="PedidoTrabajo.ID_Tarea_Fk" id="tareaSelect" class="formControl">
-                    <option hidden select value="">Seleccione la tarea correspondiente</option>                    
+                    <option hidden select value="">Seleccione la tarea correspondiente</option>
                 </select>
                 <span asp-validation-for="PedidoTrabajo.ID_Tarea_Fk" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.Piso_Oficina_PT" class="control-label"></label>
-                <select asp-for="PedidoTrabajo.Piso_Oficina_PT" class="form-control" asp-items="Model.PisosOficina">
+                <select asp-for="PedidoTrabajo.Piso_Oficina_PT" class="bordered" asp-items="Model.PisosOficina">
                     <option hidden selected value="">Piso Pedido de Trabajo</option>
                 </select>
                 <span asp-validation-for="PedidoTrabajo.Piso_Oficina_PT" class="text-danger"></span>
@@ -129,14 +126,14 @@
             </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.Color_Oficina_PT" class="control-label"></label>
-                <select asp-for="PedidoTrabajo.Color_Oficina_PT" class="form-control" asp-items="Model.ColoresOficina">
+                <select asp-for="PedidoTrabajo.Color_Oficina_PT" class="bordered" asp-items="Model.ColoresOficina">
                     <option hidden selected value="">Seleccione un color</option>
                 </select>
                 <span asp-validation-for="PedidoTrabajo.Color_Oficina_PT" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PedidoTrabajo.Observacion" class="control-label"></label>
-                <textarea asp-for="PedidoTrabajo.Observacion" class="form-control custom-textarea"></textarea>
+                <textarea asp-for="PedidoTrabajo.Observacion" class="custom-textarea"></textarea>
                 <span asp-validation-for="PedidoTrabajo.Observacion" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -145,11 +142,9 @@
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-page="Index">Volver a la lista</a>
+<div class="centered-button">
+    <a href="/" class="vol">Volver al Menu</a>
 </div>
-
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -234,5 +229,204 @@
                 });
             });
         </script>
+    <style>
+        body {
+            background-color: #e0e8f1;
+        }
+
+        a.btn-action {
+            display: inline-block;
+            text-decoration: none;
+            padding: 8px 12px;
+            margin: 4px;
+            border: 1px solid #003d6b;
+            border-radius: 5px;
+            background-color: #003d6b;
+            color: white;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+            a.btn-action:hover {
+                background-color: #002e5d;
+                transform: translateY(-2px);
+            }
+
+
+        input[type=submit] {
+            display: inline-block;
+            text-decoration: none;
+            padding: 8px 12px;
+            margin: 4px;
+            border: 1px solid #003d6b;
+            border-radius: 5px;
+            background-color: #003d6b;
+            color: white;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+            input[type=submit]:hover {
+                background-color: #002e5d;
+                transform: translateY(-2px);
+            }
+
+        .vol {
+            display: inline-block;
+            text-decoration: none;
+            padding: 8px 12px;
+            margin: 4px;
+            border: 1px solid #003d6b;
+            border-radius: 5px;
+            background-color: #003d6b;
+            color: white;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+            .vol:hover {
+                background-color: #002e5d;
+                transform: translateY(-2px);
+            }
+        form {
+            align-items: center;
+            justify-content: center;
+            width: 155%;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #e0e8f1;
+            border: 1px solid #003d6b;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2);
+        }
+
+        legend {
+            font-size: 1.2em;
+            color: #003d6b;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .submit {
+            background-color: #003d6b;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .submit:hover {
+                background-color: #002e5d;
+            }
+
+        h4 {
+            color: #003d6b;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        asap-for {
+            color: #003d6b;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        h3 {
+            font-size: 3em;
+            color: #003d6b;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            color: #003d6b;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .custom-textarea {
+            width: 100%;
+            height: 150px;
+            resize: none;
+            border: 1px solid #003d6b;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        a.btn-action:hover {
+            background-color: #002e5d; /* Color en hover */
+            transform: translateY(-2px);
+        }
+
+        label,
+        input[type="text"],
+        select,
+        .submit,
+        h4 {
+            font-size: 1em;
+            font-weight: bold;
+            color: #003d6b; /* Asegurarte de que las etiquetas label y h4 compartan el mismo color */
+        }
+
+        input[type="number"],
+        select,
+        .submit,
+        h4 {
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #003d6b;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #003d6b;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #003d6b;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .centered-button {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .bordered {
+            border: 1px solid #003d6b;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .row {
+            align-items: center;
+            justify-content: center;
+        }
+
+    </style>
 }
 

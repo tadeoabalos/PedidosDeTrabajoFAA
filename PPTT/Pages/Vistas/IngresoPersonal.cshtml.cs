@@ -1,12 +1,9 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PPTT.Pages.Vistas
 {
@@ -55,15 +52,12 @@ namespace PPTT.Pages.Vistas
             //lo hasheo
             byte[] hashContraseña;
             hashContraseña = MD5.HashData(bytesContraseña);
-            Console.WriteLine(hashContraseña);
             bool isValid = await EjecutarValidarStoredProcedure(DNI, NumeroDeControl, hashContraseña);
 
             if (isValid)
             {
                 HttpContext.Session.SetInt32("UserRole", _rol);
                 HttpContext.Session.SetString("UserName", _nombre);
-                Console.WriteLine($"Rol: {_rol}, Nombre: {_nombre}, Ingreso: {_ingreso}");
-
                 //lo llevo a una pagina hecha para cambiar su contraseña para sacar la predeterminada
                 if (_ingreso == 0)
                 {
@@ -113,8 +107,7 @@ namespace PPTT.Pages.Vistas
                             {
                                 _rol = reader.GetInt32(0);
                                 _nombre = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
-                                _ingreso = reader.IsDBNull(2) ? 0 : reader.GetInt32(2);
-                                Console.WriteLine($"Rol: {_rol}, Nombre: {_nombre}, Ingreso: {_ingreso}");
+                                _ingreso = reader.IsDBNull(2) ? 0 : reader.GetInt32(2);                
                                 return _rol != 0;
                             }
                             else

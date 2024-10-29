@@ -1,23 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.ComponentModel.DataAnnotations;
 using System.Data;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Newtonsoft.Json;
-using PPTT.Data;
 using PPTT.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Configuration;
 namespace PPTT.Pages.PT
 {
     public class CreatePPTT : PageModel
@@ -114,7 +102,6 @@ namespace PPTT.Pages.PT
                 }
                 return Page();
             }
-
             PedidoTrabajo.Fecha_Subida = DateTime.Now;
             PedidoTrabajo.IP_Solicitante = HttpContext.Connection.RemoteIpAddress?.ToString();
             PedidoTrabajo.ID_Prioridad_Fk = 1;
@@ -149,14 +136,6 @@ namespace PPTT.Pages.PT
                             if (await reader.ReadAsync())
                             {
                                 idOrden = reader.GetInt32(0); // Asigna el ID retornado
-                                _logger.LogInformation($"ID Orden retornado: {idOrden}");
-                                _logger.LogInformation($"ID Orden retornado: {idOrden}");
-                                _logger.LogInformation($"ID Orden retornado: {idOrden}");
-                                Console.WriteLine(idOrden);
-                                Console.WriteLine(idOrden);
-                                Console.WriteLine(idOrden);
-
-                                Console.WriteLine(idOrden);
                             }
                         }
                     }
@@ -172,10 +151,10 @@ namespace PPTT.Pages.PT
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Division = await _context.GetDivisionAsync();
-            Grados = await _context.GetGradosAsync();            
-            Organismos = await _context.GetOrganismoAsync();
-            return Page();
+                Division = await _context.GetDivisionAsync();
+                Grados = await _context.GetGradosAsync();
+                Organismos = await _context.GetOrganismoAsync();
+                return Page();
         }
         public async Task<JsonResult> OnGetServiciosByDivisionAsync(string division)
         {

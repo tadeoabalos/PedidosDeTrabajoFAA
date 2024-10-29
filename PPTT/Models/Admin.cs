@@ -31,6 +31,8 @@ namespace PPTT.Models
         [Display(Name = "División")]
         public int? ID_Division_Fk {  get; set; }
         [Display(Name = "Servicio")]
+
+        [Required(ErrorMessage = "Debes seleccionar un servicio.")]
         public int? ID_Servicio_Fk { get; set; }
         [Display(Name ="Fecha de Alta")]
         public DateTime? Fecha_Alta { get; set; }

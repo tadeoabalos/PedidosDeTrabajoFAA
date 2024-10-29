@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using PPTT.Data;
 using PPTT.Models;
+
 
 namespace PPTT.Pages.Administradores
 {
@@ -24,22 +21,45 @@ namespace PPTT.Pages.Administradores
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null)
+            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+
+            if (_rol < 2)
             {
-                return NotFound();
+                return RedirectToPage("/Index");
             }
-
-            var admin = await _context.Usuario.FirstOrDefaultAsync(m => m.ID_Usuario_Pk == id);
-
-            if (admin == null)
+            else if (_rol > 1)
             {
-                return NotFound();
+                int datos = HttpContext.Session.GetInt32("datos") ?? 0;
+                HttpContext.Session.SetInt32("datos", datos);
+                if (datos == 0)
+                {
+                    datos = datos + 1;
+                    HttpContext.Session.SetInt32("datos", datos);
+                    Console.WriteLine(datos);
+                    return RedirectToPage("/Administradores/TraerServicio");
+                }
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var admin = await _context.Usuario.FirstOrDefaultAsync(m => m.ID_Usuario_Pk == id);
+
+                if (admin == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    Admin = admin;
+                }
+                return Page();
             }
             else
             {
-                Admin = admin;
+                ModelState.AddModelError(string.Empty, "Rol no reconocido.");
+                return Page();
             }
-            return Page();
         }                                                                                           
                                                                                                                                                                                                                                                                                                                         
         public async Task<IActionResult> OnPostAsync(int? id)

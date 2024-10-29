@@ -1,12 +1,10 @@
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PPTT.Pages.Administradores
 {
@@ -20,27 +18,42 @@ namespace PPTT.Pages.Administradores
 
         public async Task<IActionResult> OnGetAsync()
         {
-            int DNI = HttpContext.Session.GetInt32("DNI") ?? 0;
-            Console.WriteLine("DNI del usuario: " + DNI);
+            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+            HttpContext.Session.SetInt32("UserRole", _rol);
 
-            // Convertir el DNI a string, invertirlo y crear el hash MD5
-            string numeroStr = DNI.ToString();
-            string numeroInvertido = new string(numeroStr.Reverse().ToArray());
-            byte[] bytesContraseña = Encoding.ASCII.GetBytes(numeroInvertido);
-            byte[] hashContraseña = MD5.HashData(bytesContraseña);  
-
-            Console.WriteLine("Hash de la contraseña (en bytes): " + BitConverter.ToString(hashContraseña));
-
-            // Llamar al stored procedure para crear o actualizar la contraseña
-            bool isValid = await CrearContraStoredProcedure(DNI, hashContraseña);
-            if (isValid)
+            if (_rol < 2)
             {
-                Console.WriteLine("Contraseña actualizada correctamente.");
-                return RedirectToPage("/Administradores/Index");
+                return RedirectToPage("/Index");
+            }
+            else if (_rol > 1)
+            {
+                int DNI = HttpContext.Session.GetInt32("DNI") ?? 0;
+                Console.WriteLine("DNI del usuario: " + DNI);
+
+                // Convertir el DNI a string, invertirlo y crear el hash MD5
+                string numeroStr = DNI.ToString();
+                string numeroInvertido = new string(numeroStr.Reverse().ToArray());
+                byte[] bytesContraseña = Encoding.ASCII.GetBytes(numeroInvertido);
+                byte[] hashContraseña = MD5.HashData(bytesContraseña);
+
+                Console.WriteLine("Hash de la contraseña (en bytes): " + BitConverter.ToString(hashContraseña));
+
+                // Llamar al stored procedure para crear o actualizar la contraseña
+                bool isValid = await CrearContraStoredProcedure(DNI, hashContraseña);
+                if (isValid)
+                {
+                    Console.WriteLine("Contraseña actualizada correctamente.");
+                    return RedirectToPage("/Administradores/Index");
+                }
+                else
+                {
+                    Console.WriteLine("Error al actualizar la contraseña.");
+                    return Page();
+                }
             }
             else
             {
-                Console.WriteLine("Error al actualizar la contraseña.");
+                ModelState.AddModelError(string.Empty, "Rol no reconocido.");
                 return Page();
             }
         }
