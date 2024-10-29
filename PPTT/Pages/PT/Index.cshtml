@@ -4,7 +4,6 @@
 @{
     ViewData["Title"] = "Pedidos de trabajo";
 }
-
 <h3>Pedidos de Trabajo</h3>
 <a asp-page="./Finalizados" class="btn-action">Trabajos Finalizados</a>
 <table class="table" id="tabla">
@@ -334,6 +333,16 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <style>
+    body {
+        margin: 0; 
+        padding: 0;
+        align-items: center;
+        justify-content: center;
+        width: 100%; 
+        padding: 20px;
+        background-color: #e0e8f1;       
+    }
+
     #warningMessagePen {
         display: block;
         overflow: auto;
@@ -441,4 +450,12 @@
             background-color: #ff9800; /* Mantener el color al pasar el mouse */
             transform: translateY(-2px); /* Efecto al pasar el mouse */
         }
-</style>
+    .container {
+        width: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: none !important;
+    }
+
+
+</style> 

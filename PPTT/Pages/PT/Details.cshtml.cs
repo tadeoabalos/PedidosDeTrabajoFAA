@@ -23,6 +23,14 @@ namespace PPTT.Pages.PT
         public List<Estado> Estado { get; set; } = default!;
         public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();
         public int PrioridadId;
+        public List<Motivo> Motivos { get; set; } = new List<Motivo>(); 
+
+        public void RetornaMotivo(int IdPt, int IdEstado)
+        {           
+            Motivos = _context.Motivo
+                .FromSqlRaw("EXEC [dbo].[RetornaMotivo] @p0, @p1", IdPt, IdEstado)
+                .ToList(); 
+        }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -74,6 +82,7 @@ namespace PPTT.Pages.PT
                 return StatusCode(500, "Error interno del servidor.");
             }
 
+            RetornaMotivo(PedidoTrabajo.ID_Orden_Trabajo_Pk, PedidoTrabajo.ID_Estado_Fk);
             return Page();
         }
 

@@ -201,11 +201,11 @@
                         <br />
                         <label id="labelMotivoSuspension">Motivo de suspensión:</label>
                         <select id="motivo" name="motSus">
-                            <option value="faltaMaterial">Falta de material</option>
-                            <option value="faltaPersonal">Falta de personal</option>
-                            <option value="faltaHerramientas">Falta de herramientas</option>
-                            <option value="condicionRiesgosa">Condición riesgosa</option>
-                            <option value="esperaMaterial">A la espera de material</option>
+                            <option value="Falta De Material">Falta de material</option>
+                            <option value="Falta de personal">Falta de personal</option>
+                            <option value="Falta de herramientas">Falta de herramientas</option>
+                            <option value="Condición riesgosa">Condición riesgosa</option>
+                            <option value="A la espera de material">A la espera de material</option>
                         </select>
                         <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
                     </div>
@@ -282,17 +282,91 @@
         </div>
     </div>
     </div><!-- VENTANA MODAL DE PRIORIDAD -->
+    <div id="DescripcionMotivoCancelacion">
+        <hr/>
+        <h4>Motivo de la Cancelación</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha y Hora</th> 
+                    <th>Motivo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if ((Model.Motivos != null && Model.Motivos.Any()))
+                {
+                    foreach (var motivo in Model.Motivos)
+                    {
+                        @if (motivo.ID_Estado_Fk == 1006) 
+                        {
+                            <tr>
+                                <td>@motivo.Fecha</td> 
+                                <td>@motivo.motivo</td> 
+                            </tr>                        
+                        }
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="2">No hay motivos disponibles.</td> 
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div id="DescripcionMotivoSuspension">
+        <hr />
+        <h4>Motivo de la Suspensión</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha y Hora</th>
+                    <th>Motivo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if ((Model.Motivos != null && Model.Motivos.Any()))
+                {
+                    foreach (var motivo in Model.Motivos)
+                    {
+                        @if (motivo.ID_Estado_Fk == 1005)
+                        {
+                            <tr>
+                                <td>@motivo.Fecha</td>
+                                <td>@motivo.motivo</td>
+                            </tr>
+                        }
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="2">No hay motivos disponibles.</td> 
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
     <div>
         <a asp-page="./Index"class="btn-action">Back to List</a>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="Motivo
+CANCELADOhttps://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function () {
             let EstadoOriginalValue = deptSelect.value;
-            let PrioridadOriginalValue = prioSelect.value;
-            
+            let PrioridadOriginalValue = prioSelect.value;                      
+            $('#DescripcionMotivoSuspension').hide();
+            $('#DescripcionMotivoCancelacion').hide();
+            if (EstadoOriginalValue == 1005) {
+                $('#DescripcionMotivoSuspension').show();
+            }
+            if (EstadoOriginalValue == 1006) {
+                $('#DescripcionMotivoCancelacion').show();
+            }
             function VolverAEstadoOriginal (){
                 document.getElementById('deptSelect').value = EstadoOriginalValue;
             }
@@ -328,7 +402,7 @@
                     $('#fechaFinalizacion').val(getTodayDate());
                 }
                 if (selectedOption == 1005 ) {
-                    console.log(selectedOption + EstadoOriginalValue);
+                   
                     $('#ModalEstSus').modal('show');
                     $('#fechaInicioSuspendido').val(getTodayDate());
                 }
