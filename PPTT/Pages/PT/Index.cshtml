@@ -125,6 +125,22 @@
         }
     </tbody>
 </table>
+<div class="pagination">
+    @if (Model.PedidoTrabajo.HasPreviousPage)
+    {
+        <a asp-page="./Index" asp-route-pageIndex="@(Model.PedidoTrabajo.PageIndex - 1)" class="pag">Anterior</a>
+    }
+
+    @for (int i = 1; i <= Model.PedidoTrabajo.TotalPages; i++)
+    {
+        <a asp-page="./Index" asp-route-pageIndex="@i" class="pag">@i</a>
+    }
+
+    @if (Model.PedidoTrabajo.HasNextPage)
+    {
+        <a asp-page="./Index" asp-route-pageIndex="@(Model.PedidoTrabajo.PageIndex + 1)" class="pag">Siguiente</a>
+    }
+</div>
 <a class="btn-action" asp-page="./Menu">Volver al Menu</a>
 <button id="btnExportar">Exportar Excel</button>
 
@@ -374,9 +390,17 @@
         margin: 0 !important;
         padding: 0 !important;
         max-width: none !important;
-    }
-    tr {
+    }    
+    table tr:nth-child(odd) td {
         background-color: #e0e8f1;
+    }    
+    table tr:nth-child(even) td {
+        background-color: #eeeeee;
+    }
+    .pag {
+        margin: 5px;
+        text-decoration: none;
+        color:midnightblue;
     }
 
 </style> 
