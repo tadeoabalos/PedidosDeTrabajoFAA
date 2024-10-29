@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PPTT.Data;
 using PPTT.Models;
@@ -22,7 +23,7 @@ namespace PPTT.Pages.Administradores
         public List<Admin> Usuarios { get; set; } = new List<Admin>();
         public Orden_Asignada Orden_Asignada { get; set; }
         public PTUsuario PT { get; set; } = default!;
-        public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();        
+        public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();
         public async Task OnGetAsync()
         {
             Prioridad = await _context.GetPrioridadAsync();
@@ -33,7 +34,7 @@ namespace PPTT.Pages.Administradores
                 .Include(pt => pt.Prioridad)
                 .Include(pt => pt.Dependencia_Interna)
                 .Include(pt => pt.Grado)
-                .ToListAsync();
+                .ToListAsync();            
         }
         public async Task<JsonResult> OnGetUsuariosFiltradosAsync(string division)
         {

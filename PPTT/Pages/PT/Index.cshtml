@@ -4,7 +4,6 @@
 @{
     ViewData["Title"] = "Pedidos de trabajo";
 }
-
 <h3>Pedidos de Trabajo</h3>
 <a asp-page="./Finalizados">Trabajos Finalizados</a>
 <table class="table" id="tabla">
@@ -61,7 +60,7 @@
         @foreach (var item in Model.PedidoTrabajo)
         {
             @if (item.ID_Estado_Fk != 1004 ) { 
-            <tr>
+            <tr class="registros">
                 <td>
                     @Html.DisplayFor(modelItem => item.ID_Orden_Fk)
                 </td>
@@ -297,10 +296,11 @@
 
 <style>
     body {
+        margin: 0; 
+        padding: 0;
         align-items: center;
         justify-content: center;
-        width: 105%;
-        margin: 30px auto;
+        width: 100%; 
         padding: 20px;
         background-color: #e0e8f1;       
     }
@@ -367,5 +367,16 @@
         margin-top: 20px;
         margin-bottom: 10px;
         font-weight: bold;
+    }   
+
+    .container {
+        width: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: none !important;
     }
+    tr {
+        background-color: #e0e8f1;
+    }
+
 </style> 

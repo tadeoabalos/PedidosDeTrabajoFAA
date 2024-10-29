@@ -19,10 +19,19 @@ namespace PPTT.Pages.PT
             _context = context;
         }
         public List<Admin> Usuarios { get; set; } = new List<Admin>();
-        public PTUsuario? PedidoTrabajo { get; set; } = default!;      
+        public PTUsuario? PedidoTrabajo { get; set; } = default!;
         public List<Estado> Estado { get; set; } = default!;
         public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();
         public int PrioridadId;
+        public List<Motivo> Motivos { get; set; } = new List<Motivo>(); 
+
+        public void RetornaMotivo(int IdPt, int IdEstado)
+        {           
+            Motivos = _context.Motivo
+                .FromSqlRaw("EXEC [dbo].[RetornaMotivo] @p0, @p1", IdPt, IdEstado)
+                .ToList(); 
+        }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {            
             if (id == null)
@@ -33,9 +42,8 @@ namespace PPTT.Pages.PT
             {
                 Usuarios = await _context.GetUsuariosFiltradosByOrdenAsync(id);
             }
-            
             Estado = await _context.GetEstadosAsync();
-            Prioridad = await _context.GetPrioridadAsync();
+            Prioridad = await _context.GetPrioridadAsync();            
             PedidoTrabajo = await _context.PTUsuario
                 .Include(pt => pt.Organismo) 
                 .Include(pt => pt.Tarea) 
@@ -50,15 +58,16 @@ namespace PPTT.Pages.PT
                 return NotFound();
             }
 
+            RetornaMotivo(PedidoTrabajo.ID_Orden_Trabajo_Pk, PedidoTrabajo.ID_Estado_Fk);
             return Page();
-        }        
+        }
+        
 
         public async Task<JsonResult> OnGetPrioridadesAsync()
         {
             var prioridades = await _context.GetPrioridadAsync();
             return new JsonResult(prioridades);
         }        
-
         public async Task<IActionResult> OnPostFinalizarEstadoAsync(int OrdenTrabajoId)
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[FinalizarPedidoTrabajo] @p0", OrdenTrabajoId);
@@ -88,9 +97,7 @@ namespace PPTT.Pages.PT
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[PendientePedidoTrabajo] @p0", OrdenTrabajoId);
             return RedirectToPage("./Index");
-        }
-        
-
+        }        
     }
 }
 

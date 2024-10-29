@@ -30,6 +30,7 @@ namespace PPTT.Data
         public DbSet<PTUsuario> PTUsuarios { get; set; }
         public DbSet<Tarea> Tarea { get; set; }
         public DbSet<Orden_Asignada> Orden_Asignada { get; set; }
+        public DbSet<Motivo> Motivo { get; set; }
 
         // Sector funciones //
         public async Task<List<Estado>> GetEstadosAsync() 
@@ -83,7 +84,7 @@ namespace PPTT.Data
         public async Task<List<Admin>> GetUsuarioPorPtAsync(int PT) 
         {
             return await Usuario.FromSqlRaw("EXEC [dbo].[RetornaUsuarioPorPT] @p0", PT).ToListAsync();
-        }
+        }       
         // IDENTITYS
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -122,6 +123,9 @@ namespace PPTT.Data
 
             modelBuilder.Entity<Prioridad>()
             .HasKey(d => d.ID_Prioridad_Pk);
+
+            modelBuilder.Entity<Motivo>()
+            .HasKey(d => d.ID_Motivo_Pk);
         }
 
         internal object FromSqlRaw(string v, SqlParameter sqlParameter)
