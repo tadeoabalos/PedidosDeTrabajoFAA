@@ -12,7 +12,7 @@
         padding: 0;
     }
 
-    form {
+    .form-log {
         width: 60%;
         margin: 30px auto;
         padding: 20px;
@@ -38,7 +38,7 @@
     label,
     input[type="text"],
     select,
-    .submit,
+    .submit-log,
     h4 {
         font-size: 1em;
         font-weight: bold;
@@ -64,7 +64,7 @@
         background-color: white;
     }
 
-    .submit {
+    .submit-log {
         background-color: #003d6b;
         color: white;
         padding: 15px 30px;
@@ -80,17 +80,17 @@
         font-weight: bold;
     }
 
-        .submit:hover {
+        .submit-log:hover {
             background-color: #002e5d;
             transform: scale(1.05);
         }
 
-        .submit:active {
+        .submit-log:active {
             background-color: #001f3f;
             transform: scale(1);
         }
 
-    .centered-button {
+    .centered-button-log {
         display: flex;
         justify-content: center;
         margin-top: 20px;
@@ -99,7 +99,7 @@
 
 
 <body>
-    <form method="post">
+    <form method="post" class="form-log">
         <fieldset>
             <legend>Ingreso Personal</legend>
             <div>
@@ -115,17 +115,17 @@
                 <input type="password" id="Contraseña" name="Contraseña" value="" required />
             </div>
             <div>
-                <input type="submit" value="Enviar" class="submit" />
+                <input type="submit" value="Enviar" class="submit-log" />
             </div>
         </fieldset>
     </form>
-    <div class="centered-button">
-        <a href="/Vistas/OlvideContraseña" class="submit">Olvide Mi Contraseña</a>
+    <div class="centered-button-log">
+        <a href="/Vistas/OlvideContraseña" class="submit-log">Olvide Mi Contraseña</a>
     </div>
-    <div class="centered-button">
-        <a href="/Vistas/IngresoPrimeraVez" class="submit">Cambiar Mi Contraseña</a>
+    <div class="centered-button-log">
+        <a href="/Vistas/IngresoPrimeraVez" class="submit-log">Cambiar Mi Contraseña</a>
     </div>
-    <div class="centered-button">
-        <a href="/" class="submit">Volver al Menu</a>
+    <div class="centered-button-log">
+        <a href="/" class="submit-log">Volver al Menu</a>
     </div>
 </body>

@@ -4,10 +4,9 @@
 @{
     ViewData["Title"] = "Crear Usuario";
 }
-<h3>Crear Usuarios</h3>
-        <form method="post">
+<h3>Alta de Usuario</h3>
+<form method="post" class="form-usuario">
  <div class="row"> 
-
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Admin.Nombre" class="control-label"></label>
@@ -101,9 +100,7 @@
         })    
     </script>
     <style>
-     body {
-        background-color: #e0e8f1;
-    }
+   
     a.btn-action {
         display: inline-block;
         text-decoration: none;
@@ -119,27 +116,9 @@
         a.btn-action:hover {
             background-color: #002e5d;
             transform: translateY(-2px);
-        }
+        }       
 
-
-        input[type=submit] {
-            display: inline-block;
-            text-decoration: none;
-            padding: 8px 12px;
-            margin: 4px;
-            border: 1px solid #003d6b;
-            border-radius: 5px;
-            background-color: #003d6b;
-            color: white;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-            input[type=submit]:hover {
-                background-color: #002e5d;
-                transform: translateY(-2px);
-            }
-
-        form {
+        .form-usuario {
             align-items: center;
             justify-content: center;
             width: 65% ;
@@ -158,7 +137,7 @@
             font-weight: bold;
         }
 
-        .submit {
+        .submit-usuario {
             background-color: #003d6b;
             color: white;
             padding: 10px 20px;
@@ -166,11 +145,7 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
-        }
-
-            .submit:hover {
-                background-color: #002e5d;
-            }
+        }            
 
         h4 {
             color: #003d6b;
@@ -186,11 +161,10 @@
             font-weight: bold;
         }
 
+
         h3 {
-            font-size: 3em;
             color: #003d6b;
-            margin-top: 20px;
-            margin-bottom: 10px;
+            margin: 10px;
             font-weight: bold;
         }
 
@@ -208,7 +182,7 @@
         label,
         input[type="text"],
         select,
-        .submit,
+        .submit-usuario,
         h4 {
             font-size: 1em;
             font-weight: bold;
@@ -220,7 +194,7 @@
         .submit,
         h4 {
             font-size: 1em;
-            font-weight: bold;
+            
         }
 
         input[type="password"],
@@ -253,7 +227,7 @@
             background-color: white;
         }
 
-        .centered-button {
+        .centered-button-usuario {
             display: flex;
             justify-content: center;
             margin-top: 20px;

@@ -5,10 +5,6 @@
     ViewData["Title"] = "Crear Orden de Trabajo";
 }
 
-
-
-<h3>Orden de Trabajo</h3>
-
 <div class="row">
     <div class="col-md-4">
         <form method="post">
@@ -142,9 +138,6 @@
         </form>
     </div>
 </div>
-<div class="centered-button">
-    <a href="/" class="vol">Volver al Menu</a>
-</div>
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -232,6 +225,7 @@
     <style>
         body {
             background-color: #e0e8f1;
+            overflow-x: hidden;
         }
 
         a.btn-action {
@@ -252,22 +246,7 @@
             }
 
 
-        input[type=submit] {
-            display: inline-block;
-            text-decoration: none;
-            padding: 8px 12px;
-            margin: 4px;
-            border: 1px solid #003d6b;
-            border-radius: 5px;
-            background-color: #003d6b;
-            color: white;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-            input[type=submit]:hover {
-                background-color: #002e5d;
-                transform: translateY(-2px);
-            }
+        
 
         .vol {
             display: inline-block;
@@ -285,38 +264,13 @@
                 background-color: #002e5d;
                 transform: translateY(-2px);
             }
-        form {
-            align-items: center;
-            justify-content: center;
-            width: 155%;
-            margin: 30px auto;
-            padding: 20px;
-            background-color: #e0e8f1;
-            border: 1px solid #003d6b;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2);
-        }
-
+   
         legend {
             font-size: 1.2em;
             color: #003d6b;
             margin-bottom: 10px;
             font-weight: bold;
-        }
-
-        .submit {
-            background-color: #003d6b;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-            .submit:hover {
-                background-color: #002e5d;
-            }
+        }        
 
         h4 {
             color: #003d6b;
@@ -409,13 +363,7 @@
             border-radius: 4px;
             background-color: white;
         }
-
-        .centered-button {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
+       
         .bordered {
             border: 1px solid #003d6b;
             border-radius: 4px;
