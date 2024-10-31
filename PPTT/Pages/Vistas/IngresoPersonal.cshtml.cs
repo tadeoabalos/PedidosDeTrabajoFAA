@@ -36,7 +36,7 @@ namespace PPTT.Pages.Vistas
             Console.WriteLine(_rol);
             if (_rol > 0)
             {
-                return RedirectToPage("/Vistas/YaLog");
+                return RedirectToPage("../Index");
             }
             else
             {
@@ -64,13 +64,13 @@ namespace PPTT.Pages.Vistas
                     return RedirectToPage("/Vistas/IngresoPrimeraVez");
                 }
                 //decido a que menu lo mando, si al normal o al de admin
-                if (_rol < 2)
+                else if (_rol == 1)
                 {
                     return RedirectToPage("/Vistas/MenuLog");
                 }
-                else if (_rol > 1)
+                else if (_rol >= 2)
                 {
-                    return RedirectToPage("/Administradores/Menu");
+                    return RedirectToPage("/Vistas/IndexLogueado");                   
                 }
                 else
                 {

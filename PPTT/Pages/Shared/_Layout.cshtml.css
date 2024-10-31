@@ -39,10 +39,24 @@ button.accept-policy {
   line-height: inherit;
 }
 
+footer {
+    background-color: #1d3557;
+    color: #f1faee;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 0.9em;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    height: 5vh;
+}
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
+    background-color: #1d3557;
+    color: #f1faee;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 0.9em;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
 }

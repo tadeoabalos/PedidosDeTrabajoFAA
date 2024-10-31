@@ -4,8 +4,17 @@
 @{
     ViewData["Title"] = "Pedidos de trabajo";
 }
-<h3>Pedidos de Trabajo</h3>
-<a asp-page="./Finalizados" class="btn-action">Trabajos Finalizados</a>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="navbar-logo">Pedidos de Trabajo - Cuartel General</div>
+            <div class="centered-button">
+                <form method="post" asp-page-handler="cerrar">
+                    <input type="submit" value="Cerrar Sesion" class="submit" />
+                </form>                
+            </div>
+        </div>
+    </header>
 <table class="table" id="tabla">
     <thead>
         <tr>
@@ -113,8 +122,12 @@
     <input type="text" id="fechaFin" placeholder="dd-mm-yyyy" maxlength="10" />
 
     <button id="filtrar" class="filtrar">Filtrar</button>
+    <a asp-page="./Finalizados" class="btn-action">Trabajos Finalizados</a>
 </div>
-
+</body>
+<footer>
+    <p>Dirección de Informática - Departamento de Desarrollo y Mantenimiento de Sistemas</p>
+</footer>
 <script>
     function formatDateInput(input) {
         let value = input.value.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
@@ -349,42 +362,69 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <style>
+
+    header {
+        background-color: #1d3557; 
+        color: #f1faee; 
+        padding: 10px 0;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    }
     body {
-        margin: 0; 
-        padding: 0;
-        align-items: center;
-        justify-content: center;
-        width: 100%; 
-        padding: 20px;
-        background-color: #e0e8f1;       
+        overflow-y: hidden;
+    }
+    .submit {
+        background-color: #e63946;
+        color: #f1faee;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1em;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
     }
 
+        .submit:hover {
+            background-color: #d62828;
+            transform: scale(1.05);
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+        }
+    .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    
+    .logout-icon {
+        background-color: #e63946; /* Color del botón */
+        color: #f1faee;
+        padding: 8px 12px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+        .logout-icon:hover {
+            background-color: #d62828; /* Color al pasar el cursor */
+        }
+
+    footer {
+        background-color: #1d3557;
+        color: #f1faee;
+        padding: 15px 0;
+        text-align: center;
+        font-size: 0.9em;
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+    }    
     #warningMessagePen {
         display: block;
         overflow: auto;
         word-wrap: break-word;
-    }
-
-    body {
-        margin: 0; /* Sin márgenes en el body */
-        padding: 20px; /* Aumentar el espacio interno */
-        background-color: #e0e8f1; /* Color de fondo */
-        border: 1px solid #003d6b; /* Borde alrededor del body */
-        border-radius: 8px; /* Bordes redondeados */
-        box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2); /* Sombra */
-        overflow-x: hidden; /* Evitar desbordamiento horizontal */
-        max-width: 95%; /* Aumentar el ancho máximo del body */
-        margin-left: auto; /* Centrar horizontalmente */
-        margin-right: auto; /* Centrar horizontalmente */
-        width: 100%; /* Asegurar que el body ocupe todo el ancho */
-    }
-
-    h3 {
-        font-size: 3em; /* Tamaño de fuente */
-        color: #003d6b;
-        margin: 5px 0; /* Ajustar márgenes */
-        font-weight: bold;
-    }
+    }     
 
     a.btn-action, button {
         display: inline-block;
@@ -405,30 +445,29 @@
         }
 
     table {
-        width: 100%; /* Asegura que la tabla ocupe todo el ancho */
-        margin-top: 10px; /* Margen superior de la tabla */
+        width: 100%; /* Asegura que la tabla ocupe todo el ancho */        
         border-collapse: collapse; /* Colapsa los bordes de la tabla */
         font-size: 0.75em; /* Tamaño de fuente más pequeño */
     }
 
     th, td {
-        padding: 4px; /* Ajustar espaciado interno */
-        text-align: left; /* Alinear texto a la izquierda */
-        border-bottom: 1px solid #ddd; /* Bordes inferiores */
+        padding: 4px; 
+        text-align: left; 
+        border-bottom: 1px solid #ddd; 
+        height: 8vh;
     }
 
     th {
         background-color: #e0e8f1; /* Fondo de los encabezados */
         color: #003d6b; /* Color del texto de los encabezados */
-    }
+    }    
 
-    /* Estilos para el modal */
     .modal-content {
-        padding: 5px; /* Espaciado interno del contenido del modal */
+       padding: 5px; 
     }
 
     .modal-header, .modal-footer {
-        border: none; /* Sin borde en el encabezado y pie del modal */
+        border: none; 
     }
 
     button {
@@ -466,12 +505,6 @@
             background-color: #ff9800; /* Mantener el color al pasar el mouse */
             transform: translateY(-2px); /* Efecto al pasar el mouse */
         }
-    .container {
-        width: auto !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        max-width: none !important;
-    }    
     table tr:nth-child(odd) td {
         background-color: #e0e8f1;
     }    
@@ -482,8 +515,12 @@
         margin: 5px;
         text-decoration: none;
         color:midnightblue;
-
     }
-
+    .container {
+        width: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: none !important;
+    }    
 
 </style> 

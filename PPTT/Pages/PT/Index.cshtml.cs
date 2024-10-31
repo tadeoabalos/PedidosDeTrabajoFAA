@@ -3,7 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using PPTT.Data;
+using PPTT.Models;
 using PPTT.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -15,40 +24,34 @@ namespace PPTT.Pages.Administradores
         public IndexPPTT(PPTT.Data.DBPPTTContext context)
         {
             _context = context;
-        }      
+        }
         //public IList<PTUsuario> PedidoTrabajo { get;set; } = default!;
         public PaginatedList<PTUsuario> PedidoTrabajo { get; set; } = default!;
-
         [BindProperty]
         public List<Admin> Usuarios { get; set; } = new List<Admin>();
         public Orden_Asignada Orden_Asignada { get; set; }
         public PTUsuario PT { get; set; } = default!;
         public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task OnGetAsync(int? pageIndex)
         {
-        int pageSize = 8; 
+            int pageSize = 8; 
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
             int datos = 0;
+            Prioridad = await _context.GetPrioridadAsync();
             HttpContext.Session.SetInt32("datoss", datos);
 
-            if (_rol == 2)
-            {   var pedidosQuery = _context.PTUsuario
-                Prioridad = await _context.GetPrioridadAsync();
-                PedidoTrabajo = await _context.PTUsuario
-                    .Include(pt => pt.Organismo)
-                    .Include(pt => pt.Tarea)
-                    .Include(pt => pt.Estado)
-                    .Include(pt => pt.Prioridad)
-                    .Include(pt => pt.Dependencia_Interna)
-                    .Include(pt => pt.Grado)
-                    .ToListAsync();
-                  PedidoTrabajo = await PaginatedList<PTUsuario>.CreateAsync(pedidosQuery, pageIndex ?? 1, pageSize);
-                return Page();
-            }
-            
-            return RedirectToPage("/Vistas/MenuLog");
-
+                          
+                var pedidosQuery = _context.PTUsuario
+                .Include(pt => pt.Organismo)
+                .Include(pt => pt.Tarea)
+                .Include(pt => pt.Estado)
+                .Include(pt => pt.Prioridad)
+                .Include(pt => pt.Dependencia_Interna)
+                .Include(pt => pt.Grado)
+                .AsQueryable();
+                PedidoTrabajo = await PaginatedList<PTUsuario>.CreateAsync(pedidosQuery, pageIndex ?? 1, pageSize);
+                               
         }
 
         public async Task<JsonResult> OnGetUsuariosFiltradosAsync(string division)
