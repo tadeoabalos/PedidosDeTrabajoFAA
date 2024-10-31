@@ -57,7 +57,6 @@ namespace PPTT.Pages.Vistas
             if (isValid)
             {
                 HttpContext.Session.SetInt32("UserRole", _rol);
-                HttpContext.Session.SetString("UserName", _nombre);
                 //lo llevo a una pagina hecha para cambiar su contraseña para sacar la predeterminada
                 if (_ingreso == 0)
                 {
@@ -68,9 +67,13 @@ namespace PPTT.Pages.Vistas
                 {
                     return RedirectToPage("/Vistas/MenuLog");
                 }
-                else if (_rol >= 2)
+                else if (_rol == 2)
                 {
-                    return RedirectToPage("/Vistas/IndexLogueado");                   
+                    return RedirectToPage("/Vistas/IndexAdmin");                   
+                }
+                else if (_rol == 2)
+                {
+                    return RedirectToPage("/Vistas/IndexLogueado");
                 }
                 else
                 {

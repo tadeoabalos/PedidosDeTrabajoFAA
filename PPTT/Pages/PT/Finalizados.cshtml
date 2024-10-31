@@ -63,7 +63,7 @@
     <tbody>
         @foreach (var item in Model.PedidoTrabajo)
         {
-            @if (item.ID_Estado_Fk == 1004 ) { 
+            @if (item.ID_Estado_Fk == 1004 || item.ID_Estado_Fk == 1006 ) { 
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.ID_Orden_Fk)

@@ -38,7 +38,7 @@
     <tbody>
         @foreach (var item in Model.PedidoTrabajo)
         {
-            @if (item.ID_Estado_Fk != 1004 && item.ID_Estado_Fk != 1006)
+            @if (item.ID_Estado_Fk != 1004)
             {
                 <tr data-fecha="@item.Fecha_Subida?.ToString("yyyy-MM-dd") ?? " 0001-01-01"">
                     <td>@Html.DisplayFor(modelItem => item.ID_Orden_Fk)</td>
@@ -95,22 +95,18 @@
         }
     </tbody>
 </table>
-<div class="pagination">
-    @if (Model.PedidoTrabajo.HasPreviousPage)
-    {
-        <a asp-page="./Index" asp-route-pageIndex="@(Model.PedidoTrabajo.PageIndex - 1)" class="pag">Anterior</a>
-    }
 
-    @for (int i = 1; i <= Model.PedidoTrabajo.TotalPages; i++)
-    {
-        <a asp-page="./Index" asp-route-pageIndex="@i" class="pag">@i</a>
-    }
+@if (Model.PedidoTrabajo.HasPreviousPage)
+{
+    <a asp-page="IndexAdmin" asp-route-pageIndex="@(Model.PedidoTrabajo.PageIndex - 1)">Anterior</a>
+}
 
-    @if (Model.PedidoTrabajo.HasNextPage)
-    {
-        <a asp-page="./Index" asp-route-pageIndex="@(Model.PedidoTrabajo.PageIndex + 1)" class="pag">Siguiente</a>
-    }
-</div>
+@if (Model.PedidoTrabajo.HasNextPage)
+{
+    <a asp-page="IndexAdmin" asp-route-pageIndex="@(Model.PedidoTrabajo.PageIndex + 1)">Siguiente</a>
+}
+
+
 <a class="btn-action" asp-page="./Menu">Volver al Menu</a>
 <button id="btnExportar">Exportar Excel</button>
 
@@ -137,7 +133,7 @@
         <label for="fechaFin">Fecha Fin:</label>
         <input type="text" id="fechaFin" name="fechaFin" required />
         
-        <button type="button" id="filtrar" class="filtrar">Filtrar</button>
+        <button type="button" id="filtrar">Filtrar</button>
     </form>
     <a asp-page="./Finalizados" class="btn-action">Trabajos Finalizados</a>
 </div>
