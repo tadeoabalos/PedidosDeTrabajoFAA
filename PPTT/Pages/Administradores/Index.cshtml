@@ -4,11 +4,10 @@
 @using PPTT.Data
 
 @{
-    ViewData["Title"] = "ABM usuario";
-    // Recuperar el diccionario de servicios de la sesión
+    ViewData["Title"] = "ABM usuario";    
     var servicios = HttpContext.Session.GetObject<Dictionary<int, string>>("Servicios");
 
-    // Debug: Imprimir el contenido del diccionario
+    
     if (servicios != null)
     {
         foreach (var kvp in servicios)
@@ -22,11 +21,18 @@
     }
 }
 
-<h3>Usuarios</h3>
+<div class="titulo">
+    <h3>Listado de Usuarios</h3>
+    <p>
+        <a class="btn-action" asp-page="Create">Crear Nuevo Usuario</a>
+    </p>
+</div>
 
-<p>
-    <a class="btn-action" asp-page="Create">Crear Nuevo Usuario</a>
-</p>
+<!-- Input para buscar empleados por nombre -->
+<form method="get">
+    <input class="buscador" type="text" name="searchQuery" placeholder="Busca por Nombre, Apellido, DNI o Correo." value="@Model.SearchQuery" />
+    <button type="submit">Buscar</button>
+</form>
 
 <table class="table" id="tabla">
     <thead>
@@ -40,29 +46,18 @@
             <th>@Html.DisplayNameFor(model => model.Admin[0].ID_Servicio_Fk)</th>
             <th>@Html.DisplayNameFor(model => model.Admin[0].Fecha_Alta)</th>
             <th>@Html.DisplayNameFor(model => model.Admin[0].Fecha_Baja)</th>
-            <th></th> <!-- Columna de acciones (índice 9) -->
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.Admin)
         {
             <tr>
-                <!-- Nombre -->
                 <td>@item.Nombre</td>
-
-                <!-- Apellido -->
                 <td>@item.Apellido</td>
-
-                <!-- DNI -->
                 <td>@item.DNI</td>
-
-                <!-- Número de control -->
                 <td>@item.Numero_Control</td>
-
-                <!-- Correo -->
                 <td>@item.Correo</td>
-
-                <!-- División -->
                 <td>
                     @if (item.ID_Division_Fk == null)
                     {
@@ -77,8 +72,6 @@
                         @:División Mantenimiento de Instalaciones
                     }
                 </td>
-
-                <!-- Servicio -->
                 <td>
                     @if (item.ID_Servicio_Fk == null)
                     {
@@ -93,33 +86,31 @@
                         @:Servicio no reconocido
                     }
                 </td>
-
-                <!-- Fecha de alta -->
                 <td>@item.Fecha_Alta?.ToShortDateString()</td>
-
-                <!-- Fecha de baja -->
                 <td>
                     @if (item.Fecha_Baja?.ToShortDateString() == "1/1/0001")
                     {
-                        @:Este empleado sigue trabajando
+                        @:--/--
                     }
                     else
                     {
                         @item.Fecha_Baja?.ToShortDateString()
                     }
                 </td>
-
-                <!-- Botones de acción -->
                 <td>
                     @if (item.Fecha_Baja?.ToShortDateString() == "1/1/0001")
                     {
-                        <a class="btn-action" asp-page="./Edit" asp-route-id="@item.ID_Usuario_Pk">Editar</a>
-                        <a class="btn-action" asp-page="./Details" asp-route-id="@item.ID_Usuario_Pk">Detalles</a>
-                        <a class="btn-action" asp-page="./Delete" asp-route-id="@item.ID_Usuario_Pk">Borrar</a>
+                        <div class="lista-seccion-boton">
+                            <a asp-page="./Details" asp-route-id="@item.ID_Usuario_Pk">Detalle</a>
+                            |
+                            <a asp-page="./Edit" asp-route-id="@item.ID_Usuario_Pk">Modificar</a>
+                        </div>
                     }
                     else
                     {
-                        <a class="btn-action" asp-page="./AltaDenuevo" asp-route-id="@item.ID_Usuario_Pk">Dar de Alta</a>
+                        <div class="lista-seccion-boton">
+                            <a asp-page="./AltaDenuevo" asp-route-id="@item.ID_Usuario_Pk">Dar de Alta</a>
+                        </div>
                     }
                 </td>
             </tr>
@@ -127,66 +118,95 @@
     </tbody>
 </table>
 
-<a class="btn-action" asp-page="./Menu">Volver al Menu</a>
+<a class="btn-action" asp-page="/Vistas/IndexLogueado">Volver al Menu</a>
 <button id="btnExportar">Exportar Excel</button>
 
-<style>
-    body {
-        align-items: center;
-        justify-content: center;
-        width: 95%;
-        margin: 30px auto;
-        padding: 20px;
-        background-color: #e0e8f1;
-        border: 1px solid #003d6b;
-        border-radius: 8px;
-        box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2);
+<style>   
+    #warningMessagePen {
+        display: block;
+        overflow: auto;
+        word-wrap: break-word;
     }
 
-    a.btn-action {
+    .buscador {
+        margin: 10px 0 0 10px;
+        width: 24vw;
+    }   
+
+    a.btn-action, button {
         display: inline-block;
         text-decoration: none;
-        padding: 8px 12px;
-        margin: 4px;
-        border: 1px solid #003d6b;
-        border-radius: 5px;
-        background-color: #003d6b;
+        padding: 4px 6px; /* Ajustar el padding */
+        margin: 2px; /* Reducir margen */
+        border: 1px solid #003d6b; /* Bordes de botones */
+        border-radius: 4px; /* Bordes más redondeados */
+        background-color: #003d6b; /* Color de fondo de los botones */
         color: white;
         transition: background-color 0.3s, transform 0.3s;
+        font-size: 0.8em; /* Tamaño de fuente reducido */
     }
 
-        a.btn-action:hover {
-            background-color: #002e5d;
-            transform: translateY(-2px);
-        }
-
-    button {
-        display: inline-block;
-        text-decoration: none;
-        padding: 8px 12px;
-        margin: 4px;
-        border: 1px solid #4caf50;
-        border-radius: 5px;
-        background-color: #4caf50;
-        color: white;
-        transition: background-color 0.3s, transform 0.3s;
-    }
-
-        button:hover {
-            background-color: #4caf50;
-            transform: translateY(-2px);
+        a.btn-action:hover, button:hover {
+            background-color: #002e5d; /* Color al pasar el mouse */
+            /* Sutil efecto al pasar el mouse */
         }
 
     table {
         width: 100%;
-        margin-top: 20px;
         border-collapse: collapse;
+        font-size: 0.75em;
     }
 
+
+    .modal-content {
+        padding: 5px;
+    }
+
+    .modal-header, .modal-footer {
+        border: none;
+    }
+
+    button {
+        display: inline-block;
+        text-decoration: none;
+        padding: 4px 6px; /* Ajustar el padding */
+        margin: 2px; /* Reducir margen */
+        border: 1px solid #4caf50; /* Bordes de botones */
+        border-radius: 4px; /* Bordes más redondeados */
+        background-color: #4caf50; /* Color de fondo de los botones */
+        color: white;
+        transition: background-color 0.3s, transform 0.3s;
+        font-size: 0.8em; /* Tamaño de fuente reducido */
+    }
+
+        button:hover {
+            background-color: #4caf50; /* Mantener el color al pasar el mouse */
+            transform: translateY(-2px); /* Efecto al pasar el mouse */
+        }
+
+    .filtrar {
+        display: inline-block;
+        text-decoration: none;
+        padding: 4px 6px; /* Ajustar el padding */
+        margin: 2px; /* Reducir margen */
+        border: 1px solid #ff9800; /* Bordes de botones */
+        border-radius: 4px; /* Bordes más redondeados */
+        background-color: #ff9800; /* Color de fondo de los botones */
+        color: white;
+        transition: background-color 0.3s, transform 0.3s;
+        font-size: 0.8em; /* Tamaño de fuente reducido */
+    }
+
+        .filtrar:hover {
+            background-color: #ff9800; /* Mantener el color al pasar el mouse */
+            transform: translateY(-2px); /* Efecto al pasar el mouse */
+        }
+
     th, td {
-        padding: 10px;
+        padding: 4px;
         text-align: left;
         border-bottom: 1px solid #ddd;
+        height: 8vh;
     }
 
     th {
@@ -194,13 +214,37 @@
         color: #003d6b;
     }
 
-    h3 {
-        font-size: 3em;
-        color: #003d6b;
-        margin-top: 20px;
-        margin-bottom: 10px;
-        font-weight: bold;
+    table tr:nth-child(odd) td {
+        background-color: #e0e8f1;
     }
+
+    table tr:nth-child(even) td {
+        background-color: #eeeeee;
+    }
+
+    .pag {
+        margin: 5px;
+        text-decoration: none;
+        color: midnightblue;
+    }
+
+    .container {
+        width: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: none !important;
+    }
+
+    .lista-seccion-boton {
+        display: flex;
+        align-items: center;       
+        gap:2px;
+    }
+    .lista-seccion-boton a {
+            text-decoration: none;
+            margin-right:5px;
+    }
+
 </style>
 
 <!-- Scripts para exportar a Excel -->

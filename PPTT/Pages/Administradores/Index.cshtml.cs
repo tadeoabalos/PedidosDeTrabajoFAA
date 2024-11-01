@@ -2,27 +2,36 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using PPTT.Models;
-using System.Data;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PPTT.Pages.Administradores
 {
     public class IndexModel : PageModel
     {
         private readonly IConfiguration _configuration;
-        private readonly PPTT.Data.DBPPTTContext _context;       
-        private IConfiguration? configuration;
-        public IndexModel(PPTT.Data.DBPPTTContext context)
+        private readonly PPTT.Data.DBPPTTContext _context;
+
+        public IndexModel(PPTT.Data.DBPPTTContext context, IConfiguration configuration)
         {
             _context = context;
-            _configuration = configuration; // Asegúrate de que esto esté presente
+            _configuration = configuration;
         }
+
         public List<ServicioModel> Items { get; set; } = new List<ServicioModel>();
-        public List<string> Divisions { get; set; } = new List<string>(); // Asegúrate de que esta propiedad existe
-        public IList<Admin> Admin { get;set; } = default!;
+        public List<string> Divisions { get; set; } = new List<string>();
+        public IList<Admin> Admin { get; set; } = default!;
+
+        // Propiedad de búsqueda para filtrar los datos
+        [BindProperty(SupportsGet = true)]
+        public string SearchQuery { get; set; }
+
         public class ServicioModel
         {
             public int? ID_Servicio_Fk { get; set; }
         }
+
         public async Task<IActionResult> OnGetAsync()
         {
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
@@ -36,16 +45,33 @@ namespace PPTT.Pages.Administradores
             {
                 int datos = HttpContext.Session.GetInt32("datos") ?? 0;
                 HttpContext.Session.SetInt32("datos", datos);
+
                 if (datos == 0)
                 {
-                    datos = datos + 1;
+                    datos += 1;
                     HttpContext.Session.SetInt32("datos", datos);
-                    Console.WriteLine(datos);
                     return RedirectToPage("/Administradores/TraerServicio");
                 }
                 else
                 {
-                    Admin = await _context.Usuario.ToListAsync();
+                    var query = _context.Usuario.AsQueryable();
+                   
+                    if (!string.IsNullOrEmpty(SearchQuery))
+                    {                       
+                        if (int.TryParse(SearchQuery, out int dniQuery))
+                        {
+                            query = query.Where(u => u.DNI == dniQuery);
+                        }
+                        else
+                        {                       
+                            query = query.Where(u =>
+                                u.Nombre.Contains(SearchQuery) ||
+                                u.Apellido.Contains(SearchQuery) ||
+                                u.Correo.Contains(SearchQuery));
+                        }
+                    }
+
+                    Admin = await query.ToListAsync();
                     return Page();
                 }
             }
@@ -55,7 +81,5 @@ namespace PPTT.Pages.Administradores
                 return Page();
             }
         }
-
-
     }
 }

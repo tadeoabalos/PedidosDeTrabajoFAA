@@ -4,8 +4,8 @@
 @{
     ViewData["Title"] = "Editar Usuario";
 }
-<h3>Editar</h3>
-<form method="post">
+<h3>Modificar Usuario</h3>
+<form method="post" class="form-mod">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="Admin.ID_Usuario_Pk" />
     <div class="form-group">
@@ -67,9 +67,7 @@
         <input type="submit" value="Guardar" class="btn btn-primary" />
     </div>
 </form>
-<div class="centered-button">
-    <a asp-page="./Index" class="btn-action">Volver a la Lista</a>
-</div>
+
 
 
 @section Scripts {
@@ -115,11 +113,10 @@
                 loadServicios(initialDivisionId);
             }
         });
-    </script>
-    t
+    </script>    
     <style>
         body {
-            background-color: #e0e8f1;
+            background-color: #eeeeee;
         }
 
         a.btn-action {
@@ -140,24 +137,7 @@
             }
 
 
-        input[type=submit] {
-            display: inline-block;
-            text-decoration: none;
-            padding: 8px 12px;
-            margin: 4px;
-            border: 1px solid #003d6b;
-            border-radius: 5px;
-            background-color: #003d6b;
-            color: white;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-            input[type=submit]:hover {
-                background-color: #002e5d;
-                transform: translateY(-2px);
-            }
-
-        form {
+        .form-mod {
             align-items: center;
             justify-content: center;
             width: 65%;
@@ -176,7 +156,7 @@
             font-weight: bold;
         }
 
-        .submit {
+        .submit-mod {
             background-color: #003d6b;
             color: white;
             padding: 10px 20px;
@@ -204,11 +184,9 @@
             font-weight: bold;
         }
 
-        h3 {
-            font-size: 3em;
+        h3 {            
             color: #003d6b;
-            margin-top: 20px;
-            margin-bottom: 10px;
+            margin: 10px;
             font-weight: bold;
         }
 
@@ -226,7 +204,7 @@
         label,
         input[type="text"],
         select,
-        .submit,
+        .submit-mod,
         h4 {
             font-size: 1em;
             font-weight: bold;
@@ -235,7 +213,7 @@
 
         input[type="number"],
         select,
-        .submit,
+        .submit-mod,
         h4 {
             font-size: 1em;
             font-weight: bold;
@@ -269,14 +247,7 @@
             border: 1px solid #003d6b;
             border-radius: 4px;
             background-color: white;
-        }
-
-        .centered-button {
-            display: flex;
-            margin-top: 20px;
-            align-items: center;
-            justify-content: center;
-        }
+        }        
 
     </style>
 }

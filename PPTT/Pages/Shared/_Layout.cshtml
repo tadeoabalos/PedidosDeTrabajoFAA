@@ -8,20 +8,36 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Orden_de_Trabajo.styles.css" asp-append-version="true" />
 </head>
+@{
+    var currentPage = ViewContext.RouteData.Values["Page"]?.ToString();
+    var pages = new List<string> { "/Index", "/Vistas/IngresoPersonal", "/PT/Create" };
+}
 <body>
     <header>
+        <div class="navbar">
+            <div class="navbar-logo">
+                <a class="a-to-index" asp-page="/Vistas/IndexLogueado">Pedidos de Trabajo - Cuartel General</a>
+            </div>
+            <div class="centered-button">
+                @if (!pages.Contains(currentPage))
+                {                                       
+                    <form method="post" asp-page-handler="cerrar">
+                        <input type="submit" value="Cerrar Sesion" class="submit" />                        
+                    </form>
+                }
+            </div>
+        </div>
     </header>
-    
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <footer>
+    <footer>            
         <p>Dirección de Informática - Departamento de Desarrollo y Mantenimiento de Sistemas</p>
     </footer>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
