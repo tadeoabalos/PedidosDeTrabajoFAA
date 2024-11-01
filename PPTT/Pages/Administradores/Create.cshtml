@@ -6,8 +6,8 @@
 }
 <h3>Alta de Usuario</h3>
 <form method="post" class="form-usuario">
- <div class="row"> 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-alta">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Admin.Nombre" class="control-label"></label>
                 <input required asp-for="Admin.Nombre" class="form-control" />
@@ -63,7 +63,15 @@
 <div class="centered-button">
     <a class="btn-action" asp-page="./Index">Volver a la lista</a>
 </div>
-
+<style>
+    .form-alta {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+</style>
 
 @section Scripts {    
     @{
@@ -98,141 +106,6 @@
                 }
             })
         })    
-    </script>
-    <style>
-   
-    a.btn-action {
-        display: inline-block;
-        text-decoration: none;
-        padding: 8px 12px;
-        margin: 4px;
-        border: 1px solid #003d6b;
-        border-radius: 5px;
-        background-color: #003d6b;
-        color: white;
-        transition: background-color 0.3s, transform 0.3s;
-    }
-
-        a.btn-action:hover {
-            background-color: #002e5d;
-            transform: translateY(-2px);
-        }       
-
-        .form-usuario {
-            align-items: center;
-            justify-content: center;
-            width: 65% ;
-            margin: 30px auto;
-            padding: 20px;
-            background-color: #e0e8f1;
-            border: 1px solid #003d6b;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2);
-        }
-
-        legend {
-            font-size: 1.2em;
-            color: #003d6b;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        .submit-usuario {
-            background-color: #003d6b;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }            
-
-        h4 {
-            color: #003d6b;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        asap-for {
-            color: #003d6b;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-
-        h3 {
-            color: #003d6b;
-            margin: 10px;
-            font-weight: bold;
-        }
-
-        .custom-textarea {
-            width: 100%;
-            height: 150px;
-            resize: none;
-        }
-
-        a.btn-action:hover {
-            background-color: #002e5d; /* Color en hover */
-            transform: translateY(-2px);
-        }
-
-        label,
-        input[type="text"],
-        select,
-        .submit-usuario,
-        h4 {
-            font-size: 1em;
-            font-weight: bold;
-            color: #003d6b; /* Asegurarte de que las etiquetas label y h4 compartan el mismo color */
-        }
-
-        input[type="number"],
-        select,
-        .submit,
-        h4 {
-            font-size: 1em;
-            
-        }
-
-        input[type="password"],
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #003d6b;
-            border-radius: 4px;
-            background-color: white;
-        }
-
-        input[type="text"],
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #003d6b;
-            border-radius: 4px;
-            background-color: white;
-        }
-
-        input[type="number"],
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #003d6b;
-            border-radius: 4px;
-            background-color: white;
-        }
-
-        .centered-button-usuario {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-    </style>
+    </script>    
 }
 
