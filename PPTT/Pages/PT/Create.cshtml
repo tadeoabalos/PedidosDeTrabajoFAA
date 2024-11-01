@@ -133,7 +133,7 @@
                 <span asp-validation-for="PedidoTrabajo.Observacion" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Crear" class="btn btn-primary" />
+                <input type="submit" class="submit" value="Crear" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -241,6 +241,22 @@
         }
 
             a.btn-action:hover {
+                background-color: #002e5d;
+                transform: translateY(-2px);
+            }
+                    submit {
+            display: inline-block;
+            text-decoration: none;
+            padding: 8px 12px;
+            margin: 4px;
+            border: 1px solid #003d6b;
+            border-radius: 5px;
+            background-color: #003d6b;
+            color: white;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+            submit:hover {
                 background-color: #002e5d;
                 transform: translateY(-2px);
             }

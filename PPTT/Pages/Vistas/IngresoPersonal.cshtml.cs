@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using PPTT.Models;
 using System.Data;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
@@ -13,6 +14,7 @@ namespace PPTT.Pages.Vistas
         private int _rol;
         private string? _nombre;
         private int _ingreso;
+        private int _division; // Añadida la declaración de _division
 
         public IngresoPersonalModel(IConfiguration configuration)
         {
@@ -30,48 +32,52 @@ namespace PPTT.Pages.Vistas
 
         public IActionResult OnGet()
         {
-            //si el rol es mayor a 0 significa que esta loggeado asi que hago que no pueda volver a la pagina de loggeo y sea redireccionado a una pagina para cerrar sesion
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
             HttpContext.Session.SetInt32("UserRole", _rol);
             Console.WriteLine(_rol);
-            if (_rol > 0)
+
+            if (_rol == 1)
             {
-                return RedirectToPage("../Index");
+                return RedirectToPage("/Vistas/MenuLog");
+            }
+            else if (_rol == 2)
+            {
+                return RedirectToPage("/Vistas/IndexAdmin");
+            }
+            else if (_rol == 3)
+            {
+                return RedirectToPage("/Vistas/IndexLogueado");
             }
             else
             {
                 return Page();
             }
-
         }
+
         public async Task<IActionResult> OnPostAsync()
         {
-            //lo hago Bytes
-            byte[] bytesContraseña;
-            bytesContraseña = ASCIIEncoding.ASCII.GetBytes(Contraseña);
-            //lo hasheo
-            byte[] hashContraseña;
-            hashContraseña = MD5.HashData(bytesContraseña);
+            byte[] bytesContraseña = Encoding.ASCII.GetBytes(Contraseña);
+            byte[] hashContraseña = MD5.HashData(bytesContraseña);
             bool isValid = await EjecutarValidarStoredProcedure(DNI, NumeroDeControl, hashContraseña);
 
             if (isValid)
             {
                 HttpContext.Session.SetInt32("UserRole", _rol);
-                //lo llevo a una pagina hecha para cambiar su contraseña para sacar la predeterminada
+                HttpContext.Session.SetInt32("Division", _division);
+
                 if (_ingreso == 0)
                 {
                     return RedirectToPage("/Vistas/IngresoPrimeraVez");
                 }
-                //decido a que menu lo mando, si al normal o al de admin
                 else if (_rol == 1)
                 {
                     return RedirectToPage("/Vistas/MenuLog");
                 }
                 else if (_rol == 2)
                 {
-                    return RedirectToPage("/Vistas/IndexAdmin");                   
+                    return RedirectToPage("/Vistas/IndexAdmin");
                 }
-                else if (_rol == 2)
+                else if (_rol == 3)
                 {
                     return RedirectToPage("/Vistas/IndexLogueado");
                 }
@@ -100,17 +106,19 @@ namespace PPTT.Pages.Vistas
                     using (SqlCommand command = new SqlCommand("Validar", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
-                        //ejecuto el stored procedure de login con estos valores
                         command.Parameters.AddWithValue("@DNI", dni);
                         command.Parameters.AddWithValue("@Numero_Control", numeroDeControl);
                         command.Parameters.AddWithValue("@Password", password);
+
                         using (SqlDataReader reader = await command.ExecuteReaderAsync())
                         {
                             if (await reader.ReadAsync())
                             {
                                 _rol = reader.GetInt32(0);
                                 _nombre = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
-                                _ingreso = reader.IsDBNull(2) ? 0 : reader.GetInt32(2);                
+                                _ingreso = reader.IsDBNull(2) ? 0 : reader.GetInt32(2);
+                                _division = reader.IsDBNull(3) ? 0 : reader.GetInt32(3);
+                                Console.WriteLine(_division);
                                 return _rol != 0;
                             }
                             else

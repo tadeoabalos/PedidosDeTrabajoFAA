@@ -2,9 +2,9 @@
 @model PPTT.Pages.Administradores.IndexPPTT
 
 @{
-    ViewData["Title"] = "Pedidos de trabajo";
+
 }
-<body>    
+<body>
 <table class="table" id="tabla">
     <thead>
         <tr>
@@ -16,6 +16,7 @@
             <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].RTI_Solicitante)</th>
             <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Numero_Oficina_PT)</th>
             <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Correo)</th>
+            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Division_Fk)</th>
             <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Tarea_Fk)</th>
             <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Observacion)</th>
             <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Estado_Fk)</th>
@@ -26,9 +27,13 @@
         </tr>
     </thead>
     <tbody>
+        @{
+            var divisionUsuario = HttpContext.Session.GetInt32("Division");
+        }
+
         @foreach (var item in Model.PedidoTrabajo)
         {
-            @if (item.ID_Estado_Fk != 1004 && item.ID_Estado_Fk != 1006)
+            if (item.ID_Estado_Fk != 1004 && item.ID_Estado_Fk != 1006)
             {
                 <tr data-fecha="@item.Fecha_Subida?.ToString("yyyy-MM-dd") ?? " 0001-01-01"">
                     <td>@Html.DisplayFor(modelItem => item.ID_Orden_Fk)</td>
@@ -48,6 +53,7 @@
                     <td>@Html.DisplayFor(modelItem => item.RTI_Solicitante)</td>
                     <td>@Html.DisplayFor(modelItem => item.Numero_Oficina_PT)</td>
                     <td>@Html.DisplayFor(modelItem => item.Correo)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ID_Division_Fk)</td> <!-- Asegúrate de mostrar esta celda -->
                     <td>
                         @Html.Raw(item.Tarea.Descripcion_Tarea.Length > 3 ?
                                  item.Tarea.Descripcion_Tarea.Substring(0) :
@@ -68,7 +74,7 @@
                     <td>
                         <div class="form-group">
                             <select id="usuarioSelect_@item.ID_Orden_Trabajo_Pk" class="formControl" data-division-id="@item.ID_Division_Fk">
-                                <option hidden selected value="">@item.ID_Division_Fk</option>
+                                <option hidden selected value="">Selecciona un usuario</option>
                             </select>
                         </div>
                     </td>
@@ -82,6 +88,8 @@
                     </td>
                 </tr>
             }
+
+        }
         }
     </tbody>
 </table>

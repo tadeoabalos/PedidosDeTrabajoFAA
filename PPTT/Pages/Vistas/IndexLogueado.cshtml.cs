@@ -38,6 +38,8 @@ namespace PPTT.Pages.Vistas
         public IActionResult OnPostCerrar()
         {
             HttpContext.Session.SetInt32("UserRole", 0);
+            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+            Console.WriteLine(_rol);
             return RedirectToPage("/Index");
         }
     }

@@ -4,19 +4,10 @@
 }
 
 <body>
-    <header>
-        <div class="navbar">
-            <div class="navbar-logo">Pedidos - Cuartel General</div>                    
-            <div class="centered-button">
-                <form method="post" asp-page-handler="cerrar">
-                    <input type="submit" value="Cerrar Sesion" class="submit" />
-                </form>
-            </div>
-        </div>
-    </header>
     <div class="card-container">
         <a asp-page="/PT/IndexAdmin"> <div class="card">Pedidos de Trabajo</div></a>
-        <div class="card">Modificar Usuario</div>
+        <a asp-page="/Administradores/Create"><div class="card">Alta de Usuario</div></a>
+        <a asp-page="/Administradores/Index"><div class="card">Listado de Usuarios</div></a>
         <div class="card">Baja de Usuario</div>
         <div class="card">Pedidos de Trabajo</div>
     </div>
