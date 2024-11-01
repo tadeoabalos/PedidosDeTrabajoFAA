@@ -90,20 +90,21 @@
                 }
 
             }
-            }
         </tbody>
     </table>
 
 
-@if (Model.PedidoTrabajo.HasPreviousPage)
-{
-    <a asp-page="IndexAdmin" asp-route-pageIndex="@(Model.PedidoTrabajo.PageIndex - 1)">Anterior</a>
-}
-
-@if (Model.PedidoTrabajo.HasNextPage)
-{
-    <a asp-page="IndexAdmin" asp-route-pageIndex="@(Model.PedidoTrabajo.PageIndex + 1)">Siguiente</a>
-}
+    @if (Model.PedidoTrabajo != null)
+    {
+        @if (Model.PedidoTrabajo.HasPreviousPage)
+        {
+            <a asp-page="IndexPPTT" asp-route-PageIndex="@(Model.PedidoTrabajo.PageIndex - 1)">Anterior</a>
+        }
+        @if (Model.PedidoTrabajo.HasNextPage)
+        {
+            <a asp-page="IndexPPTT" asp-route-PageIndex="@(Model.PedidoTrabajo.PageIndex + 1)">Siguiente</a>
+        }
+    }
 
 
 <a class="btn-action" asp-page="/Vistas/IndexAdmin">Volver al Menu</a>

@@ -32,7 +32,7 @@ namespace PPTT.Pages.Administradores
 
         public async Task OnGetAsync(int? PageIndex, DateTime? fechaInicio, DateTime? fechaFin)
         {
-            int pageSize = 9;
+            int pageSize = 12;
             var pedidosQuery = _context.PTUsuario
                 .Include(pt => pt.Organismo)
                 .Include(pt => pt.Tarea)
