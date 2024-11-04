@@ -38,13 +38,16 @@ namespace PPTT.Pages.Administradores
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             Divisions = await _context.GetDivisionAsync();
-            Roles = Enum.GetValues(typeof(Admin.Rol))
-                .Cast<Admin.Rol>()
-                .Select(c => new SelectListItem
-                {
-                    Value = ((int)c).ToString(),
-                    Text = c.ToString()
-                }).ToList();
+            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+                Roles = Enum.GetValues(typeof(Admin.Rol))
+    .Cast<Admin.Rol>()
+    .Where(c => !(c == Admin.Rol.SuperAdministrador && _rol < 3)) // Filtra SuperAdministrador si _rol es menor que 3
+    .Select(c => new SelectListItem
+    {
+        Value = ((int)c).ToString(),
+        Text = c.ToString()
+    }).ToList();
+
             if (id == null)
             {
                 return NotFound();
