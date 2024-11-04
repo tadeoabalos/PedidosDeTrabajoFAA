@@ -32,17 +32,19 @@ namespace PPTT.Pages.Administradores
         public Orden_Asignada Orden_Asignada { get; set; }
         public PTUsuario PT { get; set; } = default!;
         public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();
+        public DateTime? FechaInicio { get; set; }
+        public DateTime? FechaFin { get; set; }
 
-        public async Task OnGetAsync(int? pageIndex)
+        public async Task OnGetAsync(int? pageIndex, DateTime? fechaInicio, DateTime? fechaFin)
         {
-            int pageSize = 8; 
+            int pageSize = 12;
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
             int datos = 0;
             Prioridad = await _context.GetPrioridadAsync();
             HttpContext.Session.SetInt32("datoss", datos);
 
-                          
-                var pedidosQuery = _context.PTUsuario
+            // Consulta inicial de pedidos de trabajo
+            var pedidosQuery = _context.PTUsuario
                 .Include(pt => pt.Organismo)
                 .Include(pt => pt.Tarea)
                 .Include(pt => pt.Estado)
@@ -50,9 +52,22 @@ namespace PPTT.Pages.Administradores
                 .Include(pt => pt.Dependencia_Interna)
                 .Include(pt => pt.Grado)
                 .AsQueryable();
-                PedidoTrabajo = await PaginatedList<PTUsuario>.CreateAsync(pedidosQuery, pageIndex ?? 1, pageSize);
-                               
+
+            // Filtrar por rango de fechas usando solo Fecha_Subida
+            if (fechaInicio.HasValue && fechaFin.HasValue)
+            {
+                var fechaFinFinal = fechaFin.Value.Date.AddDays(1).AddTicks(-1); // Incluye el final del día
+                pedidosQuery = pedidosQuery.Where(pt => pt.Fecha_Subida >= fechaInicio && pt.Fecha_Subida <= fechaFinFinal);
+            }
+
+            // Paginación de los resultados filtrados
+            PedidoTrabajo = await PaginatedList<PTUsuario>.CreateAsync(pedidosQuery, pageIndex ?? 1, pageSize);
         }
+
+
+
+
+
 
         public async Task<JsonResult> OnGetUsuariosFiltradosAsync(string division)
         {

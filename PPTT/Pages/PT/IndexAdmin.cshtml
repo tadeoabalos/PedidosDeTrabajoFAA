@@ -2,114 +2,112 @@
 @model PPTT.Pages.Administradores.IndexPPTT
 
 @{
-
+    ViewData["Title"] = "Pedidos de trabajo";
 }
 <body>
-<table class="table" id="tabla">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Orden_Fk)</th>
-            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Fecha_Subida)</th>
-            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Grado_Fk)</th>
-            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Apellido_Solicitante)</th>
-            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Organismo_Fk)</th>
-            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].RTI_Solicitante)</th>
-            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Numero_Oficina_PT)</th>
-            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Correo)</th>
-            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Division_Fk)</th>
-            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Tarea_Fk)</th>
-            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Observacion)</th>
-            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Estado_Fk)</th>
-            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Prioridad_Fk)</th>
-            <th><span>Asignar Personal</span></th>
-            <th><span>Personal Asignado</span></th>
-            <th>Detalle/Estado</th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            var divisionUsuario = HttpContext.Session.GetInt32("Division");
-        }
-
-        @foreach (var item in Model.PedidoTrabajo)
-        {
-            if (item.ID_Estado_Fk != 1004 && item.ID_Estado_Fk != 1006)
-            {
-                <tr data-fecha="@item.Fecha_Subida?.ToString("yyyy-MM-dd") ?? " 0001-01-01"">
-                    <td>@Html.DisplayFor(modelItem => item.ID_Orden_Fk)</td>
-                    <td>
-                        @if (item.Fecha_Subida.HasValue)
-                        {
-                            @item.Fecha_Subida.Value.ToString("dd-MM-yyyy")
-                        }
-                        else
-                        {
-                            @:01-01-0001
-                        }
-                    </td>
-                    <td>@Html.DisplayFor(modelItem => item.Grado.Descripcion_Grado)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Apellido_Solicitante)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Organismo.Descripcion_organismo)</td>
-                    <td>@Html.DisplayFor(modelItem => item.RTI_Solicitante)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Numero_Oficina_PT)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Correo)</td>
-                    <td>@Html.DisplayFor(modelItem => item.ID_Division_Fk)</td> <!-- Asegúrate de mostrar esta celda -->
-                    <td>
-                        @Html.Raw(item.Tarea.Descripcion_Tarea.Length > 3 ?
-                                 item.Tarea.Descripcion_Tarea.Substring(0) :
-                                 item.Tarea.Descripcion_Tarea)
-                    </td>
-                    <td>@Html.DisplayFor(modelItem => item.Observacion)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Estado.Descripcion_Estado)</td>
-                    <td data-orden-trabajo-id="@item.ID_Orden_Trabajo_Pk">
-                        <div class="form-group">
-                            <select asp-for="PT.ID_Prioridad_Fk"
-                                    asp-items="@(new SelectList(Model.Prioridad, "ID_Prioridad_Pk", "Descripcion_Prioridad"))"
-                                    class="PrioridadSelect formControl">
-                                <option hidden selected value="">@item.Prioridad.Descripcion_Prioridad</option>
-                            </select>
-                            <span asp-validation-for="PT.ID_Prioridad_Fk" class="text-danger"></span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <select id="usuarioSelect_@item.ID_Orden_Trabajo_Pk" class="formControl" data-division-id="@item.ID_Division_Fk">
-                                <option hidden selected value="">Selecciona un usuario</option>
-                            </select>
-                        </div>
-                    </td>
-                    <td>
-                        <span id="personalAsignado_@item.ID_Orden_Trabajo_Pk" data-orden-id="@item.ID_Orden_Trabajo_Pk">
-                            Personal asignado
-                        </span>
-                    </td>
-                    <td>
-                        <a asp-page="./Details" class="btn-action" asp-route-id="@item.ID_Orden_Trabajo_Pk">Ir</a>
-                    </td>
-                </tr>
+    <table class="table" id="tabla">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Orden_Fk)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Fecha_Subida)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Grado_Fk)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Apellido_Solicitante)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Organismo_Fk)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].RTI_Solicitante)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Numero_Oficina_PT)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Correo)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Division_Fk)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Tarea_Fk)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Observacion)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Estado_Fk)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Prioridad_Fk)</th>
+                <th><span>Asignar Personal</span></th>
+                <th><span>Personal Asignado</span></th>
+                <th>Detalle/Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var divisionUsuario = HttpContext.Session.GetInt32("Division");
             }
 
-        }
-        }
-    </tbody>
-</table>
-<div class="pagination">
-    @if (Model.PedidoTrabajo.HasPreviousPage)
+            @foreach (var item in Model.PedidoTrabajo)
+            {
+                if (item.ID_Estado_Fk != 1004 && item.ID_Estado_Fk != 1006 && item.ID_Division_Fk == divisionUsuario)
+                {
+                    <tr data-fecha="@item.Fecha_Subida?.ToString("yyyy-MM-dd") ?? " 0001-01-01"">
+                        <td>@Html.DisplayFor(modelItem => item.ID_Orden_Fk)</td>
+                        <td>
+                            @if (item.Fecha_Subida.HasValue)
+                            {
+                                @item.Fecha_Subida.Value.ToString("dd-MM-yyyy")
+                            }
+                            else
+                            {
+                                @:01-01-0001
+                            }
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.Grado.Descripcion_Grado)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Apellido_Solicitante)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Organismo.Descripcion_organismo)</td>
+                        <td>@Html.DisplayFor(modelItem => item.RTI_Solicitante)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Numero_Oficina_PT)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Correo)</td>
+                        <td>@Html.DisplayFor(modelItem => item.ID_Division_Fk)</td> <!-- Asegúrate de mostrar esta celda -->
+                        <td>
+                            @Html.Raw(item.Tarea.Descripcion_Tarea.Length > 3 ?
+                                     item.Tarea.Descripcion_Tarea.Substring(0) :
+                                     item.Tarea.Descripcion_Tarea)
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.Observacion)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Estado.Descripcion_Estado)</td>
+                        <td data-orden-trabajo-id="@item.ID_Orden_Trabajo_Pk">
+                            <div class="form-group">
+                                <select asp-for="PT.ID_Prioridad_Fk"
+                                        asp-items="@(new SelectList(Model.Prioridad, "ID_Prioridad_Pk", "Descripcion_Prioridad"))"
+                                        class="PrioridadSelect formControl">
+                                    <option hidden selected value="">@item.Prioridad.Descripcion_Prioridad</option>
+                                </select>
+                                <span asp-validation-for="PT.ID_Prioridad_Fk" class="text-danger"></span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <select id="usuarioSelect_@item.ID_Orden_Trabajo_Pk" class="formControl" data-division-id="@item.ID_Division_Fk">
+                                    <option hidden selected value="">Selecciona un usuario</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <span id="personalAsignado_@item.ID_Orden_Trabajo_Pk" data-orden-id="@item.ID_Orden_Trabajo_Pk">
+                                Personal asignado
+                            </span>
+                        </td>
+                        <td>
+                            <a asp-page="./Details" class="btn-action" asp-route-id="@item.ID_Orden_Trabajo_Pk">Ir</a>
+                        </td>
+                    </tr>
+                }
+
+            }
+        </tbody>
+    </table>
+
+
+    @if (Model.PedidoTrabajo != null)
     {
-        <a asp-page="./Index" asp-route-pageIndex="@(Model.PedidoTrabajo.PageIndex - 1)" class="pag">Anterior</a>
+        @if (Model.PedidoTrabajo.HasPreviousPage)
+        {
+            <a asp-page="IndexPPTT" asp-route-PageIndex="@(Model.PedidoTrabajo.PageIndex - 1)">Anterior</a>
+        }
+        @if (Model.PedidoTrabajo.HasNextPage)
+        {
+            <a asp-page="IndexPPTT" asp-route-PageIndex="@(Model.PedidoTrabajo.PageIndex + 1)">Siguiente</a>
+        }
     }
 
-    @for (int i = 1; i <= Model.PedidoTrabajo.TotalPages; i++)
-    {
-        <a asp-page="./Index" asp-route-pageIndex="@i" class="pag">@i</a>
-    }
 
-    @if (Model.PedidoTrabajo.HasNextPage)
-    {
-        <a asp-page="./Index" asp-route-pageIndex="@(Model.PedidoTrabajo.PageIndex + 1)" class="pag">Siguiente</a>
-    }
-</div>
-<a class="btn-action" asp-page="./Menu">Volver al Menu</a>
+<a class="btn-action" asp-page="/Vistas/IndexAdmin">Volver al Menu</a>
 <button id="btnExportar">Exportar Excel</button>
 
 <div>
@@ -135,9 +133,9 @@
         <label for="fechaFin">Fecha Fin:</label>
         <input type="text" id="fechaFin" name="fechaFin" required />
         
-        <button type="button" id="filtrar" class="filtrar">Filtrar</button>
+        <button type="button" id="filtrar">Filtrar</button>
     </form>
-    <a asp-page="./Finalizados" class="btn-action">Trabajos Finalizados</a>
+    <a asp-page="./FinalizadosAdmin" class="btn-action">Trabajos Finalizados</a>
 </div>
 
 </body>
@@ -388,7 +386,22 @@
     body {
         overflow-y: hidden;
     }
-    
+    .submit {
+        background-color: #e63946;
+        color: #f1faee;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1em;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+
+        .submit:hover {
+            background-color: #d62828;
+            transform: scale(1.05);
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+        }
     .navbar {
         display: flex;
         align-items: center;

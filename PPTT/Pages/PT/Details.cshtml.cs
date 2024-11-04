@@ -68,12 +68,6 @@ namespace PPTT.Pages.PT
                     HttpContext.Session.SetInt32("datoss", 0);
                     return RedirectToPage("./Index");
                 }
-
-                // Registro de datos para depuración
-                Console.WriteLine($"PedidoTrabajo: {PedidoTrabajo}");
-                Console.WriteLine($"Usuarios: {Usuarios.Count}");
-                Console.WriteLine($"Estado: {Estado.Count}");
-                Console.WriteLine($"Prioridad: {Prioridad.Count}");
             }
             catch (Exception ex)
             {
