@@ -21,8 +21,8 @@
             </div>
             <div class="centered-button">
                 @if (!pages.Contains(currentPage))
-                {                                       
-                    <form method="post" asp-page-handler="cerrar">
+                {
+                    <form method="post" asp-page="/Vistas/IndexLogueado" asp-page-handler="cerrar">
                         <input type="submit" value="Cerrar Sesion" class="submit" />                        
                     </form>
                 }

@@ -93,18 +93,6 @@ header {
     font-weight: bold;
 }
 
-.logout-icon {
-    background-color: #e63946; /* Color del botón */
-    color: #f1faee;
-    padding: 8px 12px;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background-color 0.3s;
-}
-
-    .logout-icon:hover {
-        background-color: #d62828; /* Color al pasar el cursor */
-    }
 footer {
     background-color: #1d3557;
     color: #f1faee;
@@ -115,6 +103,9 @@ footer {
     width: 100%;
     bottom: 0;
     height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .a-to-index {
