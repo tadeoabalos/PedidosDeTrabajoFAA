@@ -4,70 +4,80 @@
 @{
     ViewData["Title"] = "Editar Usuario";
 }
-<h3>Modificar Usuario</h3>
-<form method="post" class="form-mod">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="Admin.ID_Usuario_Pk" />
-    <div class="form-group">
-        <label asp-for="Admin.Nombre" class="control-label"></label>
-        <input asp-for="Admin.Nombre" class="form-control" />
-        <span asp-validation-for="Admin.Nombre" class="text-danger"></span>
+<div class="page-content">
+    <div class="form-alta">
+        <div class="formulario">
+            <legend>Modificar Usuario</legend>
+            <hr/>
+            <form method="post" class="form-mod">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Admin.ID_Usuario_Pk" />
+                <div class="form-group">
+                    <label asp-for="Admin.Nombre" class="control-label"></label>
+                    <input asp-for="Admin.Nombre" class="form-control" />
+                    <span asp-validation-for="Admin.Nombre" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Admin.Apellido" class="control-label"></label>
+                    <input asp-for="Admin.Apellido" class="form-control" />
+                    <span asp-validation-for="Admin.Apellido" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Admin.DNI" class="control-label"></label>
+                    <input asp-for="Admin.DNI" class="form-control" />
+                    <span asp-validation-for="Admin.DNI" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Admin.Numero_Control" class="control-label"></label>
+                    <input asp-for="Admin.Numero_Control" class="form-control" />
+                    <span asp-validation-for="Admin.Numero_Control" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Admin.Correo" class="control-label"></label>
+                    <input asp-for="Admin.Correo" class="form-control" />
+                    <span asp-validation-for="Admin.Correo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Admin.ID_Division_Fk" class="control-label"></label>
+                    <select asp-for="Admin.ID_Division_Fk"
+                            asp-items="Model.Divisions.Select(d => new SelectListItem
+                                    {
+                                        Value = d.ID_Division_Pk.ToString(),
+                                        Text = d.Descripcion_Division
+                                    })"
+                            id="deptSelect"
+                            class="form-control">
+                        <option hidden selected value="">Seleccione el Organismo</option>
+                    </select>
+                    <span asp-validation-for="Admin.ID_Division_Fk" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Admin.ID_Servicio_Fk" id="servicioLabel" class="control-label"></label>
+                    <select asp-for="Admin.ID_Servicio_Fk" id="servicioSelect" class="form-control" required>
+                        <option hidden value="">Seleccione el servicio correspondiente</option>
+                    </select>
+                    <span asp-validation-for="Admin.ID_Servicio_Fk" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Admin.ID_Rol_Fk" class="control-label"></label>
+                    <select asp-for="Admin.ID_Rol_Fk"
+                            asp-items="Model.Roles"
+                            class="form-control">
+                        <option hidden selected value="">Seleccione un rol</option>
+                    </select>
+                    <span asp-validation-for="Admin.ID_Rol_Fk" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Guardar" class="submit-log" />
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="form-group">
-        <label asp-for="Admin.Apellido" class="control-label"></label>
-        <input asp-for="Admin.Apellido" class="form-control" />
-        <span asp-validation-for="Admin.Apellido" class="text-danger"></span>
+    <div class="centered-button">
+        <a class="btn-action" asp-page="../Vistas/IndexLogueado">Volver al menú</a> |
+        <a class="btn-action" asp-page="./Index">Ir lista de usuarios</a>
     </div>
-    <div class="form-group">
-        <label asp-for="Admin.DNI" class="control-label"></label>
-        <input asp-for="Admin.DNI" class="form-control" />
-        <span asp-validation-for="Admin.DNI" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Admin.Numero_Control" class="control-label"></label>
-        <input asp-for="Admin.Numero_Control" class="form-control" />
-        <span asp-validation-for="Admin.Numero_Control" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Admin.Correo" class="control-label"></label>
-        <input asp-for="Admin.Correo" class="form-control" />
-        <span asp-validation-for="Admin.Correo" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Admin.ID_Division_Fk" class="control-label"></label>
-        <select asp-for="Admin.ID_Division_Fk"
-                asp-items="Model.Divisions.Select(d => new SelectListItem
-                        {
-                            Value = d.ID_Division_Pk.ToString(),
-                            Text = d.Descripcion_Division
-                        })"
-                id="deptSelect"
-                class="formControl">
-            <option hidden selected value="">Seleccione el Organismo</option>
-        </select>
-        <span asp-validation-for="Admin.ID_Division_Fk" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Admin.ID_Servicio_Fk" id="servicioLabel" class="control-label"></label>
-        <select asp-for="Admin.ID_Servicio_Fk" id="servicioSelect" class="formControl" required>
-            <option hidden value="">Seleccione el servicio correspondiente</option>
-        </select>
-        <span asp-validation-for="Admin.ID_Servicio_Fk" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Admin.ID_Rol_Fk" class="control-label"></label>
-        <select asp-for="Admin.ID_Rol_Fk"
-                asp-items="Model.Roles"
-                class="formControl">
-            <option hidden selected value="">Seleccione un rol</option>
-        </select>
-        <span asp-validation-for="Admin.ID_Rol_Fk" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <input type="submit" value="Guardar" class="btn btn-primary" />
-    </div>
-</form>
-
+ </div>
 
 
 @section Scripts {
@@ -113,141 +123,108 @@
                 loadServicios(initialDivisionId);
             }
         });
-    </script>    
+    </script>
     <style>
-        body {
-            background-color: #eeeeee;
+        .page-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 85vh;
+            background-color: #f0f2f5; /* Color de fondo opcional */
         }
 
-        a.btn-action {
-            display: inline-block;
-            text-decoration: none;
-            padding: 8px 12px;
-            margin: 4px;
-            border: 1px solid #003d6b;
-            border-radius: 5px;
-            background-color: #003d6b;
-            color: white;
-            transition: background-color 0.3s, transform 0.3s;
+        .row-inputs {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 20px;
         }
 
-            a.btn-action:hover {
-                background-color: #002e5d;
-                transform: translateY(-2px);
+            .row-inputs .form-group {
+                width: 48%;
             }
 
-
-        .form-mod {
-            align-items: center;
+        .form-alta {
+            display: flex;
             justify-content: center;
-            width: 65%;
-            margin: 30px auto;
-            padding: 20px;
-            background-color: #e0e8f1;
+            align-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 45vw;
+            background-color: #ffffff;
+            border: 1px solid #c2d3e0;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 61, 107, 0.1);
+        }
+
+        .formulario {
+            padding: 10px;
+        }
+
+        .titulo-form {
+            background-color: #003d6b;
+            color: #fcfcfc;
+            width: 100%;
+            text-align: center;
+        }
+
+        .form-control, label, h4 {
+            font-size: 1em;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
             border: 1px solid #003d6b;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 61, 107, 0.2);
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .submit-log {
+            width: 100%;
+            background-color: #003d6b;
+            color: white;
+            padding: 12px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            text-align: center;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+            .submit-log:hover {
+                background-color: #002e5d;
+            }
+
+            .submit-log:active {
+                background-color: #001f3f;
+                transform: scale(0.98);
+            }
+
+        fieldset {
+            border: none;
+            padding: 0;
+            margin: 0;
         }
 
         legend {
             font-size: 1.2em;
             color: #003d6b;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        .submit-mod {
-            background-color: #003d6b;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-            .submit:hover {
-                background-color: #002e5d;
-            }
-
-        h4 {
-            color: #003d6b;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        asap-for {
-            color: #003d6b;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        h3 {            
-            color: #003d6b;
-            margin: 10px;
-            font-weight: bold;
-        }
-
-        .custom-textarea {
-            width: 100%;
-            height: 150px;
-            resize: none;
-        }
-
-        a.btn-action:hover {
-            background-color: #002e5d; /* Color en hover */
-            transform: translateY(-2px);
-        }
-
-        label,
-        input[type="text"],
-        select,
-        .submit-mod,
-        h4 {
-            font-size: 1em;
-            font-weight: bold;
-            color: #003d6b; /* Asegurarte de que las etiquetas label y h4 compartan el mismo color */
-        }
-
-        input[type="number"],
-        select,
-        .submit-mod,
-        h4 {
-            font-size: 1em;
-            font-weight: bold;
-        }
-
-        input[type="password"],
-        select {
-            width: 100%;
-            padding: 8px;
             margin-bottom: 15px;
-            border: 1px solid #003d6b;
-            border-radius: 4px;
-            background-color: white;
+            text-align: center;
         }
-
-        input[type="text"],
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #003d6b;
-            border-radius: 4px;
-            background-color: white;
-        }
-
-        input[type="number"],
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #003d6b;
-            border-radius: 4px;
-            background-color: white;
-        }        
-
     </style>
 }
