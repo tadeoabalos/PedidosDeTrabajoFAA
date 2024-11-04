@@ -58,24 +58,23 @@
                 <td>@item.DNI</td>
                 <td>@item.Numero_Control</td>
                 <td>@item.Correo</td>
-                <td>
-                    @if (item.ID_Division_Fk == null)
+                @if (item.ID_Division_Fk == null)
+                {
+                    @:No se le asignó una división
+                }
+                else if (Model.Divisiones != null)
+                {
+                    var division = Model.Divisiones.FirstOrDefault(d => d.ID_Division_Pk == item.ID_Division_Fk);
+                    if (division != null)
                     {
-                        @:No se le asignó una división
+                        @division.Descripcion_Division
                     }
                     else
                     {
-                        var division = Model.Divisiones.FirstOrDefault(d => d.ID_Division_Pk == item.ID_Division_Fk);
-                        if (division != null)
-                        {
-                            @division.Descripcion_Division
-                        }
-                        else
-                        {
-                            @:División desconocida
-                        }
+                        @:División desconocida
                     }
-                </td>
+                }
+
 
                 <td>
                     @if (item.ID_Servicio_Fk == null)

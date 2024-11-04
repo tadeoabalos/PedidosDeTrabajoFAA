@@ -2,7 +2,6 @@
 @model PPTT.Pages.Administradores.IndexPPTT
 
 @{
-
 }
 <body>
 <table class="table" id="tabla">
@@ -109,7 +108,7 @@
         <a asp-page="./Index" asp-route-pageIndex="@(Model.PedidoTrabajo.PageIndex + 1)" class="pag">Siguiente</a>
     }
 </div>
-<a class="btn-action" asp-page="./Menu">Volver al Menu</a>
+<a class="btn-action" asp-page="/Vistas/IndexLogueado">Volver al Menu</a>
 <button id="btnExportar">Exportar Excel</button>
 
 <div>
