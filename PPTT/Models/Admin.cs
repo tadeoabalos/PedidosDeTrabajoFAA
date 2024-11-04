@@ -16,8 +16,9 @@ namespace PPTT.Models
         public enum Rol
         {
             // Asegúrate de tener valores definidos aquí
-            Usuario = 1,
-            Administrador = 2
+            Operario = 1,
+            Administrador = 2,
+            SuperAdministrador = 3
         }
 
         [Display(Name = "Rol")]

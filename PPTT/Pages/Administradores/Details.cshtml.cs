@@ -22,7 +22,7 @@ namespace PPTT.Pages.Administradores
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
             HttpContext.Session.SetInt32("UserRole", _rol);
 
-            if (_rol == 2)
+            if (_rol > 1)
             {
                 int datos = HttpContext.Session.GetInt32("datos") ?? 0;
                 HttpContext.Session.SetInt32("datos", datos);

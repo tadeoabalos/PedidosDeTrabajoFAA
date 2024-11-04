@@ -31,7 +31,7 @@ namespace PPTT.Pages.Administradores
         {
             public int? ID_Servicio_Fk { get; set; }
         }
-
+        public DbSet<Division> Divisiones { get; set; }
         public async Task<IActionResult> OnGetAsync()
         {
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
@@ -41,7 +41,7 @@ namespace PPTT.Pages.Administradores
             {
                 return RedirectToPage("/Index");
             }
-            else if (_rol > 1)
+            else if (_rol == 2 || _rol == 3)
             {
                 int datos = HttpContext.Session.GetInt32("datos") ?? 0;
                 HttpContext.Session.SetInt32("datos", datos);
