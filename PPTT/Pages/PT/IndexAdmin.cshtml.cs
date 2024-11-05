@@ -12,11 +12,11 @@ using ModelsContext = PPTT.Models.DBPPTTContext;
 
 namespace PPTT.Pages.Administradores
 {
-    public class IndexAdminPPTT : PageModel
+    public class IndexAdminPTPPTT : PageModel
     {
         private readonly DataContext _context;
 
-        public IndexAdminPPTT(DataContext context)
+        public IndexAdminPTPPTT(DataContext context)
         {
             _context = context;
         }
@@ -46,11 +46,11 @@ namespace PPTT.Pages.Administradores
             // Filtros de fecha
             if (fechaInicio.HasValue && fechaFin.HasValue)
             {
-                var fechaFinFinal = fechaFin.Value.Date.AddDays(1).AddTicks(-1);
+                var fechaFinFinal = fechaFin.Value.Date.AddDays(1).AddTicks(-1); // Incluye el final del día
                 pedidosQuery = pedidosQuery.Where(pt => pt.Fecha_Subida >= fechaInicio && pt.Fecha_Subida <= fechaFinFinal);
             }
 
-            // Paginación
+            // Paginación de los resultados filtrados
             PedidoTrabajo = await PaginatedListAdmin<PTUsuario>.CreateAsync(pedidosQuery, PageIndex ?? 1, pageSize);
         }
 
