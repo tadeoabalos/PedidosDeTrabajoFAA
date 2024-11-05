@@ -41,8 +41,7 @@
             <th>@Html.DisplayNameFor(model => model.Admin[0].Apellido)</th>
             <th>@Html.DisplayNameFor(model => model.Admin[0].DNI)</th>
             <th>@Html.DisplayNameFor(model => model.Admin[0].Numero_Control)</th>
-            <th>@Html.DisplayNameFor(model => model.Admin[0].Correo)</th>
-            <th>@Html.DisplayNameFor(model => model.Admin[0].ID_Division_Fk)</th>
+            <th>@Html.DisplayNameFor(model => model.Admin[0].Correo)</th>            
             <th>@Html.DisplayNameFor(model => model.Admin[0].ID_Servicio_Fk)</th>
             <th>@Html.DisplayNameFor(model => model.Admin[0].Fecha_Alta)</th>
             <th>@Html.DisplayNameFor(model => model.Admin[0].Fecha_Baja)</th>
@@ -74,8 +73,6 @@
                         @:División desconocida
                     }
                 }
-
-
                 <td>
                     @if (item.ID_Servicio_Fk == null)
                     {
@@ -108,6 +105,8 @@
                             <a asp-page="./Details" asp-route-id="@item.ID_Usuario_Pk">Detalle</a>
                             |
                             <a asp-page="./Edit" asp-route-id="@item.ID_Usuario_Pk">Modificar</a>
+                            |
+                            <a asp-page="./Delete" asp-route-id="@item.ID_Usuario_Pk">Dar de baja</a>
                         </div>
                     }
                     else

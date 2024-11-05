@@ -64,7 +64,7 @@ namespace PPTT.Models
         [ForeignKey("ID_Dependencia_Interna_Fk")]
         public Dependencia_Interna? Dependencia_Interna { get; set; }
         [Display(Name = "DNI del Solicitante")]
-        public int DNI_Solicitante { get; set; } = 0;
+        public int DNI_Solicitante { get; set; } 
 
         [Display(Name = "Número de Control del Solicitante")]
         public string? Numero_Control_Solicitante { get; set; } = string.Empty;

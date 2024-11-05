@@ -93,6 +93,11 @@ header {
     font-weight: bold;
 }
 
+.a-to-index {
+    font-size: 0.75em;
+    margin-left: 15px;
+}
+
 footer {
     background-color: #1d3557;
     color: #f1faee;
