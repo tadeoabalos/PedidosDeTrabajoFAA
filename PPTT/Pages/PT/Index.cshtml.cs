@@ -64,11 +64,6 @@ namespace PPTT.Pages.Administradores
             PedidoTrabajo = await PaginatedList<PTUsuario>.CreateAsync(pedidosQuery, pageIndex ?? 1, pageSize);
         }
 
-
-
-
-
-
         public async Task<JsonResult> OnGetUsuariosFiltradosAsync(string division)
         {
             var usuarios = await _context.GetUsuariosFiltradosAsync(int.Parse(division));

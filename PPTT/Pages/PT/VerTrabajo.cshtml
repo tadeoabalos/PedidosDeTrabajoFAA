@@ -1,0 +1,276 @@
+﻿@page
+@model PPTT.Pages.Vistas.VerTrabajo.VerTrabajoPPTT
+
+@{
+    ViewData["Title"] = "Pedidos de trabajo";
+}
+<body>
+    <table class="table" id="tabla">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Orden_Fk)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Fecha_Subida)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Grado_Fk)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Apellido_Solicitante)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Organismo_Fk)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].RTI_Solicitante)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Numero_Oficina_PT)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Correo)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Division_Fk)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Tarea_Fk)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Observacion)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Estado_Fk)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Prioridad_Fk)</th>
+                <th><span>Asignar Personal</span></th>
+                <th><span>Personal Asignado</span></th>
+                <th>Detalle/Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var divisionUsuario = HttpContext.Session.GetInt32("Division");
+            }
+
+            @if (Model.PedidoTrabajo != null && Model.PedidoTrabajo.Any())
+            {
+                foreach (var item in Model.PedidoTrabajo)
+                {
+                    if (item.ID_Estado_Fk != 1004 && item.ID_Estado_Fk != 1006 && item.ID_Division_Fk == divisionUsuario)
+                    {
+                        <tr data-fecha="@item.Fecha_Subida?.ToString("yyyy-MM-dd") ?? " 0001-01-01"">
+                            <td>@Html.DisplayFor(modelItem => item.ID_Orden_Fk)</td>
+                            <td>
+                                @if (item.Fecha_Subida.HasValue)
+                                {
+                                    @item.Fecha_Subida.Value.ToString("dd-MM-yyyy")
+                                }
+                                else
+                                {
+                                    @:01-01-0001
+                                }
+                            </td>
+                            <td>@Html.DisplayFor(modelItem => item.Grado.Descripcion_Grado)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Apellido_Solicitante)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Organismo.Descripcion_organismo)</td>
+                            <td>@Html.DisplayFor(modelItem => item.RTI_Solicitante)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Numero_Oficina_PT)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Correo)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ID_Division_Fk)</td>
+                            <td>
+                                @Html.Raw(item.Tarea.Descripcion_Tarea.Length > 3 ?
+                                         item.Tarea.Descripcion_Tarea.Substring(0) :
+                                         item.Tarea.Descripcion_Tarea)
+                            </td>
+                            <td>@Html.DisplayFor(modelItem => item.Observacion)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Estado.Descripcion_Estado)</td>
+                            <td data-orden-trabajo-id="@item.ID_Orden_Trabajo_Pk">
+                                <div class="form-group">
+                                    <select asp-for="PT.ID_Prioridad_Fk"
+                                            asp-items="@(new SelectList(Model.Prioridad, "ID_Prioridad_Pk", "Descripcion_Prioridad"))"
+                                            class="PrioridadSelect formControl">
+                                        <option hidden selected value="">@item.Prioridad?.Descripcion_Prioridad</option>
+                                    </select>
+                                    <span asp-validation-for="PT.ID_Prioridad_Fk" class="text-danger"></span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <select id="usuarioSelect_@item.ID_Orden_Trabajo_Pk" class="formControl" data-division-id="@item.ID_Division_Fk">
+                                        <option hidden selected value="">Selecciona un usuario</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <span id="personalAsignado_@item.ID_Orden_Trabajo_Pk" data-orden-id="@item.ID_Orden_Trabajo_Pk">
+                                    Personal asignado
+                                </span>
+                            </td>
+                            <td>
+                                <a asp-page="./Details" class="btn-action" asp-route-id="@item.ID_Orden_Trabajo_Pk">Ir</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="15">No hay pedidos de trabajo disponibles.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+    <a class="btn-action" asp-page="/Vistas/IndexAdmin">Volver al Menu</a>
+    <button id="btnExportar">Exportar Excel</button>
+
+<footer>
+    <p>Dirección de Informática - Departamento de Desarrollo y Mantenimiento de Sistemas</p>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<style>
+
+    header {
+        background-color: #1d3557; 
+        color: #f1faee; 
+        padding: 10px 0;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    body {
+        overflow-y: hidden;
+    }
+    .submit {
+        background-color: #e63946;
+        color: #f1faee;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1em;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+
+        .submit:hover {
+            background-color: #d62828;
+            transform: scale(1.05);
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+        }
+    .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    
+    .logout-icon {
+        background-color: #e63946; /* Color del botón */
+        color: #f1faee;
+        padding: 8px 12px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+        .logout-icon:hover {
+            background-color: #d62828; /* Color al pasar el cursor */
+        }
+
+    footer {
+        background-color: #1d3557;
+        color: #f1faee;
+        padding: 15px 0;
+        text-align: center;
+        font-size: 0.9em;
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+    }    
+    #warningMessagePen {
+        display: block;
+        overflow: auto;
+        word-wrap: break-word;
+    }     
+
+    a.btn-action, button {
+        display: inline-block;
+        text-decoration: none;
+        padding: 4px 6px; /* Ajustar el padding */
+        margin: 2px; /* Reducir margen */
+        border: 1px solid #003d6b; /* Bordes de botones */
+        border-radius: 4px; /* Bordes más redondeados */
+        background-color: #003d6b; /* Color de fondo de los botones */
+        color: white;
+        transition: background-color 0.3s, transform 0.3s;
+        font-size: 0.8em; /* Tamaño de fuente reducido */
+    }
+
+        a.btn-action:hover, button:hover {
+            background-color: #002e5d; /* Color al pasar el mouse */
+            transform: translateY(-1px); /* Sutil efecto al pasar el mouse */
+        }
+
+    table {
+        width: 100%; /* Asegura que la tabla ocupe todo el ancho */        
+        border-collapse: collapse; /* Colapsa los bordes de la tabla */
+        font-size: 0.75em; /* Tamaño de fuente más pequeño */
+    }
+
+    th, td {
+        padding: 4px; 
+        text-align: left; 
+        border-bottom: 1px solid #ddd; 
+        height: 8vh;
+    }
+
+    th {
+        background-color: #e0e8f1; /* Fondo de los encabezados */
+        color: #003d6b; /* Color del texto de los encabezados */
+    }    
+
+    .modal-content {
+       padding: 5px; 
+    }
+
+    .modal-header, .modal-footer {
+        border: none; 
+    }
+
+    button {
+        display: inline-block;
+        text-decoration: none;
+        padding: 4px 6px; /* Ajustar el padding */
+        margin: 2px; /* Reducir margen */
+        border: 1px solid #4caf50; /* Bordes de botones */
+        border-radius: 4px; /* Bordes más redondeados */
+        background-color: #4caf50; /* Color de fondo de los botones */
+        color: white;
+        transition: background-color 0.3s, transform 0.3s;
+        font-size: 0.8em; /* Tamaño de fuente reducido */
+    }
+
+        button:hover {
+            background-color: #4caf50; /* Mantener el color al pasar el mouse */
+            transform: translateY(-2px); /* Efecto al pasar el mouse */
+        }
+
+    .filtrar {
+        display: inline-block;
+        text-decoration: none;
+        padding: 4px 6px; /* Ajustar el padding */
+        margin: 2px; /* Reducir margen */
+        border: 1px solid #ff9800; /* Bordes de botones */
+        border-radius: 4px; /* Bordes más redondeados */
+        background-color: #ff9800; /* Color de fondo de los botones */
+        color: white;
+        transition: background-color 0.3s, transform 0.3s;
+        font-size: 0.8em; /* Tamaño de fuente reducido */
+    }
+
+        .filtrar:hover {
+            background-color: #ff9800; /* Mantener el color al pasar el mouse */
+            transform: translateY(-2px); /* Efecto al pasar el mouse */
+        }
+    table tr:nth-child(odd) td {
+        background-color: #e0e8f1;
+    }    
+    table tr:nth-child(even) td {
+        background-color: #eeeeee;
+    }
+    .pag {
+        margin: 5px;
+        text-decoration: none;
+        color:midnightblue;
+    }
+    .container {
+        width: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: none !important;
+    }    
+
+</style> 

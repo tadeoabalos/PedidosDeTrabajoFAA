@@ -17,7 +17,6 @@ namespace PPTT.Pages.Administradores
 
         [BindProperty]
         public Admin Admin { get; set; } = default!;
-
         public List<Division> Divisions { get; set; } = new List<Division>();
         public List<SelectListItem> Roles { get; set; } = new List<SelectListItem>();
 
@@ -71,11 +70,11 @@ namespace PPTT.Pages.Administradores
                 return Page();
             }
 
-            var adminFromDb = await _context.Usuario.AsNoTracking().FirstOrDefaultAsync(m => m.ID_Usuario_Pk == Admin.ID_Usuario_Pk);
+          var adminFromDb = await _context.Usuario.AsNoTracking().FirstOrDefaultAsync(m => m.ID_Usuario_Pk == Admin.ID_Usuario_Pk);
             if (adminFromDb == null)
             {
                 return NotFound();
-            }
+            }  
 
             // Asignar las propiedades del objeto Admin basadas en el formulario
             adminFromDb.Nombre = Admin.Nombre;

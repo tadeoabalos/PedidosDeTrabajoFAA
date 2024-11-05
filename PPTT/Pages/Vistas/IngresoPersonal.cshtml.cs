@@ -64,6 +64,7 @@ namespace PPTT.Pages.Vistas
             {
                 HttpContext.Session.SetInt32("UserRole", _rol);
                 HttpContext.Session.SetInt32("Division", _division);
+                //HttpContext.Session.SetInt32("Division", _division);
 
                 if (_ingreso == 0)
                 {
