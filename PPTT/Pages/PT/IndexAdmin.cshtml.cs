@@ -52,9 +52,32 @@ namespace PPTT.Pages.Administradores
             // Paginación
             PedidoTrabajo = await PaginatedListAdmin<PTUsuario>.CreateAsync(pedidosQuery, PageIndex ?? 1, pageSize);
         }
+        public async Task<JsonResult> OnGetUsuariosFiltradosAsync(string division)
+        {
+            var usuarios = await _context.GetUsuariosFiltradosAsync(int.Parse(division));
+            return new JsonResult(usuarios);
+        }
+        public async Task<JsonResult> OnGetUsuarioPorPtAsync(string PT)
+        {
+            var usuario = await _context.GetUsuarioPorPtAsync(int.Parse(PT));
+            return new JsonResult(usuario);
+        }
+        public async Task<IActionResult> OnPostAsignarUsuarioAsync(int UsuarioId, int OrdenTrabajoId)
+        {
+            await _context.Database.ExecuteSqlRawAsync("EXEC AsignarUsuarioAOrden @p0, @p1", UsuarioId, OrdenTrabajoId);
+            return RedirectToPage("/PT/IndexAdmin");
+        }
+        public async Task<IActionResult> OnPostSetPrioridadAsync(int OrdenTrabajoId, int PrioridadId)
+        {
+            await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[SetPrioridad] @p0, @p1", OrdenTrabajoId, PrioridadId);
+            return RedirectToPage("/PT/IndexAdmin");
+        }
 
-
-        // Otros métodos aquí...
+        public async Task<JsonResult> OnGetPrioridadesAsync()
+        {
+            var prioridades = await _context.GetPrioridadAsync();
+            return new JsonResult(prioridades);
+        }
     }
 
     public class PaginatedListAdmin<T> : List<T>

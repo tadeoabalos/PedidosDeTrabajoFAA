@@ -1,8 +1,5 @@
 ﻿@page
 @model PPTT.Pages.Administradores.IndexPPTT
-
-@{
-}
 <body>
 <table class="table" id="tabla">
     <thead>
@@ -115,7 +112,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script> <!-- Cargar idioma español -->
-    <script>
+    <script>        
         document.addEventListener("DOMContentLoaded", function() {
             flatpickr("#fechaInicio", {
                 dateFormat: "d-m-Y", // Formato dd-mm-yyyy
@@ -127,7 +124,7 @@
             });
         });
     </script>
-    <form method="get">
+   <!-- <form method="get">
         <label for="fechaInicio">Fecha Inicio:</label>
         <input type="text" id="fechaInicio" name="fechaInicio" required />
 
@@ -135,7 +132,7 @@
         <input type="text" id="fechaFin" name="fechaFin" required />
         
         <button type="button" id="filtrar" class="filtrar">Filtrar</button>
-    </form>
+         </form>-->
     <a asp-page="./Finalizados" class="btn-action">Trabajos Finalizados</a>
 </div>
 

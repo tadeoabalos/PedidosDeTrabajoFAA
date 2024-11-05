@@ -61,7 +61,8 @@
                         </td>
                         <td>@Html.DisplayFor(modelItem => item.Observacion)</td>
                         <td>@Html.DisplayFor(modelItem => item.Estado.Descripcion_Estado)</td>
-                        <td data-orden-trabajo-id="@item.ID_Orden_Trabajo_Pk">
+                        <td>@Html.DisplayFor(modelItem => item.Prioridad.Descripcion_Prioridad)</td>
+                        <!--<td data-orden-trabajo-id="@item.ID_Orden_Trabajo_Pk">
                             <div class="form-group">
                                 <select asp-for="PT.ID_Prioridad_Fk"
                                         asp-items="@(new SelectList(Model.Prioridad, "ID_Prioridad_Pk", "Descripcion_Prioridad"))"
@@ -70,7 +71,7 @@
                                 </select>
                                 <span asp-validation-for="PT.ID_Prioridad_Fk" class="text-danger"></span>
                             </div>
-                        </td>
+                        </td>-->
                         <td>
                             <div class="form-group">
                                 <select id="usuarioSelect_@item.ID_Orden_Trabajo_Pk" class="formControl" data-division-id="@item.ID_Division_Fk">
@@ -126,7 +127,7 @@
             });
         });
     </script>
-    <form method="get">
+        <!-- <form method="get">
         <label for="fechaInicio">Fecha Inicio:</label>
         <input type="text" id="fechaInicio" name="fechaInicio" required />
 
@@ -134,7 +135,7 @@
         <input type="text" id="fechaFin" name="fechaFin" required />
         
         <button type="button" id="filtrar">Filtrar</button>
-    </form>
+    </form> -->
     <a asp-page="./FinalizadosAdmin" class="btn-action">Trabajos Finalizados</a>
 </div>
 
@@ -208,7 +209,7 @@
 <div class="modal fade" id="confirmPrioridadModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="post" asp-page-handler="SetPrioridad">
+            <form method="post" asp-page-handler="SettPrioridad">
                 <div class="modal-header">
                     <h5 class="modal-title" id="confirmModalLabel">Confirmar Modificación</h5>
                 </div>
