@@ -51,10 +51,9 @@ namespace PPTT.Pages.PT
         public enum ColorOficina
         {
             AZUL,
-            VERDE,
-            MARRÓN,
             BLANCO,
-            ROJO
+            ROSA,
+            VERDE                        
         }
         public enum PisoOficina
         {

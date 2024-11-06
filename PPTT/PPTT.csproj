@@ -9,12 +9,20 @@
   <ItemGroup>
     <Compile Remove="Pages\Operativos\**" />
     <Compile Remove="Pages\SuperAdmin\**" />
+    <Compile Remove="wwwroot\NewFolder1\**" />
+    <Compile Remove="wwwroot\NewFolder\**" />
     <Content Remove="Pages\Operativos\**" />
     <Content Remove="Pages\SuperAdmin\**" />
+    <Content Remove="wwwroot\NewFolder1\**" />
+    <Content Remove="wwwroot\NewFolder\**" />
     <EmbeddedResource Remove="Pages\Operativos\**" />
     <EmbeddedResource Remove="Pages\SuperAdmin\**" />
+    <EmbeddedResource Remove="wwwroot\NewFolder1\**" />
+    <EmbeddedResource Remove="wwwroot\NewFolder\**" />
     <None Remove="Pages\Operativos\**" />
     <None Remove="Pages\SuperAdmin\**" />
+    <None Remove="wwwroot\NewFolder1\**" />
+    <None Remove="wwwroot\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,8 +41,6 @@
 
   <ItemGroup>
     <Folder Include="Pages\Operativos\" />
-    <Folder Include="wwwroot\NewFolder1\" />
-    <Folder Include="wwwroot\NewFolder\" />
   </ItemGroup>
 
   <ItemGroup>

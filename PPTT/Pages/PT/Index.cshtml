@@ -49,7 +49,7 @@
                     <td>@Html.DisplayFor(modelItem => item.RTI_Solicitante)</td>
                     <td>@Html.DisplayFor(modelItem => item.Numero_Oficina_PT)</td>
                     <td>@Html.DisplayFor(modelItem => item.Correo)</td>
-                    <td>@Html.DisplayFor(modelItem => item.ID_Division_Fk)</td> <!-- Asegúrate de mostrar esta celda -->
+                    <td>@Html.DisplayFor(modelItem => item.Division.Descripcion_Division)</td> 
                     <td>
                         @Html.Raw(item.Tarea.Descripcion_Tarea.Length > 3 ?
                                  item.Tarea.Descripcion_Tarea.Substring(0) :
