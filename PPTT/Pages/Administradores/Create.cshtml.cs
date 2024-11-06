@@ -14,7 +14,7 @@ namespace PPTT.Pages.Administradores
         public CreateModel(PPTT.Data.DBPPTTContext context)
         {
             _context = context;
-            Admin = new Admin(); // Inicializa el objeto Admin
+            Admin = new Admin(); 
         }
 
         [BindProperty]
@@ -30,18 +30,16 @@ namespace PPTT.Pages.Administradores
                 return Page();
             }
 
-            Admin.ID_Rol_Fk = 1; // Asigna el rol
+            Admin.ID_Rol_Fk = 1; 
             Admin.Fecha_Baja = new DateTime(1, 1, 1); 
-            Admin.Fecha_Alta = DateTime.Now; // Asigna la fecha actual
-
-            // Guarda el objeto Admin en el contexto
+            Admin.Fecha_Alta = DateTime.Now; 
+            
             _context.Usuario.Add(Admin);
             await _context.SaveChangesAsync();
 
-            DNI = Admin.DNI; // Asigna el DNI
+            DNI = Admin.DNI; 
             HttpContext.Session.SetInt32("DNI", DNI);
-
-            // Lógica para invertir y hashear el DNI
+            
             string numeroStr = DNI.ToString();
             string numeroInvertido = new string(numeroStr.Reverse().ToArray());
 
@@ -62,10 +60,9 @@ namespace PPTT.Pages.Administradores
                 return RedirectToPage("/Index");
             }
             else if (_rol > 1)
-            {
-                // Aquí solo necesitas obtener las divisiones
+            {                
                 Divisions = await _context.GetDivisionAsync();
-                return Page(); // Muestra la página del formulario
+                return Page();
             }
             else
             {

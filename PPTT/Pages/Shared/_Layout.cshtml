@@ -6,7 +6,8 @@
     <title>@ViewData["Title"] - Pedidos de Trabajo</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Orden_de_Trabajo.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Orden_de_Trabajo.styles.css" asp-append-version="true" />    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 @{
     var currentPage = ViewContext.RouteData.Values["Page"]?.ToString();
@@ -24,8 +25,11 @@
                 @if (!pages.Contains(currentPage))
                 {
                     <form method="post" asp-page="/Vistas/IndexLogueado" asp-page-handler="cerrar">
-                        <input type="submit" value="Cerrar Sesion" class="cerrarsesion" />
+                        <button type="submit" class="cerrarsesion">
+                            <span style="margin-right: 8px">Cerrar Sesión</span><i class="fas fa-sign-out-alt"></i>
+                        </button>
                     </form>
+
                 }
             </div>
         </div>
