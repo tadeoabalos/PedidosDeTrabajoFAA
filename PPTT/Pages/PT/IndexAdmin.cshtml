@@ -127,7 +127,7 @@
             });
         });
     </script>
-        <!-- <form method="get">
+         <form method="get">
         <label for="fechaInicio">Fecha Inicio:</label>
         <input type="text" id="fechaInicio" name="fechaInicio" required />
 
@@ -135,7 +135,7 @@
         <input type="text" id="fechaFin" name="fechaFin" required />
         
         <button type="button" id="filtrar">Filtrar</button>
-    </form> -->
+    </form> 
     <a asp-page="./FinalizadosAdmin" class="btn-action">Trabajos Finalizados</a>
 </div>
 
@@ -189,7 +189,7 @@
 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="post" asp-page-handler="AsignarUsuario">
+            <form method="post" asp-page-handler="AAsignarUsuario">
                 <div class="modal-header">
                     <h5 class="modal-title" id="confirmModalLabel">Confirmar Asignación</h5>
                 </div>
@@ -209,7 +209,7 @@
 <div class="modal fade" id="confirmPrioridadModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="post" asp-page-handler="SettPrioridad">
+            <form method="post" asp-page-handler="ASetPrioridad">
                 <div class="modal-header">
                     <h5 class="modal-title" id="confirmModalLabel">Confirmar Modificación</h5>
                 </div>
