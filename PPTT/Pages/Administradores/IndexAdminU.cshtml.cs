@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace PPTT.Pages.Administradores
 {
-    public class IndexModel : PageModel
+    public class IndexAdminUModel : PageModel
     {
         private readonly IConfiguration _configuration;
         private readonly PPTT.Data.DBPPTTContext _context;
 
-        public IndexModel(PPTT.Data.DBPPTTContext context, IConfiguration configuration)
+        public IndexAdminUModel(PPTT.Data.DBPPTTContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;

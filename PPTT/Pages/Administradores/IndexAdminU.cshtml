@@ -1,5 +1,5 @@
 ﻿@page
-@model PPTT.Pages.Administradores.IndexModel
+@model PPTT.Pages.Administradores.IndexAdminUModel
 @using Microsoft.AspNetCore.Mvc.RazorPages
 @using PPTT.Data
 
@@ -49,8 +49,12 @@
         </tr>
     </thead>
     <tbody>
+        @{
+            var divisionUsuario = HttpContext.Session.GetInt32("Division");
+        }
         @foreach (var item in Model.Admin)
         {
+            @if (item.ID_Division_Fk == divisionUsuario){
             <tr>
                 <td>@item.Nombre</td>
                 <td>@item.Apellido</td>
@@ -117,6 +121,7 @@
                     }
                 </td>
             </tr>
+            }
         }
     </tbody>
 </table>

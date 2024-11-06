@@ -105,14 +105,6 @@ namespace PPTT.Pages.PT
                 case 1005:
                     string fechaEstimada = HttpContext.Session.GetString("FechaEstimadaFin") ?? "fecha no disponible";
                     string motivo = HttpContext.Session.GetString("motivo") ?? "motivo no disponible";
-                    Console.WriteLine(motivo);
-                    Console.WriteLine(motivo);
-                    Console.WriteLine(motivo);
-                    Console.WriteLine(motivo);
-                    Console.WriteLine(motivo);
-                    Console.WriteLine(motivo);
-                    Console.WriteLine(motivo);
-                    Console.WriteLine(motivo);
                     body = $"Su pedido de trabajo ha sido suspendido. Fecha de inicio estimada: {fechaEstimada}. Motivo: {motivo}";
                     break;
                 case 1006:

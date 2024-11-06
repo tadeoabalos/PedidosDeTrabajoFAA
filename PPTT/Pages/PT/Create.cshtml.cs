@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PPTT.Models;
 using System.Data.SqlClient;
+using System.Net.Mail;
+using System.Net;
 namespace PPTT.Pages.PT
 {
     public class CreatePPTT : PageModel
@@ -45,6 +47,7 @@ namespace PPTT.Pages.PT
         public List<Tarea> Tareas { get; set; } = new List<Tarea>();
         public List<SelectListItem> ColoresOficina { get; set; }
         public List<SelectListItem> PisosOficina { get; set; }
+        public string Mail { get; set; }
         public enum ColorOficina
         {
             AZUL,
@@ -107,12 +110,15 @@ namespace PPTT.Pages.PT
             PedidoTrabajo.ID_Prioridad_Fk = 1;
 
             // Almacena el valor retornado del stored procedure en la propiedad ID_Orden_Fk
-            // PedidoTrabajo.ID_Orden_Fk = await EjecutarDiferentesIDs(PedidoTrabajo.ID_Tarea_Fk);
-            PedidoTrabajo.ID_Orden_Fk = 1;
+            PedidoTrabajo.ID_Orden_Fk = await EjecutarDiferentesIDs(PedidoTrabajo.ID_Tarea_Fk);
+            //PedidoTrabajo.ID_Orden_Fk = 1;
             _context.PTUsuario.Add(PedidoTrabajo);
 
             await _context.SaveChangesAsync();
-
+            string mail = PedidoTrabajo.Correo;
+            string asunto = "Cambio de su Pedido";
+            string body = $"Hemos recibido su solicitud de trabajo. El número de identificación asignado es #{PedidoTrabajo.ID_Orden_Fk}. Le mantendremos informado sobre cualquier actualización en el estado de su solicitud.";
+            SendMail(mail, asunto, body);
             return RedirectToPage("/Index");
         }
 
@@ -171,6 +177,37 @@ namespace PPTT.Pages.PT
             var dependencias = await _context.GetDependenciasFiltradasAsync(int.Parse(organismo));
             return new JsonResult(dependencias);
         }
-
+        private bool SendMail(string to, string asunto, string body)
+        {
+            string mailUser = _configuration["MailSettings:MailUser"];
+            string mailPassword = _configuration["MailSettings:MailPassword"];
+            string from = mailUser;
+            string displayName = "Soporte Turnos Web Fuerza Aerea Argentina";
+            try
+            {
+                MailMessage mail = new MailMessage();
+                mail.From = new MailAddress(from, displayName);
+                mail.To.Add(to);
+                mail.Subject = asunto;
+                mail.Body = body;
+                mail.IsBodyHtml = true;
+                SmtpClient client = new SmtpClient("10.0.8.19", 25);
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential(from, mailPassword);
+                client.EnableSsl = false;
+                client.Send(mail);
+                return true;
+            }
+            catch (SmtpException ex)
+            {
+                Console.WriteLine($"ERROR SMTP: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"ERROR GENERAL: {ex.Message}");
+                return false;
+            }
+        }
     }
 }
