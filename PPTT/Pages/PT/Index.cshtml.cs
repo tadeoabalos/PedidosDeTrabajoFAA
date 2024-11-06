@@ -37,31 +37,38 @@ namespace PPTT.Pages.Administradores
 
         public async Task OnGetAsync(int? pageIndex, DateTime? fechaInicio, DateTime? fechaFin)
         {
-            int pageSize = 12;
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
-            int datos = 0;
-            Prioridad = await _context.GetPrioridadAsync();
-            HttpContext.Session.SetInt32("datoss", datos);
-
-            // Consulta inicial de pedidos de trabajo
-            var pedidosQuery = _context.PTUsuario
-                .Include(pt => pt.Organismo)
-                .Include(pt => pt.Tarea)
-                .Include(pt => pt.Estado)
-                .Include(pt => pt.Prioridad)
-                .Include(pt => pt.Dependencia_Interna)
-                .Include(pt => pt.Grado)
-                .AsQueryable();
-
-            // Filtrar por rango de fechas usando solo Fecha_Subida
-            if (fechaInicio.HasValue && fechaFin.HasValue)
+            if (_rol > 1)
             {
-                var fechaFinFinal = fechaFin.Value.Date.AddDays(1).AddTicks(-1); // Incluye el final del día
-                pedidosQuery = pedidosQuery.Where(pt => pt.Fecha_Subida >= fechaInicio && pt.Fecha_Subida <= fechaFinFinal);
-            }
+                int pageSize = 12;
+                int datos = 0;
+                Prioridad = await _context.GetPrioridadAsync();
+                HttpContext.Session.SetInt32("datoss", datos);
 
-            // Paginación de los resultados filtrados
-            PedidoTrabajo = await PaginatedList<PTUsuario>.CreateAsync(pedidosQuery, pageIndex ?? 1, pageSize);
+                // Consulta inicial de pedidos de trabajo
+                var pedidosQuery = _context.PTUsuario
+                    .Include(pt => pt.Organismo)
+                    .Include(pt => pt.Tarea)
+                    .Include(pt => pt.Estado)
+                    .Include(pt => pt.Prioridad)
+                    .Include(pt => pt.Dependencia_Interna)
+                    .Include(pt => pt.Grado)
+                    .AsQueryable();
+
+                // Filtrar por rango de fechas usando solo Fecha_Subida
+                if (fechaInicio.HasValue && fechaFin.HasValue)
+                {
+                    var fechaFinFinal = fechaFin.Value.Date.AddDays(1).AddTicks(-1); // Incluye el final del día
+                    pedidosQuery = pedidosQuery.Where(pt => pt.Fecha_Subida >= fechaInicio && pt.Fecha_Subida <= fechaFinFinal);
+                }
+
+                // Paginación de los resultados filtrados
+                PedidoTrabajo = await PaginatedList<PTUsuario>.CreateAsync(pedidosQuery, pageIndex ?? 1, pageSize);
+            }
+            else
+            {
+               RedirectToPage("/Index");
+            }
         }
 
         public async Task<JsonResult> OnGetUsuariosFiltradosAsync(string division)

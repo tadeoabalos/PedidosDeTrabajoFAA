@@ -25,15 +25,23 @@ namespace PPTT.Pages.Administradores
         public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();        
         public async Task OnGetAsync()
         {
-            Prioridad = await _context.GetPrioridadAsync();
-            PedidoTrabajo = await _context.PTUsuario
-                .Include(pt => pt.Organismo)           
-                .Include(pt => pt.Tarea)
-                .Include(pt => pt.Estado)
-                .Include(pt => pt.Prioridad)
-                .Include(pt => pt.Dependencia_Interna)
-                .Include(pt => pt.Grado)
-                .ToListAsync();
+            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+            if (_rol > 1)
+            {
+                Prioridad = await _context.GetPrioridadAsync();
+                PedidoTrabajo = await _context.PTUsuario
+                    .Include(pt => pt.Organismo)
+                    .Include(pt => pt.Tarea)
+                    .Include(pt => pt.Estado)
+                    .Include(pt => pt.Prioridad)
+                    .Include(pt => pt.Dependencia_Interna)
+                    .Include(pt => pt.Grado)
+                    .ToListAsync();
+            }
+            else
+            {
+                RedirectToPage("/Index");
+            }
         }
         public async Task<JsonResult> OnGetUsuariosFiltradosAsync(string division)
         {

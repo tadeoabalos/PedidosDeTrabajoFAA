@@ -35,58 +35,67 @@ namespace PPTT.Pages.PT
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null)
+            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+            if (_rol > 1)
             {
-                return NotFound();
-            }
-
-            // Obtener los usuarios filtrados
-            try
-            {
-                Usuarios = await _context.GetUsuariosFiltradosByOrdenAsync(id);
-                Estado = await _context.GetEstadosAsync();
-                Prioridad = await _context.GetPrioridadAsync();
-                PedidoTrabajo = await _context.PTUsuario
-                    .Include(pt => pt.Organismo)
-                    .Include(pt => pt.Tarea)
-                    .Include(pt => pt.Estado)
-                    .Include(pt => pt.Dependencia_Interna)
-                    .Include(pt => pt.Grado)
-                    .Include(pt => pt.Prioridad)
-                    .FirstOrDefaultAsync(m => m.ID_Orden_Trabajo_Pk == id);
-
-                // Verificar si se encontró el pedido de trabajo
-                if (PedidoTrabajo == null)
+                if (id == null)
                 {
                     return NotFound();
                 }
 
-                // Lógica de envío de correo
-                int datos = HttpContext.Session.GetInt32("datoss") ?? 0;
-                if (datos == 1)
-                {   
-                    await SendStatusEmail(PedidoTrabajo);
-                    HttpContext.Session.SetInt32("datoss", 0);
-                    int rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
-                    if (rol == 3)
+                // Obtener los usuarios filtrados
+                try
+                {
+                    Usuarios = await _context.GetUsuariosFiltradosByOrdenAsync(id);
+                    Estado = await _context.GetEstadosAsync();
+                    Prioridad = await _context.GetPrioridadAsync();
+                    PedidoTrabajo = await _context.PTUsuario
+                        .Include(pt => pt.Organismo)
+                        .Include(pt => pt.Tarea)
+                        .Include(pt => pt.Estado)
+                        .Include(pt => pt.Dependencia_Interna)
+                        .Include(pt => pt.Grado)
+                        .Include(pt => pt.Prioridad)
+                        .FirstOrDefaultAsync(m => m.ID_Orden_Trabajo_Pk == id);
+
+                    // Verificar si se encontró el pedido de trabajo
+                    if (PedidoTrabajo == null)
                     {
-                        return RedirectToPage("./Index");
+                        return NotFound();
                     }
-                    else
+
+                    // Lógica de envío de correo
+                    int datos = HttpContext.Session.GetInt32("datoss") ?? 0;
+                    if (datos == 1)
                     {
-                        return RedirectToPage("./IndexAdmin");
+                        await SendStatusEmail(PedidoTrabajo);
+                        HttpContext.Session.SetInt32("datoss", 0);
+                        int rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+                        if (rol == 3)
+                        {
+                            return RedirectToPage("./Index");
+                        }
+                        else
+                        {
+                            return RedirectToPage("./IndexAdmin");
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                // Manejo de errores
-                Console.WriteLine($"ERROR: {ex.Message}");
-                return StatusCode(500, "Error interno del servidor.");
-            }
+                catch (Exception ex)
+                {
+                    // Manejo de errores
+                    Console.WriteLine($"ERROR: {ex.Message}");
+                    return StatusCode(500, "Error interno del servidor.");
+                }
 
-            RetornaMotivo(PedidoTrabajo.ID_Orden_Trabajo_Pk, PedidoTrabajo.ID_Estado_Fk);
-            return Page();
+                RetornaMotivo(PedidoTrabajo.ID_Orden_Trabajo_Pk, PedidoTrabajo.ID_Estado_Fk);
+                return Page();
+
+            }
+            else
+            {
+                return RedirectToPage("/Index");
+            }
         }
 
         private async Task SendStatusEmail(PTUsuario pedidoTrabajo)

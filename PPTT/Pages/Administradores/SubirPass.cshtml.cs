@@ -43,7 +43,16 @@ namespace PPTT.Pages.Administradores
                 if (isValid)
                 {
                     Console.WriteLine("Contraseña actualizada correctamente.");
-                    return RedirectToPage("/Administradores/Index");
+                    int _roll = HttpContext.Session.GetInt32("UserRole") ?? 0;
+                    if (_roll == 3)
+                    {
+                        return RedirectToPage("./Index");
+
+                    }
+                    else
+                    {
+                        return RedirectToPage("./IndexAdminU");
+                    }
                 }
                 else
                 {
