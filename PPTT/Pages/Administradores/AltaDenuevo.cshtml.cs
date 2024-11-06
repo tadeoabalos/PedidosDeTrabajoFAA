@@ -34,8 +34,16 @@ namespace PPTT.Pages.Administradores
 
                 await _context.SaveChangesAsync();
             }
+            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+            if (_rol == 3)
+            {
+                return RedirectToPage("./Index");
 
-            return RedirectToPage("./Index");
+            }
+            else
+            {
+                return RedirectToPage("./IndexAdminU");
+            }
         }
     }
 }

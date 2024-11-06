@@ -43,9 +43,24 @@ namespace PPTT.Pages.Administradores
 
             // Ejecutar el stored procedure
             bool isValid = await EjecutarValidarStoredProcedure();
+            if (isValid)
+            {
+                int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+                if (_rol == 3)
+                {
+                    return RedirectToPage("./Index");
 
-            // Redirigir o mostrar la página según el resultado
-            return isValid ? RedirectToPage("/Administradores/Index") : Page();
+                }
+                else
+                {
+                    return RedirectToPage("./IndexAdminU");
+                }
+            }
+            else
+            {
+                return Page();
+            }
+
         }
 
         private async Task<bool> EjecutarValidarStoredProcedure()

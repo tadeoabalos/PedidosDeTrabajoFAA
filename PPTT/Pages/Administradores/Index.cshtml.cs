@@ -41,7 +41,7 @@ namespace PPTT.Pages.Administradores
             {
                 return RedirectToPage("/Index");
             }
-            else if (_rol == 2 || _rol == 3)
+            else if (_rol == 3)
             {
                 int datos = HttpContext.Session.GetInt32("datos") ?? 0;
                 HttpContext.Session.SetInt32("datos", datos);

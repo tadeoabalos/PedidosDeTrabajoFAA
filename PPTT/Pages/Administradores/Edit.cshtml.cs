@@ -38,29 +38,36 @@ namespace PPTT.Pages.Administradores
         {
             Divisions = await _context.GetDivisionAsync();
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+            if (_rol > 1)
+            {
                 Roles = Enum.GetValues(typeof(Admin.Rol))
-    .Cast<Admin.Rol>()
-    .Where(c => !(c == Admin.Rol.SuperAdministrador && _rol < 3)) // Filtra SuperAdministrador si _rol es menor que 3
-    .Select(c => new SelectListItem
-    {
-        Value = ((int)c).ToString(),
-        Text = c.ToString()
-    }).ToList();
+.Cast<Admin.Rol>()
+.Where(c => !(c == Admin.Rol.SuperAdministrador && _rol < 3)) // Filtra SuperAdministrador si _rol es menor que 3
+.Select(c => new SelectListItem
+{
+    Value = ((int)c).ToString(),
+    Text = c.ToString()
+}).ToList();
 
-            if (id == null)
-            {
-                return NotFound();
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var admin = await _context.Usuario.FirstOrDefaultAsync(m => m.ID_Usuario_Pk == id);
+                if (admin == null)
+                {
+                    return NotFound();
+                }
+
+                Admin = admin;
+
+                return Page();
             }
-
-            var admin = await _context.Usuario.FirstOrDefaultAsync(m => m.ID_Usuario_Pk == id);
-            if (admin == null)
+            else
             {
-                return NotFound();
+                return RedirectToPage("/Index");
             }
-
-            Admin = admin;
-
-            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()

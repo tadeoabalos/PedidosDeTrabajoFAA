@@ -70,7 +70,17 @@
         </div>
     </div>
     <div class="centered-button">
-        <a class="btn-action" asp-page="../Vistas/IndexLogueado">Volver al menú</a> |
+        @{
+            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+        }
+        @if (_rol == 3)
+        {
+            <a class="btn-action" asp-page="./Vistas/IndexLogueado">Volver al menú</a>
+        }
+        else
+        {
+            <a class="btn-action" asp-page="./Vistas/IndexAdmin">Volver al menú</a>
+        }
         <a class="btn-action" asp-page="./Index">Ir lista de usuarios</a>
     </div>
 </div>
