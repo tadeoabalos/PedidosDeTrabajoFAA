@@ -22,7 +22,6 @@ builder.Services.AddSession(options =>
 
 // Register GlobalState as a singleton service
 builder.Services.AddSingleton<GlobalState>();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

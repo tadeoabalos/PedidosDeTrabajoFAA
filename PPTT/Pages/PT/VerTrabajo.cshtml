@@ -21,21 +21,14 @@
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Observacion)</th>
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Estado_Fk)</th>
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Prioridad_Fk)</th>
-                <th><span>Asignar Personal</span></th>
-                <th><span>Personal Asignado</span></th>
-                <th>Detalle/Estado</th>
             </tr>
         </thead>
         <tbody>
-            @{
-                var divisionUsuario = HttpContext.Session.GetInt32("Division");
-            }
-
             @if (Model.PedidoTrabajo != null && Model.PedidoTrabajo.Any())
             {
                 foreach (var item in Model.PedidoTrabajo)
                 {
-                    if (item.ID_Estado_Fk != 1004 && item.ID_Estado_Fk != 1006 && item.ID_Division_Fk == divisionUsuario)
+                    if (item.ID_Estado_Fk != 1004 && item.ID_Estado_Fk != 1006)
                     {
                         <tr data-fecha="@item.Fecha_Subida?.ToString("yyyy-MM-dd") ?? " 0001-01-01"">
                             <td>@Html.DisplayFor(modelItem => item.ID_Orden_Fk)</td>
@@ -65,29 +58,10 @@
                             <td>@Html.DisplayFor(modelItem => item.Estado.Descripcion_Estado)</td>
                             <td data-orden-trabajo-id="@item.ID_Orden_Trabajo_Pk">
                                 <div class="form-group">
-                                    <select asp-for="PT.ID_Prioridad_Fk"
-                                            asp-items="@(new SelectList(Model.Prioridad, "ID_Prioridad_Pk", "Descripcion_Prioridad"))"
-                                            class="PrioridadSelect formControl">
-                                        <option hidden selected value="">@item.Prioridad?.Descripcion_Prioridad</option>
-                                    </select>
-                                    <span asp-validation-for="PT.ID_Prioridad_Fk" class="text-danger"></span>
+                                    <span class="form-control-plaintext">@item.Prioridad?.Descripcion_Prioridad</span>
                                 </div>
                             </td>
-                            <td>
-                                <div class="form-group">
-                                    <select id="usuarioSelect_@item.ID_Orden_Trabajo_Pk" class="formControl" data-division-id="@item.ID_Division_Fk">
-                                        <option hidden selected value="">Selecciona un usuario</option>
-                                    </select>
-                                </div>
-                            </td>
-                            <td>
-                                <span id="personalAsignado_@item.ID_Orden_Trabajo_Pk" data-orden-id="@item.ID_Orden_Trabajo_Pk">
-                                    Personal asignado
-                                </span>
-                            </td>
-                            <td>
-                                <a asp-page="./Details" class="btn-action" asp-route-id="@item.ID_Orden_Trabajo_Pk">Ir</a>
-                            </td>
+
                         </tr>
                     }
                 }
@@ -101,8 +75,6 @@
         </tbody>
     </table>
 </body>
-    <a class="btn-action" asp-page="/Vistas/IndexAdmin">Volver al Menu</a>
-    <button id="btnExportar">Exportar Excel</button>
 
 <footer>
     <p>Dirección de Informática - Departamento de Desarrollo y Mantenimiento de Sistemas</p>

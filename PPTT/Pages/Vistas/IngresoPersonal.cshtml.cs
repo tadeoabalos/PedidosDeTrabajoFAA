@@ -72,7 +72,7 @@ namespace PPTT.Pages.Vistas
                 }
                 else if (_rol == 1)
                 {
-                    return RedirectToPage("/Vistas/MenuLog");
+                    return RedirectToPage("/PT/VerTrabajo");
                 }
                 else if (_rol == 2)
                 {
