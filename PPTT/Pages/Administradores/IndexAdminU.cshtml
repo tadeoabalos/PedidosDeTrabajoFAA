@@ -1,0 +1,301 @@
+﻿@page
+@model PPTT.Pages.Administradores.IndexModel
+@using Microsoft.AspNetCore.Mvc.RazorPages
+@using PPTT.Data
+
+@{
+    ViewData["Title"] = "ABM usuario";    
+    var servicios = HttpContext.Session.GetObject<Dictionary<int, string>>("Servicios");
+
+    
+    if (servicios != null)
+    {
+        foreach (var kvp in servicios)
+        {
+            Console.WriteLine($"Key: {kvp.Key}, Value: {kvp.Value}");
+        }
+    }
+    else
+    {
+        Console.WriteLine("No se encontraron servicios en la sesión.");
+    }
+}
+
+<div class="titulo">
+    <h3>Listado de Usuarios</h3>
+    <p>
+        <a class="btn-action" asp-page="Create">Crear Nuevo Usuario</a>
+    </p>
+</div>
+
+<!-- Input para buscar empleados por nombre -->
+<form method="get">
+    <input class="buscador" type="text" name="searchQuery" placeholder="Busca por Nombre, Apellido, DNI o Correo." value="@Model.SearchQuery" />
+    <button type="submit">Buscar</button>
+</form>
+
+<table class="table" id="tabla">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Admin[0].Nombre)</th>
+            <th>@Html.DisplayNameFor(model => model.Admin[0].Apellido)</th>
+            <th>@Html.DisplayNameFor(model => model.Admin[0].DNI)</th>
+            <th>@Html.DisplayNameFor(model => model.Admin[0].Numero_Control)</th>
+            <th>@Html.DisplayNameFor(model => model.Admin[0].Correo)</th>            
+            <th>@Html.DisplayNameFor(model => model.Admin[0].ID_Servicio_Fk)</th>
+            <th>@Html.DisplayNameFor(model => model.Admin[0].Fecha_Alta)</th>
+            <th>@Html.DisplayNameFor(model => model.Admin[0].Fecha_Baja)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Admin)
+        {
+            <tr>
+                <td>@item.Nombre</td>
+                <td>@item.Apellido</td>
+                <td>@item.DNI</td>
+                <td>@item.Numero_Control</td>
+                <td>@item.Correo</td>
+                @if (item.ID_Division_Fk == null)
+                {
+                    @:No se le asignó una división
+                }
+                else if (Model.Divisiones != null)
+                {
+                    var division = Model.Divisiones.FirstOrDefault(d => d.ID_Division_Pk == item.ID_Division_Fk);
+                    if (division != null)
+                    {
+                        @division.Descripcion_Division
+                    }
+                    else
+                    {
+                        @:División desconocida
+                    }
+                }
+                <td>
+                    @if (item.ID_Servicio_Fk == null)
+                    {
+                        @:No se le asignó un servicio
+                    }
+                    else if (servicios != null && servicios.ContainsKey(item.ID_Servicio_Fk.Value))
+                    {
+                        @servicios[item.ID_Servicio_Fk.Value]
+                    }
+                    else
+                    {
+                        @:Servicio no reconocido
+                    }
+                </td>
+                <td>@item.Fecha_Alta?.ToShortDateString()</td>
+                <td>
+                    @if (item.Fecha_Baja?.ToShortDateString() == "1/1/0001")
+                    {
+                        @:--/--
+                    }
+                    else
+                    {
+                        @item.Fecha_Baja?.ToShortDateString()
+                    }
+                </td>
+                <td>
+                    @if (item.Fecha_Baja?.ToShortDateString() == "1/1/0001")
+                    {
+                        <div class="lista-seccion-boton">
+                            <a asp-page="./Details" asp-route-id="@item.ID_Usuario_Pk">Detalle</a>
+                            |
+                            <a asp-page="./Edit" asp-route-id="@item.ID_Usuario_Pk">Modificar</a>
+                            |
+                            <a asp-page="./Delete" asp-route-id="@item.ID_Usuario_Pk">Dar de baja</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="lista-seccion-boton">
+                            <a asp-page="./AltaDenuevo" asp-route-id="@item.ID_Usuario_Pk">Dar de Alta</a>
+                        </div>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+                int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+}
+@if (_rol == 3)
+{
+    <a class="btn-action" asp-page="/Vistas/IndexLogueado">Volver al Menu</a>
+}
+else
+{
+<a class="btn-action" asp-page="/Vistas/IndexAdmin">Volver al Menu</a>
+
+}
+
+
+
+<button id="btnExportar">Exportar Excel</button>
+
+<style>   
+    #warningMessagePen {
+        display: block;
+        overflow: auto;
+        word-wrap: break-word;
+    }
+
+    .buscador {
+        margin: 10px 0 0 10px;
+        width: 24vw;
+    }   
+
+    a.btn-action, button {
+        display: inline-block;
+        text-decoration: none;
+        padding: 4px 6px; /* Ajustar el padding */
+        margin: 2px; /* Reducir margen */
+        border: 1px solid #003d6b; /* Bordes de botones */
+        border-radius: 4px; /* Bordes más redondeados */
+        background-color: #003d6b; /* Color de fondo de los botones */
+        color: white;
+        transition: background-color 0.3s, transform 0.3s;
+        font-size: 0.8em; /* Tamaño de fuente reducido */
+    }
+
+        a.btn-action:hover, button:hover {
+            background-color: #002e5d; /* Color al pasar el mouse */
+            /* Sutil efecto al pasar el mouse */
+        }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.75em;
+    }
+
+
+    .modal-content {
+        padding: 5px;
+    }
+
+    .modal-header, .modal-footer {
+        border: none;
+    }
+
+    button {
+        display: inline-block;
+        text-decoration: none;
+        padding: 4px 6px; /* Ajustar el padding */
+        margin: 2px; /* Reducir margen */
+        border: 1px solid #4caf50; /* Bordes de botones */
+        border-radius: 4px; /* Bordes más redondeados */
+        background-color: #4caf50; /* Color de fondo de los botones */
+        color: white;
+        transition: background-color 0.3s, transform 0.3s;
+        font-size: 0.8em; /* Tamaño de fuente reducido */
+    }
+
+        button:hover {
+            background-color: #4caf50; /* Mantener el color al pasar el mouse */
+            transform: translateY(-2px); /* Efecto al pasar el mouse */
+        }
+
+    .filtrar {
+        display: inline-block;
+        text-decoration: none;
+        padding: 4px 6px; /* Ajustar el padding */
+        margin: 2px; /* Reducir margen */
+        border: 1px solid #ff9800; /* Bordes de botones */
+        border-radius: 4px; /* Bordes más redondeados */
+        background-color: #ff9800; /* Color de fondo de los botones */
+        color: white;
+        transition: background-color 0.3s, transform 0.3s;
+        font-size: 0.8em; /* Tamaño de fuente reducido */
+    }
+
+        .filtrar:hover {
+            background-color: #ff9800; /* Mantener el color al pasar el mouse */
+            transform: translateY(-2px); /* Efecto al pasar el mouse */
+        }
+
+    th, td {
+        padding: 4px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        height: 8vh;
+    }
+
+    th {
+        background-color: #e0e8f1;
+        color: #003d6b;
+    }
+
+    table tr:nth-child(odd) td {
+        background-color: #e0e8f1;
+    }
+
+    table tr:nth-child(even) td {
+        background-color: #eeeeee;
+    }
+
+    .pag {
+        margin: 5px;
+        text-decoration: none;
+        color: midnightblue;
+    }
+
+    .container {
+        width: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: none !important;
+    }
+
+    .lista-seccion-boton {
+        display: flex;
+        align-items: center;       
+        gap:2px;
+    }
+    .lista-seccion-boton a {
+            text-decoration: none;
+            margin-right:5px;
+    }
+
+</style>
+
+<!-- Scripts para exportar a Excel -->
+<script src="https://unpkg.com/xlsx@0.16.9/dist/xlsx.full.min.js"></script>
+<script src="https://unpkg.com/file-saverjs@latest/FileSaver.min.js"></script>
+<script src="https://unpkg.com/tableexport@latest/dist/js/tableexport.min.js"></script>
+
+
+<!-- Script para exportar a Excel -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const $btnExportar = document.querySelector("#btnExportar"),
+            $tabla = document.querySelector("#tabla");
+
+        $btnExportar.addEventListener("click", function () {
+            let tableExport = new TableExport($tabla, {
+                exportButtons: false, // No queremos botones adicionales
+                filename: "Reporte de Usuarios", // Nombre del archivo de Excel
+                sheetname: "Usuarios", // Título de la hoja
+                ignoreCols: [9] // Ignorar la décima columna (índice 9)
+            });
+
+            let datos = tableExport.getExportData();
+            let preferenciasDocumento = datos.tabla.xlsx;
+
+            tableExport.export2file(
+                preferenciasDocumento.data,
+                preferenciasDocumento.mimeType,
+                preferenciasDocumento.filename,
+                preferenciasDocumento.fileExtension,
+                preferenciasDocumento.merges,
+                preferenciasDocumento.RTL,
+                preferenciasDocumento.sheetname
+            );
+        });
+    });
+</script>

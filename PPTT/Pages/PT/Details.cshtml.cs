@@ -64,7 +64,7 @@ namespace PPTT.Pages.PT
                 // Lógica de envío de correo
                 int datos = HttpContext.Session.GetInt32("datoss") ?? 0;
                 if (datos == 1)
-                {
+                {   
                     await SendStatusEmail(PedidoTrabajo);
                     HttpContext.Session.SetInt32("datoss", 0);
                     int rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
@@ -105,10 +105,19 @@ namespace PPTT.Pages.PT
                 case 1005:
                     string fechaEstimada = HttpContext.Session.GetString("FechaEstimadaFin") ?? "fecha no disponible";
                     string motivo = HttpContext.Session.GetString("motivo") ?? "motivo no disponible";
+                    Console.WriteLine(motivo);
+                    Console.WriteLine(motivo);
+                    Console.WriteLine(motivo);
+                    Console.WriteLine(motivo);
+                    Console.WriteLine(motivo);
+                    Console.WriteLine(motivo);
+                    Console.WriteLine(motivo);
+                    Console.WriteLine(motivo);
                     body = $"Su pedido de trabajo ha sido suspendido. Fecha de inicio estimada: {fechaEstimada}. Motivo: {motivo}";
                     break;
                 case 1006:
-                    body = "Su pedido de trabajo ha sido cancelado.";
+                    string motivoo = HttpContext.Session.GetString("motivo") ?? "motivo no disponible";
+                    body = $"Su pedido de trabajo ha sido cancelado. Motivo: {motivoo}";
                     break;
                 default:
                     return; // No se envía correo si no hay un estado válido
@@ -141,6 +150,7 @@ namespace PPTT.Pages.PT
             HttpContext.Session.SetInt32("datoss", datos);
             string fechaComoString = fechaEstimadaFin.ToString("dd/MM/yyyy");
             HttpContext.Session.SetString("FechaEstimadaFin", fechaComoString);
+            HttpContext.Session.SetString("motivo", motSus);
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[SuspenderPedidoTrabajo] @p0, @p1, @p2", OrdenTrabajoId, fechaEstimadaFin, motSus);
             return RedirectToPage("./MandarMailCambioEstado");
         }
