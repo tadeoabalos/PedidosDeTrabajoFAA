@@ -11,7 +11,7 @@
 @{
     var currentPage = ViewContext.RouteData.Values["Page"]?.ToString();
     var pages = new List<string> { "/Index", "/Vistas/IngresoPersonal", "/PT/Create", "/Vistas/OlvideContraseña",
-    "/Vistas/IngresoPrimeraVez"};
+    "/Vistas/IngresoPrimeraVez" };
 }
 <body>
     <header>
@@ -24,7 +24,7 @@
                 @if (!pages.Contains(currentPage))
                 {
                     <form method="post" asp-page="/Vistas/IndexLogueado" asp-page-handler="cerrar">
-                        <input type="submit" value="Cerrar Sesion" class="submit" />                        
+                        <input type="submit" value="Cerrar Sesion" class="submit" />
                     </form>
                 }
             </div>
@@ -36,7 +36,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <footer>            
+    <footer>
         <p>Dirección de Informática - Departamento de Desarrollo y Mantenimiento de Sistemas</p>
     </footer>
     @await RenderSectionAsync("Scripts", required: false)
