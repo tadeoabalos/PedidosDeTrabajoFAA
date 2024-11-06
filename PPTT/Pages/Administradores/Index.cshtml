@@ -121,7 +121,21 @@
     </tbody>
 </table>
 
-<a class="btn-action" asp-page="/Vistas/IndexLogueado">Volver al Menu</a>
+@{
+                int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+}
+@if (_rol == 3)
+{
+    <a class="btn-action" asp-page="/Vistas/IndexLogueado">Volver al Menu</a>
+}
+else
+{
+<a class="btn-action" asp-page="/Vistas/IndexAdmin">Volver al Menu</a>
+
+}
+
+
+
 <button id="btnExportar">Exportar Excel</button>
 
 <style>   

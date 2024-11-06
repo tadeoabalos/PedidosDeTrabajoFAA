@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace PPTT.Pages.Vistas
 {
-    public class YaLogModel : PageModel
+    public class IndexLogueado : PageModel
     {
         public IActionResult OnGet()
         {

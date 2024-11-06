@@ -12,11 +12,11 @@ using ModelsContext = PPTT.Models.DBPPTTContext;
 
 namespace PPTT.Pages.Administradores
 {
-    public class IndexAdminPPTT : PageModel
+    public class IndexAdminPTPPTT : PageModel
     {
         private readonly DataContext _context;
 
-        public IndexAdminPPTT(DataContext context)
+        public IndexAdminPTPPTT(DataContext context)
         {
             _context = context;
         }
@@ -25,6 +25,7 @@ namespace PPTT.Pages.Administradores
 
         [BindProperty]
         public List<Admin> Usuarios { get; set; } = new List<Admin>();
+        public PTUsuario PT { get; set; } = default!;
 
         public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();
         public DateTime? FechaInicio { get; set; }
@@ -45,11 +46,11 @@ namespace PPTT.Pages.Administradores
             // Filtros de fecha
             if (fechaInicio.HasValue && fechaFin.HasValue)
             {
-                var fechaFinFinal = fechaFin.Value.Date.AddDays(1).AddTicks(-1);
+                var fechaFinFinal = fechaFin.Value.Date.AddDays(1).AddTicks(-1); // Incluye el final del día
                 pedidosQuery = pedidosQuery.Where(pt => pt.Fecha_Subida >= fechaInicio && pt.Fecha_Subida <= fechaFinFinal);
             }
 
-            // Paginación
+            // Paginación de los resultados filtrados
             PedidoTrabajo = await PaginatedListAdmin<PTUsuario>.CreateAsync(pedidosQuery, PageIndex ?? 1, pageSize);
         }
         public async Task<JsonResult> OnGetUsuariosFiltradosAsync(string division)
@@ -73,13 +74,33 @@ namespace PPTT.Pages.Administradores
             return RedirectToPage("/PT/IndexAdmin");
         }
 
+        public async Task<JsonResult> OnGetAUsuariosFiltradosAsync(string division)
+        {
+            var usuarios = await _context.GetUsuariosFiltradosAsync(int.Parse(division));
+            return new JsonResult(usuarios);
+        }
+        public async Task<JsonResult> OnGetAUsuarioPorPtAsync(string PT)
+        {
+            var usuario = await _context.GetUsuarioPorPtAsync(int.Parse(PT));
+            return new JsonResult(usuario);
+        }
+        public async Task<IActionResult> OnPostAAsignarUsuarioAsync(int UsuarioId, int OrdenTrabajoId)
+        {
+            await _context.Database.ExecuteSqlRawAsync("EXEC AsignarUsuarioAOrden @p0, @p1", UsuarioId, OrdenTrabajoId);
+            return RedirectToPage("/PT/IndexAdmin");
+        }
+        public async Task<IActionResult> OnPostASetPrioridadAsync(int OrdenTrabajoId, int PrioridadId)
+        {
+            await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[SetPrioridad] @p0, @p1", OrdenTrabajoId, PrioridadId);
+            return RedirectToPage("/PT/IndexAdmin");
+        }
+
         public async Task<JsonResult> OnGetPrioridadesAsync()
         {
             var prioridades = await _context.GetPrioridadAsync();
             return new JsonResult(prioridades);
         }
     }
-
     public class PaginatedListAdmin<T> : List<T>
     {
         public int PageIndex { get; private set; } // Cambiado a PageIndex
@@ -102,5 +123,7 @@ namespace PPTT.Pages.Administradores
             return new PaginatedListAdmin<T>(items, count, pageIndex, pageSize); // Cambiado a pageIndex
         }
     }
-
 }
+
+
+

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PPTT.Models;
 using System.Net.Mail;
 using System.Net;
+using static PPTT.Models.Admin;
 
 namespace PPTT.Pages.PT
 {
@@ -66,7 +67,15 @@ namespace PPTT.Pages.PT
                 {
                     await SendStatusEmail(PedidoTrabajo);
                     HttpContext.Session.SetInt32("datoss", 0);
-                    return RedirectToPage("./Index");
+                    int rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+                    if (rol == 3)
+                    {
+                        return RedirectToPage("./Index");
+                    }
+                    else
+                    {
+                        return RedirectToPage("./IndexAdmin");
+                    }
                 }
             }
             catch (Exception ex)
@@ -158,7 +167,16 @@ namespace PPTT.Pages.PT
         public async Task<IActionResult> OnPostSetPrioridadAsync(int OrdenTrabajoId, int PrioridadId)
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[SetPrioridad] @p0, @p1", OrdenTrabajoId, PrioridadId);
-            return RedirectToPage("./Index");
+            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+            if (_rol == 3)
+            {
+                return RedirectToPage("./Index");
+            }
+            else
+            {
+                return RedirectToPage("./IndexAdmin");
+            }
+            
         }
 
         public async Task<IActionResult> OnPostPendienteEstadoAsync(int OrdenTrabajoId)
