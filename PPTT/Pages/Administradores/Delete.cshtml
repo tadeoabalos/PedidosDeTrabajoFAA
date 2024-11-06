@@ -19,9 +19,9 @@
 <div class="page-content">
     <div class="form-alta">
         <div class="formulario">
-        <legend>Baja de usuario</legend>
-        <legend>¿Estás seguro de dar de baja a este usuario?</legend>
-            <form method="post">
+            <legend>Baja de usuario</legend>
+            <hr />
+            <form method="post" onsubmit="return confirmDelete()">
                 <div>
                     <dl class="row">
                         <dt class="col-sm-2">
@@ -90,7 +90,7 @@
                         </dd>
                     </dl>
                     <input type="hidden" asp-for="Admin.ID_Usuario_Pk" />
-                    <input type="submit" value="Dar de baja" class="btn btn-danger" />
+                    <input type="submit" value="Dar de baja" class="submit-log" style="background-color: #C70039 " />
                 </div>
             </form>
             <div class="centered-button">
@@ -99,6 +99,9 @@
         </div>
     </div>
 </div>
-<style>
-   
-</style>
+
+<script>
+    function confirmDelete() {
+        return confirm("¿Está seguro de que desea dar de baja a este usuario?");
+    }
+</script>
