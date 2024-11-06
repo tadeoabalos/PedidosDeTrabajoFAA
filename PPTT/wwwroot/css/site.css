@@ -45,6 +45,31 @@ body {
     padding: 40px 0;
     flex-grow: 1;
 }
+.input cerrarsesion {
+    background-color: #ff4757; /* Color de fondo: rojo suave */
+    color: #ffffff; /* Color del texto: blanco */
+    border: none; /* Sin borde */
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño de la fuente */
+    font-weight: bold; /* Negrita */
+    border-radius: 8px; /* Bordes redondeados */
+    cursor: pointer; /* Cambio de cursor */
+    transition: background-color 0.3s, transform 0.2s; /* Transición de color y escala */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+}
+
+/* Efecto al pasar el mouse */
+    .cerrarsesion:hover {
+        background-color: #e84118; /* Color de fondo más oscuro al pasar el mouse */
+        transform: scale(1.05); /* Efecto de escala */
+    }
+
+/* Efecto al hacer clic */
+    .cerrarsesion:active {
+        background-color: #c23616; /* Color más oscuro al hacer clic */
+        transform: scale(0.95); /* Reducir tamaño */
+    }
+
 
 
 .card {
