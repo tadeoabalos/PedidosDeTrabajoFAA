@@ -5,6 +5,10 @@ using PPTT.Models;
 using System.Net.Mail;
 using System.Net;
 using static PPTT.Models.Admin;
+using Humanizer;
+using System.Data;
+using System.Data.SqlClient;
+
 
 namespace PPTT.Pages.PT
 {
@@ -12,6 +16,7 @@ namespace PPTT.Pages.PT
     {
         private readonly PPTT.Data.DBPPTTContext _context;
         private readonly IConfiguration _configuration;
+        private string _correo;
 
         public DetailsPPTT(PPTT.Data.DBPPTTContext context, IConfiguration configuration)
         {
@@ -156,14 +161,74 @@ namespace PPTT.Pages.PT
             return RedirectToPage("./MandarMailCambioEstado");
         }
 
+        public class CorreoResult
+        {
+            public string Correo { get; set; }
+        }
+
         public async Task<IActionResult> OnPostEnProcesoEstadoAsync(int OrdenTrabajoId, int IdUsuario)
         {
+            if (IdUsuario == 0)
+            {
+                ModelState.AddModelError(string.Empty, "Debe seleccionar un usuario.");
+                return Page();
+            }
+            EjecutarObtenerCorreoStoredProcedure(IdUsuario);
+            string corrreo = HttpContext.Session.GetString("correous");
+
+            string asunto = "Se le ha asignado un trabajo";
+            string body = $"Se le ha encargado el trabajo {OrdenTrabajoId} ingrese para ver los detalles";
+            SendMail(corrreo, asunto, body);  // Envía el correo del primer resultado
+
+            // Actualiza la sesión
             int datos = HttpContext.Session.GetInt32("datoss") ?? 0;
             datos++;
             HttpContext.Session.SetInt32("datoss", datos);
+
+            // Ejecuta el procedimiento para asignar el usuario a la orden de trabajo
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[AsignarUsuarioAOrden] @p0, @p1", IdUsuario, OrdenTrabajoId);
+
             return RedirectToPage("./MandarMailCambioEstado");
         }
+
+
+        private async Task<bool> EjecutarObtenerCorreoStoredProcedure(int IdUsuario)
+        {
+            string? connectionString = _configuration.GetConnectionString("ConnectionSQL");
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+                    using (SqlCommand command = new SqlCommand("Tomar_Mail", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@IDUSUARIO", IdUsuario);
+
+                        using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                _correo = reader.GetString(0);
+                                HttpContext.Session.SetString("correous", _correo);
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
+            }
+        }
+
 
         public async Task<IActionResult> OnPostCancelarEstadoConMotivoAsync(int OrdenTrabajoId, string motCan)
         {

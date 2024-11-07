@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using static PPTT.Pages.PT.DetailsPPTT;
 namespace PPTT.Models;
 
 public partial class DBPPTTContext : DbContext
@@ -13,6 +14,9 @@ public partial class DBPPTTContext : DbContext
         : base(options)
     {
     }
+
+    // Add the DbSet for CorreoResult
+    public virtual DbSet<CorreoResult> CorreoResults { get; set; }
 
     public virtual DbSet<Prueba> Pruebas { get; set; }
 

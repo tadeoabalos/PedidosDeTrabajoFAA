@@ -29,7 +29,7 @@ namespace PPTT.Data
         public DbSet<Prueba> Prueba { get; set; }
         public DbSet<PTUsuario> PTUsuarios { get; set; }
         public DbSet<Tarea> Tarea { get; set; }
-        public DbSet<Orden_Asignada> Orden_Asignada { get; set; }
+        public DbSet<Orden_Asignada_Usuario> Orden_Asignada { get; set; }
         public DbSet<Motivo> Motivo { get; set; }
 
         // Sector funciones //
@@ -118,7 +118,7 @@ namespace PPTT.Data
             modelBuilder.Entity<Prueba>()
             .HasKey(d => d.ID);
 
-            modelBuilder.Entity<Orden_Asignada>()
+            modelBuilder.Entity<Orden_Asignada_Usuario>()
             .HasKey(d => d.ID_Trabajo_Asignado_Pk);
 
             modelBuilder.Entity<Prioridad>()

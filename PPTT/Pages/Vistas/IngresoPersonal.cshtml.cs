@@ -14,6 +14,7 @@ namespace PPTT.Pages.Vistas
         private int _rol;
         private string? _nombre;
         private int _ingreso;
+        private int _idusuario;
         private int _division; // Añadida la declaración de _division
 
         public IngresoPersonalModel(IConfiguration configuration)
@@ -38,7 +39,7 @@ namespace PPTT.Pages.Vistas
 
             if (_rol == 1)
             {
-                return RedirectToPage("/Vistas/MenuLog");
+                return RedirectToPage("/PT/VerTrabajo");
             }
             else if (_rol == 2)
             {
@@ -64,6 +65,7 @@ namespace PPTT.Pages.Vistas
             {
                 HttpContext.Session.SetInt32("UserRole", _rol);
                 HttpContext.Session.SetInt32("Division", _division);
+                HttpContext.Session.SetInt32("IDUsuario", _idusuario);
                 //HttpContext.Session.SetInt32("Division", _division);
 
                 if (_ingreso == 0)
@@ -119,6 +121,7 @@ namespace PPTT.Pages.Vistas
                                 _nombre = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
                                 _ingreso = reader.IsDBNull(2) ? 0 : reader.GetInt32(2);
                                 _division = reader.IsDBNull(3) ? 0 : reader.GetInt32(3);
+                                _idusuario = reader.IsDBNull(4) ? 0 : reader.GetInt32(4);
                                 Console.WriteLine(_division);
                                 return _rol != 0;
                             }
