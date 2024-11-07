@@ -107,23 +107,30 @@ namespace PPTT.Pages.PT
         {
             string asunto = "Cambio de estado de su pedido de trabajo";
             string body = "";
+            DateTime fechaActual = DateTime.Now;
+
+            // Formatear la fecha en formato dd/MM/yyyy
+            string fechaFormateada = fechaActual.ToString("dd/MM/yyyy");
             Console.WriteLine(pedidoTrabajo.ID_Estado_Fk);
             switch (pedidoTrabajo.ID_Estado_Fk)
             {
+                case 1002:
+                    body = $"Su pedido de trabajo #{pedidoTrabajo.ID_Orden_Fk} ha cambiado de estado a pendiente y está a la espera de procesamiento.";
+                    break;
                 case 1003:
-                    body = "Su pedido de trabajo está en proceso.";
+                    body = $"Su solicitud de trabajo #{pedidoTrabajo.ID_Orden_Fk} se encuentra en curso. Se ha asignado al personal correspondiente para proceder con la resolución de la solicitud.";
                     break;
                 case 1004:
-                    body = "Su pedido de trabajo ha sido finalizado.";
+                    body = $"Su pedido de trabajo #{pedidoTrabajo.ID_Orden_Fk} ha sido completado satisfactoriamente el día {fechaFormateada}.";
                     break;
                 case 1005:
                     string fechaEstimada = HttpContext.Session.GetString("FechaEstimadaFin") ?? "fecha no disponible";
                     string motivo = HttpContext.Session.GetString("motivo") ?? "motivo no disponible";
-                    body = $"Su pedido de trabajo ha sido suspendido. Fecha de inicio estimada: {fechaEstimada}. Motivo: {motivo}";
+                    body = $"Su pedido de trabajo #{pedidoTrabajo.ID_Orden_Fk} ha sido suspendido debido a {motivo}. Las labores se reanudarán a partir de {fechaEstimada}.";
                     break;
                 case 1006:
                     string motivoo = HttpContext.Session.GetString("motivo") ?? "motivo no disponible";
-                    body = $"Su pedido de trabajo ha sido cancelado. Motivo: {motivoo}";
+                    body = $"Su pedido de trabajo #{pedidoTrabajo.ID_Orden_Fk} ha sido cancelado. Motivo: {motivoo}.";
                     break;
                 default:
                     return; // No se envía correo si no hay un estado válido
