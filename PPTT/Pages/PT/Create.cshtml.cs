@@ -50,6 +50,7 @@ namespace PPTT.Pages.PT
         public string Mail { get; set; }
         public enum ColorOficina
         {
+            AMARILLO,
             AZUL,
             BLANCO,
             ROSA,
