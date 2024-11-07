@@ -177,7 +177,7 @@ namespace PPTT.Pages.PT
             string corrreo = HttpContext.Session.GetString("correous");
 
             string asunto = "Se le ha asignado un trabajo";
-            string body = $"Se le ha encargado el trabajo {OrdenTrabajoId} ingrese para ver los detalles";
+            string body = $"Se le ha encargado el trabajo #{OrdenTrabajoId} ingrese para ver los detalles";
             SendMail(corrreo, asunto, body);  // Envía el correo del primer resultado
 
             // Actualiza la sesión
@@ -285,16 +285,17 @@ namespace PPTT.Pages.PT
                 client.Credentials = new NetworkCredential(from, mailPassword);
                 client.EnableSsl = false;
                 client.Send(mail);
+                Console.WriteLine("true mail");
                 return true;
             }
             catch (SmtpException ex)
             {
-                Console.WriteLine($"ERROR SMTP: {ex.Message}");
+                Console.WriteLine("false mail");
                 return false;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"ERROR GENERAL: {ex.Message}");
+                Console.WriteLine("false mail");
                 return false;
             }
         }
