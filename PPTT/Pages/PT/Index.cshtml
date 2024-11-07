@@ -46,7 +46,8 @@
             <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Tarea_Fk)</th>
             <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Observacion)</th>
             <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Estado_Fk)</th>
-            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Prioridad_Fk)</th>                
+            <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Prioridad_Fk)</th>
+            <th><span>Asignar Personal</span></th>
             <th><span>Personal Asignado</span></th>
             <th>Detalle/Estado</th>
         </tr>
@@ -95,15 +96,23 @@
                             </select>
                             <span asp-validation-for="PT.ID_Prioridad_Fk" class="text-danger"></span>
                         </div>
-                    </td>                    
-                    <td>
-                        <span>No se asignó personal</span>
-                            @{
-                                /*UsuarioPorPt(item.ID_Orden_Trabajo_Pk);*/
-                            }
                     </td>
                     <td>
-                        <a asp-page="./Details" class="btn-action" asp-route-id="@item.ID_Orden_Trabajo_Pk">Ir</a>
+                        <div class="form-group">
+                            <select id="usuarioSelect_@item.ID_Orden_Trabajo_Pk" class="formControl" data-division-id="@item.ID_Division_Fk">
+                                <option hidden selected value="">Selecciona un usuario</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <span id="personalAsignado_@item.ID_Orden_Trabajo_Pk" data-orden-id="@item.ID_Orden_Trabajo_Pk">
+                            Personal asignado
+                        </span>
+                    </td>
+                    <td>
+                            <a asp-page="./Details" class="btn-action" asp-route-id="@item.ID_Orden_Trabajo_Pk">
+                                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                            </a>
                     </td>
                 </tr>
             }
@@ -323,9 +332,9 @@
                         error: function (error) {
                             console.log('Error en la carga de información del usuario asignado:', error);
                         }
-                    }); 
+                    }); //SE COLOCA EL USUARIO ASIGNADO EN EL SPAN
                 }
-            }); 
+            }); //LISTADO DE USUARIOS
     
             $('select[id^="usuarioSelect_"]').change(function () {
                 var selectedOption = $(this).find("option:selected");
