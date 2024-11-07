@@ -1,26 +1,27 @@
+
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ocupa toda la altura del viewport */
+    margin: 0;
+    padding: 0;
+    background-color: #eeeeee;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-    margin-bottom: 60px;
-    background-color: #eeeeee;
-}
 .submit {
     background-color: #f1faee;
     color: #1d3557;
@@ -114,16 +115,16 @@ header {
 footer {
     background-color: #1d3557;
     color: #f1faee;
-    padding: 15px 0;
     text-align: center;
     font-size: 0.9em;
-    position: fixed;
     width: 100%;
-    bottom: 0;
-    height: 5vh;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 10px;
+    padding: 10px 0;
+    margin-top: auto; 
 }
 
 .a-to-index {
@@ -152,18 +153,19 @@ footer {
     }
 
 .page-content {
+    flex: 1; 
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     min-height: 85vh;
-    background-color: #f0f2f5; /* Color de fondo opcional */
+    background-color: #f0f2f5;
 }
 
 .row-inputs {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     gap: 20px;
 }
 
@@ -241,3 +243,125 @@ input[type=number] {
         transform: scale(0.98);
     }
 
+.header-index-pt {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #1d3557;
+    color: #f1faee;
+    padding: 10px 0;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.75em;
+}
+
+th, td {
+    padding: 4px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    height: 8vh;
+}
+
+th {
+    background-color: #e0e8f1;
+    color: #003d6b;
+}
+
+table tr:nth-child(odd) td {
+    background-color: #e0e8f1;
+}
+
+table tr:nth-child(even) td {
+    background-color: #eeeeee;
+}
+
+
+.modal-content {
+    padding: 5px;
+}
+
+.modal-header, .modal-footer {
+    border: none;
+}
+
+#warningMessagePen {
+    display: block;
+    overflow: auto;
+    word-wrap: break-word;
+}
+
+.pagination {
+    display: flex;
+    gap: 5px;
+    justify-content: center;    
+}
+
+.filtrar {
+    display: inline-block;
+    text-decoration: none;
+    padding: 4px 6px;
+    margin: 2px;
+    border: 1px solid;    
+    background-color: #1d3557;
+    color: #ffffff;
+    transition: background-color 0.3s, transform 0.3s;
+    font-size: 0.9em;
+}
+
+    .filtrar:hover {
+        background-color: #ffffff;
+        color: #1d3557;
+    }
+
+.btnExportar {
+    display: inline-block;
+    text-decoration: none;
+    padding: 4px 6px;
+    margin: 2px;
+    border: 1px solid;    
+    background-color: #50A878;
+    color: white;
+    transition: background-color 0.3s, transform 0.3s;
+    font-size: 0.9em;
+}
+
+    .btnExportar:hover {
+        background-color: #50A868;
+    }
+
+a.btn-action {
+    display: inline-block;
+    text-decoration: none;
+    padding: 4px 6px; 
+    margin: 2px; 
+    border: 1px solid #003d6b; 
+    border-radius: 4px; 
+    background-color: #003d6b; 
+    color: white;
+    transition: background-color 0.3s, transform 0.3s;
+    font-size: 0.9em; 
+}
+    a.btn-action:hover {
+        background-color: #002e5d;
+    }
+a.btn-header-pt {
+    display: inline-block;
+    text-decoration: none;
+    padding: 4px 6px;
+    margin: 2px;
+    border: 1px #ffffff;
+    background-color: #ea6923;
+    color: #ffffff;
+    transition: background-color 0.3s, transform 0.3s;
+    font-size: 0.9em;
+}
+    a.btn-header-pt:hover {
+        background-color: #e16725;
+    }

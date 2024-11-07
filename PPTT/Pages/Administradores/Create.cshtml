@@ -14,35 +14,35 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row-inputs">
                     <div class="form-group">
-                        <label asp-for="Admin.Nombre" class="control-label"></label>
+                        
                             <input required asp-for="Admin.Nombre" class="form-control" placeholder="Nombre" pattern="[A-Za-z\s]+" title="Solo se permiten letras y espacios." />
                         <span asp-validation-for="Admin.Nombre" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Admin.Apellido" class="control-label"></label>
+                        
                             <input required asp-for="Admin.Apellido" class="form-control" placeholder="Apellido" pattern="[a-zA-Z]" title="Solo se permiten letras." />
                         <span asp-validation-for="Admin.Apellido" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="row-inputs">
                     <div class="form-group">
-                        <label asp-for="Admin.DNI" class="control-label"></label>
+                        
                             <input required asp-for="Admin.DNI" class="form-control" placeholder="Número de Documento" value="" min="1000000" max="99999999"  title="Debe ingresar al menos 8 dígitos." />
                         <span asp-validation-for="Admin.DNI" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Admin.Numero_Control" class="control-label"></label>
+                        
                             <input required asp-for="Admin.Numero_Control" class="form-control" placeholder="Número de Control" />
                         <span asp-validation-for="Admin.Numero_Control" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Admin.Correo" class="control-label"></label>
+                    
                         <input required asp-for="Admin.Correo" class="form-control" placeholder="Correo Institucional: 'correo@faa.mil.ar' " />
                     <span asp-validation-for="Admin.Correo" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Admin.ID_Division_Fk" class="control-label"></label>
+                    
                     <select asp-for="Admin.ID_Division_Fk"
                             asp-items="Model.Divisions.Select(d => new SelectListItem
                                 {
@@ -51,7 +51,7 @@
                                 })"
                             id="deptSelect"
                             class="form-control">
-                        <option hidden selected value="">Seleccione el Organismo</option>
+                        <option hidden selected value="">Seleccione la división</option>
                     </select>
                     <span asp-validation-for="Admin.ID_Division_Fk" class="text-danger"></span>
                 </div>
@@ -63,7 +63,7 @@
                     <span asp-validation-for="Admin.ID_Servicio_Fk" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Crear" class="submit-log" />
+                    <input type="submit" value="Generar Alta" class="submit-log" />
                 </div>
                     </fieldset>
             </form>
