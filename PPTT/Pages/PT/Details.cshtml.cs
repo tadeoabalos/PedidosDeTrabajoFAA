@@ -5,6 +5,10 @@ using PPTT.Models;
 using System.Net.Mail;
 using System.Net;
 using static PPTT.Models.Admin;
+using Humanizer;
+using System.Data;
+using System.Data.SqlClient;
+
 
 namespace PPTT.Pages.PT
 {
@@ -12,6 +16,7 @@ namespace PPTT.Pages.PT
     {
         private readonly PPTT.Data.DBPPTTContext _context;
         private readonly IConfiguration _configuration;
+        private string _correo;
 
         public DetailsPPTT(PPTT.Data.DBPPTTContext context, IConfiguration configuration)
         {
@@ -102,23 +107,30 @@ namespace PPTT.Pages.PT
         {
             string asunto = "Cambio de estado de su pedido de trabajo";
             string body = "";
+            DateTime fechaActual = DateTime.Now;
+
+            // Formatear la fecha en formato dd/MM/yyyy
+            string fechaFormateada = fechaActual.ToString("dd/MM/yyyy");
             Console.WriteLine(pedidoTrabajo.ID_Estado_Fk);
             switch (pedidoTrabajo.ID_Estado_Fk)
             {
+                case 1002:
+                    body = $"Su pedido de trabajo #{pedidoTrabajo.ID_Orden_Fk} ha cambiado de estado a pendiente y está a la espera de procesamiento.";
+                    break;
                 case 1003:
-                    body = "Su pedido de trabajo está en proceso.";
+                    body = $"Su solicitud de trabajo #{pedidoTrabajo.ID_Orden_Fk} se encuentra en curso. Se ha asignado al personal correspondiente para proceder con la resolución de la solicitud.";
                     break;
                 case 1004:
-                    body = "Su pedido de trabajo ha sido finalizado.";
+                    body = $"Su pedido de trabajo #{pedidoTrabajo.ID_Orden_Fk} ha sido completado satisfactoriamente el día {fechaFormateada}.";
                     break;
                 case 1005:
                     string fechaEstimada = HttpContext.Session.GetString("FechaEstimadaFin") ?? "fecha no disponible";
                     string motivo = HttpContext.Session.GetString("motivo") ?? "motivo no disponible";
-                    body = $"Su pedido de trabajo ha sido suspendido. Fecha de inicio estimada: {fechaEstimada}. Motivo: {motivo}";
+                    body = $"Su pedido de trabajo #{pedidoTrabajo.ID_Orden_Fk} ha sido suspendido debido a {motivo}. Las labores se reanudarán a partir de {fechaEstimada}.";
                     break;
                 case 1006:
                     string motivoo = HttpContext.Session.GetString("motivo") ?? "motivo no disponible";
-                    body = $"Su pedido de trabajo ha sido cancelado. Motivo: {motivoo}";
+                    body = $"Su pedido de trabajo #{pedidoTrabajo.ID_Orden_Fk} ha sido cancelado. Motivo: {motivoo}.";
                     break;
                 default:
                     return; // No se envía correo si no hay un estado válido
@@ -156,14 +168,74 @@ namespace PPTT.Pages.PT
             return RedirectToPage("./MandarMailCambioEstado");
         }
 
+        public class CorreoResult
+        {
+            public string Correo { get; set; }
+        }
+
         public async Task<IActionResult> OnPostEnProcesoEstadoAsync(int OrdenTrabajoId, int IdUsuario)
         {
+            if (IdUsuario == 0)
+            {
+                ModelState.AddModelError(string.Empty, "Debe seleccionar un usuario.");
+                return Page();
+            }
+            EjecutarObtenerCorreoStoredProcedure(IdUsuario);
+            string corrreo = HttpContext.Session.GetString("correous");
+
+            string asunto = "Se le ha asignado un trabajo";
+            string body = $"Se le ha encargado el trabajo #{OrdenTrabajoId} ingrese para ver los detalles";
+            SendMail(corrreo, asunto, body);  // Envía el correo del primer resultado
+
+            // Actualiza la sesión
             int datos = HttpContext.Session.GetInt32("datoss") ?? 0;
             datos++;
             HttpContext.Session.SetInt32("datoss", datos);
+
+            // Ejecuta el procedimiento para asignar el usuario a la orden de trabajo
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[AsignarUsuarioAOrden] @p0, @p1", IdUsuario, OrdenTrabajoId);
+
             return RedirectToPage("./MandarMailCambioEstado");
         }
+
+
+        private async Task<bool> EjecutarObtenerCorreoStoredProcedure(int IdUsuario)
+        {
+            string? connectionString = _configuration.GetConnectionString("ConnectionSQL");
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+                    using (SqlCommand command = new SqlCommand("Tomar_Mail", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@IDUSUARIO", IdUsuario);
+
+                        using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                _correo = reader.GetString(0);
+                                HttpContext.Session.SetString("correous", _correo);
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
+            }
+        }
+
 
         public async Task<IActionResult> OnPostCancelarEstadoConMotivoAsync(int OrdenTrabajoId, string motCan)
         {
@@ -220,16 +292,17 @@ namespace PPTT.Pages.PT
                 client.Credentials = new NetworkCredential(from, mailPassword);
                 client.EnableSsl = false;
                 client.Send(mail);
+                Console.WriteLine("true mail");
                 return true;
             }
             catch (SmtpException ex)
             {
-                Console.WriteLine($"ERROR SMTP: {ex.Message}");
+                Console.WriteLine("false mail");
                 return false;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"ERROR GENERAL: {ex.Message}");
+                Console.WriteLine("false mail");
                 return false;
             }
         }

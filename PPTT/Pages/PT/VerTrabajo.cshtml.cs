@@ -23,34 +23,42 @@ namespace PPTT.Pages.Vistas.VerTrabajo
         }
 
         public PTUsuario PT { get; set; } = default!;
-        public PaginatedListAdmin<PTUsuario> PedidoTrabajo { get; set; } = default!;
+        public List<PTUsuario> PedidoTrabajo { get; set; } = new List<PTUsuario>();
+
 
         [BindProperty]
         public List<Admin> Usuarios { get; set; } = new List<Admin>();
 
         public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();
-        public DateTime? FechaInicio { get; set; }
-        public DateTime? FechaFin { get; set; }
 
-        public async Task OnGetAsync(int? PageIndex, DateTime? fechaInicio, DateTime? fechaFin)
+
+        public async Task OnGetAsync()
         {
-            int pageSize = 12;
-            var pedidosQuery = _context.PTUsuario
-                .Include(pt => pt.Organismo)
-                .Include(pt => pt.Tarea)
-                .Include(pt => pt.Estado)
-                .Include(pt => pt.Prioridad)
-                .Include(pt => pt.Dependencia_Interna)
-                .Include(pt => pt.Grado)
-                .AsQueryable();
+            // Obtener el ID del usuario desde la sesión
+            var usuarioId = HttpContext.Session.GetInt32("IDUsuario");
 
-            // Filtros de fecha
-            if (fechaInicio.HasValue && fechaFin.HasValue)
+            if (usuarioId.HasValue)
             {
-                var fechaFinFinal = fechaFin.Value.Date.AddDays(1).AddTicks(-1);
-                pedidosQuery = pedidosQuery.Where(pt => pt.Fecha_Subida >= fechaInicio && pt.Fecha_Subida <= fechaFinFinal);
+                // Filtrar los pedidos de trabajo que están asignados al usuario actual
+                PedidoTrabajo = await _context.PTUsuario
+                    .Include(pt => pt.Organismo)
+                    .Include(pt => pt.Tarea)
+                    .Include(pt => pt.Estado)
+                    .Include(pt => pt.Prioridad)
+                    .Include(pt => pt.Dependencia_Interna)
+                    .Include(pt => pt.Grado)
+                    .Where(pt => _context.Orden_Asignada
+                        .Any(oa => oa.ID_Usuario_Fk == usuarioId.Value && oa.ID_Orden_Trabajo_Fk == pt.ID_Orden_Trabajo_Pk))
+                    .ToListAsync();
+            }
+            else
+            {
+                // Si no hay ID de usuario en la sesión, mostrar un resultado vacío o manejar el caso apropiadamente
+                PedidoTrabajo = new List<PTUsuario>();
             }
         }
+
+
 
 
     }

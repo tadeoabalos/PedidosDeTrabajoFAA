@@ -29,7 +29,7 @@ namespace PPTT.Pages.Administradores
         public PaginatedList<PTUsuario> PedidoTrabajo { get; set; } = default!;
         [BindProperty]
         public List<Admin> Usuarios { get; set; } = new List<Admin>();
-        public Orden_Asignada Orden_Asignada { get; set; }
+        public Orden_Asignada_Usuario Orden_Asignada { get; set; }
         public PTUsuario PT { get; set; } = default!;
         public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();
         public DateTime? FechaInicio { get; set; }
