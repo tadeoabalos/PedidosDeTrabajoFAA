@@ -6,23 +6,23 @@
 }
 <body>
     <div class="header-index-pt">
-        <a asp-page="./Finalizados" class="btn-header-pt">Trabajos Finalizados</a>
-        <div>
+        <a asp-page="./FinalizadosAdmin" class="btn-header-pt">Trabajos Finalizados</a>
+        @{/*<div>
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
             <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
             <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script> <!-- Cargar idioma español -->
             <script>
-document.addEventListener("DOMContentLoaded", function () {
-    flatpickr("#fechaInicio", {
-        dateFormat: "d-m-Y", // Formato dd-mm-yyyy
-        locale: "es", // Establecer el idioma a español
-    });
-    flatpickr("#fechaFin", {
-        dateFormat: "d-m-Y", // Formato dd-mm-yyyy
-        locale: "es", // Establecer el idioma a español
-    });
-});
-</script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    flatpickr("#fechaInicio", {
+                        dateFormat: "d-m-Y", // Formato dd-mm-yyyy
+                        locale: "es", // Establecer el idioma a español
+                    });
+                    flatpickr("#fechaFin", {
+                        dateFormat: "d-m-Y", // Formato dd-mm-yyyy
+                        locale: "es", // Establecer el idioma a español
+                    });
+                });
+            </script>
             <form method="get">
                 <label for="fechaInicio">Fecha Inicio:</label>
                 <input type="text" id="fechaInicio" name="fechaInicio" required />
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 <button type="button" id="filtrar" class="filtrar">Filtrar</button>
             </form>
-        </div> <!-- FILTRAR POR FECHA -->
+        </div> */}<!-- FILTRAR POR FECHA -->
         <button id="btnExportar" class="btnExportar">Exportar Excel</button>
     </div>
     <table class="table" id="tabla">

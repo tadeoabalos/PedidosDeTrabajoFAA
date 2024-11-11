@@ -20,19 +20,14 @@
         Console.WriteLine("No se encontraron servicios en la sesión.");
     }
 }
-
-<div class="titulo">
-    <h3>Listado de Usuarios</h3>
-    <p>
-        <a class="btn-action" asp-page="Create">Crear Nuevo Usuario</a>
-    </p>
+<div class="header-index-pt">
+    <a class="btn-header-pt" asp-page="Create">Crear Nuevo Usuario</a>
+    <form method="get">
+        <input class="buscador" type="text" name="searchQuery" placeholder="Busca por Nombre, Apellido, DNI o Correo." value="@Model.SearchQuery" />
+        <button type="submit" class="filtrar">Buscar</button>
+    </form>
+    <button id="btnExportar" class="btnExportar">Exportar Excel</button>
 </div>
-
-<!-- Input para buscar empleados por nombre -->
-<form method="get">
-    <input class="buscador" type="text" name="searchQuery" placeholder="Busca por Nombre, Apellido, DNI o Correo." value="@Model.SearchQuery" />
-    <button type="submit">Buscar</button>
-</form>
 
 <table class="table" id="tabla">
     <thead>
@@ -120,149 +115,6 @@
         }
     </tbody>
 </table>
-
-@{
-                int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
-}
-@if (_rol == 3)
-{
-    <a class="btn-action" asp-page="/Vistas/IndexLogueado">Volver al Menu</a>
-}
-else
-{
-<a class="btn-action" asp-page="/Vistas/IndexAdmin">Volver al Menu</a>
-
-}
-
-
-
-<button id="btnExportar">Exportar Excel</button>
-
-<style>   
-    #warningMessagePen {
-        display: block;
-        overflow: auto;
-        word-wrap: break-word;
-    }
-
-    .buscador {
-        margin: 10px 0 0 10px;
-        width: 24vw;
-    }   
-
-    a.btn-action, button {
-        display: inline-block;
-        text-decoration: none;
-        padding: 4px 6px; /* Ajustar el padding */
-        margin: 2px; /* Reducir margen */
-        border: 1px solid #003d6b; /* Bordes de botones */
-        border-radius: 4px; /* Bordes más redondeados */
-        background-color: #003d6b; /* Color de fondo de los botones */
-        color: white;
-        transition: background-color 0.3s, transform 0.3s;
-        font-size: 0.8em; /* Tamaño de fuente reducido */
-    }
-
-        a.btn-action:hover, button:hover {
-            background-color: #002e5d; /* Color al pasar el mouse */
-            /* Sutil efecto al pasar el mouse */
-        }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.75em;
-    }
-
-
-    .modal-content {
-        padding: 5px;
-    }
-
-    .modal-header, .modal-footer {
-        border: none;
-    }
-
-    button {
-        display: inline-block;
-        text-decoration: none;
-        padding: 4px 6px; /* Ajustar el padding */
-        margin: 2px; /* Reducir margen */
-        border: 1px solid #4caf50; /* Bordes de botones */
-        border-radius: 4px; /* Bordes más redondeados */
-        background-color: #4caf50; /* Color de fondo de los botones */
-        color: white;
-        transition: background-color 0.3s, transform 0.3s;
-        font-size: 0.8em; /* Tamaño de fuente reducido */
-    }
-
-        button:hover {
-            background-color: #4caf50; /* Mantener el color al pasar el mouse */
-            transform: translateY(-2px); /* Efecto al pasar el mouse */
-        }
-
-    .filtrar {
-        display: inline-block;
-        text-decoration: none;
-        padding: 4px 6px; /* Ajustar el padding */
-        margin: 2px; /* Reducir margen */
-        border: 1px solid #ff9800; /* Bordes de botones */
-        border-radius: 4px; /* Bordes más redondeados */
-        background-color: #ff9800; /* Color de fondo de los botones */
-        color: white;
-        transition: background-color 0.3s, transform 0.3s;
-        font-size: 0.8em; /* Tamaño de fuente reducido */
-    }
-
-        .filtrar:hover {
-            background-color: #ff9800; /* Mantener el color al pasar el mouse */
-            transform: translateY(-2px); /* Efecto al pasar el mouse */
-        }
-
-    th, td {
-        padding: 4px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-        height: 8vh;
-    }
-
-    th {
-        background-color: #e0e8f1;
-        color: #003d6b;
-    }
-
-    table tr:nth-child(odd) td {
-        background-color: #e0e8f1;
-    }
-
-    table tr:nth-child(even) td {
-        background-color: #eeeeee;
-    }
-
-    .pag {
-        margin: 5px;
-        text-decoration: none;
-        color: midnightblue;
-    }
-
-    .container {
-        width: auto !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        max-width: none !important;
-    }
-
-    .lista-seccion-boton {
-        display: flex;
-        align-items: center;       
-        gap:2px;
-    }
-    .lista-seccion-boton a {
-            text-decoration: none;
-            margin-right:5px;
-    }
-
-</style>
 
 <!-- Scripts para exportar a Excel -->
 <script src="https://unpkg.com/xlsx@0.16.9/dist/xlsx.full.min.js"></script>

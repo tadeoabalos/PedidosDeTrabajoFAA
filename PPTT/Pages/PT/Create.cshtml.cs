@@ -111,7 +111,7 @@ namespace PPTT.Pages.PT
 
             // Almacena el valor retornado del stored procedure en la propiedad ID_Orden_Fk
             PedidoTrabajo.ID_Orden_Fk = await EjecutarDiferentesIDs(PedidoTrabajo.ID_Tarea_Fk);
-            //PedidoTrabajo.ID_Orden_Fk = 1;
+            PedidoTrabajo.ID_Orden_Fk = 1;
             _context.PTUsuario.Add(PedidoTrabajo);
 
             await _context.SaveChangesAsync();

@@ -14,8 +14,7 @@
             <fieldset>
                     <h3>Datos del solicitante:</b></h3>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="PedidoTrabajo.ID_Grado_Fk" class="control-label"></label>
+            <div class="form-group">                
                 <select asp-for="PedidoTrabajo.ID_Grado_Fk"
                         asp-items="Model.Grados.Select(d=> new SelectListItem
                         {
@@ -28,13 +27,11 @@
                 </select>
                 <span asp-validation-for="PedidoTrabajo.ID_Grado_Fk" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PedidoTrabajo.RTI_Solicitante" class="control-label"></label>
-                <input asp-for="PedidoTrabajo.RTI_Solicitante" class="form-control" />
+            <div class="form-group">                
+                <input asp-for="PedidoTrabajo.RTI_Solicitante" class="form-control" placeholder="Numero de RTI"/>
                 <span asp-validation-for="PedidoTrabajo.RTI_Solicitante" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PedidoTrabajo.ID_Organismo_Fk" class="control-label"></label>
+            <div class="form-group">                
                 <select asp-for="PedidoTrabajo.ID_Organismo_Fk"
                         asp-items="Model.Organismos.Select(d=> new SelectListItem
                         {
@@ -47,36 +44,30 @@
                 </select>
                 <span asp-validation-for="PedidoTrabajo.ID_Organismo_Fk" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" id="dependenciaLabel" class="control-label"></label>
+            <div class="form-group">               
                 <select asp-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" id="dependenciaSelect" class="form-control">
                     <option hidden select value="">Seleccione la dependencia correspondiente</option>
                 </select>
                 <span asp-validation-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PedidoTrabajo.Correo" class="control-label"></label>
-                <input asp-for="PedidoTrabajo.Correo" class="form-control" />
+            <div class="form-group">                
+                <input asp-for="PedidoTrabajo.Correo" class="form-control" placeholder="Correo Institucional"/>
                 <span asp-validation-for="PedidoTrabajo.Correo" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PedidoTrabajo.Nombre_Solicitante" class="control-label"></label>
-                <input asp-for="PedidoTrabajo.Nombre_Solicitante" class="form-control" />
+            <div class="form-group">                
+                <input asp-for="PedidoTrabajo.Nombre_Solicitante" class="form-control" placeholder="Nombre" />
                 <span asp-validation-for="PedidoTrabajo.Nombre_Solicitante" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PedidoTrabajo.Apellido_Solicitante" class="control-label"></label>
-                <input asp-for="PedidoTrabajo.Apellido_Solicitante" class="form-control" />
+            <div class="form-group">                
+                <input asp-for="PedidoTrabajo.Apellido_Solicitante" class="form-control" placeholder="Apellido" />
                 <span asp-validation-for="PedidoTrabajo.Apellido_Solicitante" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PedidoTrabajo.DNI_Solicitante" class="control-label"></label>
-                <input asp-for="PedidoTrabajo.DNI_Solicitante" class="form-control" />
+            <div class="form-group">                
+                <input asp-for="PedidoTrabajo.DNI_Solicitante" class="form-control" placeholder="DNI"/>
                 <span asp-validation-for="PedidoTrabajo.DNI_Solicitante" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PedidoTrabajo.Numero_Control_Solicitante" class="control-label"></label>
-                <input asp-for="PedidoTrabajo.Numero_Control_Solicitante" class="form-control" />
+            <div class="form-group">                
+                <input asp-for="PedidoTrabajo.Numero_Control_Solicitante" class="form-control" placeholder="Numero de Control" />
                 <span asp-validation-for="PedidoTrabajo.Numero_Control_Solicitante" class="text-danger"></span>
             </div>
             <br />
@@ -85,8 +76,7 @@
                 // DATOS DEL TRABAJO
             }
             <h3>Datos del trabajo: </h3>
-            <div class="form-group">
-                <label asp-for="PedidoTrabajo.ID_Division_Fk" class="control-label"></label>
+            <div class="form-group">                
                 <select asp-for="PedidoTrabajo.ID_Division_Fk"
                         asp-items="Model.Division.Select(d=> new SelectListItem
                         {
@@ -99,33 +89,28 @@
                 </select>
                 <span asp-validation-for="PedidoTrabajo.ID_Division_Fk" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label id="servicioLabel" class="control-label">Servicio</label>
+            <div class="form-group">                
                 <select id="servicioSelect" class="form-control">
                     <option hidden select value="">Seleccione el servicio correspondiente</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label asp-for="PedidoTrabajo.ID_Tarea_Fk" id="tareaLabel" class="control-label"></label>
+            <div class="form-group">                
                 <select asp-for="PedidoTrabajo.ID_Tarea_Fk" id="tareaSelect" class="form-control">
                     <option hidden select value="">Seleccione la tarea correspondiente</option>
                 </select>
                 <span asp-validation-for="PedidoTrabajo.ID_Tarea_Fk" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PedidoTrabajo.Piso_Oficina_PT" class="control-label"></label>
+            <div class="form-group">                
                 <select asp-for="PedidoTrabajo.Piso_Oficina_PT" class="form-control" asp-items="Model.PisosOficina">
                     <option hidden selected value="">Piso Pedido de Trabajo</option>
                 </select>
                 <span asp-validation-for="PedidoTrabajo.Piso_Oficina_PT" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PedidoTrabajo.Numero_Oficina_PT" class="control-label"></label>
-                <input asp-for="PedidoTrabajo.Numero_Oficina_PT" class="form-control" />
+            <div class="form-group">                
+                <input asp-for="PedidoTrabajo.Numero_Oficina_PT" class="form-control" placeholder="Numero de Oficina"/>
                 <span asp-validation-for="PedidoTrabajo.Numero_Oficina_PT" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PedidoTrabajo.Color_Oficina_PT" class="control-label"></label>
+            <div class="form-group">                
                 <select asp-for="PedidoTrabajo.Color_Oficina_PT" class="form-control" asp-items="Model.ColoresOficina">
                     <option hidden selected value="">Seleccione un color</option>
                 </select>

@@ -68,20 +68,19 @@
                     </fieldset>
             </form>
         </div>
-    </div>
-    <div class="centered-button">
-        @{
-            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
-        }
-        @if (_rol == 3)
-        {
-            <a class="btn-action" asp-page="./Vistas/IndexLogueado">Volver al menú</a>
-        }
-        else
-        {
-            <a class="btn-action" asp-page="./Vistas/IndexAdmin">Volver al menú</a>
-        }
-        <a class="btn-action" asp-page="./Index">Volver al Listado</a>
+        <div class="centered-button">
+            @{
+                int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+            }
+            @if (_rol == 3)
+            {
+                <a style="text-decoration: none" asp-page="./Index">Volver al listado</a>
+            }
+            else
+            {
+                <a style="text-decoration: none" asp-page="./IndexAdminU">Volver al listado de Usuarios</a>
+            }        
+        </div>
     </div>
 </div>
 <style>    

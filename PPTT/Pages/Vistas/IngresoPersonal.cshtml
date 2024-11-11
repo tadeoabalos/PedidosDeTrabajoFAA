@@ -2,6 +2,43 @@
 @model PPTT.Pages.Vistas.IngresoPersonalModel
 @{
 }
+<body>
+    <form method="post" class="form-log">
+        <fieldset>
+            <legend>Ingreso Personal</legend>
+            <hr/>
+            <div>               
+                <input type="text" id="DNI" name="DNI" required placeholder="DNI"/>
+            </div>
+            <div>                
+                <input type="text" id="NumerodeControl" name="NumerodeControl" required placeholder="Número de control" />
+            </div>
+            <div class="password-container">                
+                <input type="password" id="Contraseña" name="Contraseña" required placeholder="Contraseña" />
+                <button type="button" class="toggle-password" onclick="togglePassword()">Mostrar</button>
+            </div>
+            <hr/>
+            <div class="login-botton">
+                <input type="submit" value="Ingresar" class="submit-log" />
+                <a href="/Vistas/OlvideContraseña">Olvidé Mi Contraseña</a>
+            </div>
+        </fieldset>
+    </form>
+
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('Contraseña');
+            const toggleButton = document.querySelector('.toggle-password');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleButton.textContent = 'Ocultar';
+            } else {
+                passwordInput.type = 'password';
+                toggleButton.textContent = 'Mostrar';
+            }
+        }
+    </script>
+</body>
 
 <style>
     body {
@@ -17,7 +54,7 @@
         margin: 30px auto;
         padding: 25px;
         background-color: #ffffff;
-        border: 1px solid #c2d3e0;    
+        border: 1px solid #c2d3e0;
         box-shadow: 0px 4px 12px rgba(0, 61, 107, 0.1);
     }
 
@@ -114,44 +151,3 @@
         padding: 5px;
     }
 </style>
-
-<body>
-    <form method="post" class="form-log">
-        <fieldset>
-            <legend>Ingreso Personal</legend>
-            <hr/>
-            <div>
-                <label for="DNI">DNI</label>
-                <input type="text" id="DNI" name="DNI" required />
-            </div>
-            <div>
-                <label for="NumerodeControl">Número de Control</label>
-                <input type="text" id="NumerodeControl" name="NumerodeControl" required />
-            </div>
-            <div class="password-container">
-                <label for="Contraseña">Contraseña</label>
-                <input type="password" id="Contraseña" name="Contraseña" required />
-                <button type="button" class="toggle-password" onclick="togglePassword()">Mostrar</button>
-            </div>
-            <hr/>
-            <div class="login-botton">
-                <input type="submit" value="Ingresar" class="submit-log" />
-                <a href="/Vistas/OlvideContraseña">Olvidé Mi Contraseña</a>
-            </div>
-        </fieldset>
-    </form>
-
-    <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById('Contraseña');
-            const toggleButton = document.querySelector('.toggle-password');
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleButton.textContent = 'Ocultar';
-            } else {
-                passwordInput.type = 'password';
-                toggleButton.textContent = 'Mostrar';
-            }
-        }
-    </script>
-</body>
