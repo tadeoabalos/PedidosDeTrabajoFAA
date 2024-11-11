@@ -42,6 +42,7 @@ namespace PPTT.Pages.Administradores
                 HttpContext.Session.SetInt32("datoss", datos);
 
                 // Consulta inicial de pedidos de trabajo
+                // Consulta inicial de pedidos de trabajo
                 var pedidosQuery = _context.PTUsuario
                     .Include(pt => pt.Organismo)
                     .Include(pt => pt.Tarea)
@@ -49,6 +50,7 @@ namespace PPTT.Pages.Administradores
                     .Include(pt => pt.Prioridad)
                     .Include(pt => pt.Dependencia_Interna)
                     .Include(pt => pt.Grado)
+                    .Include(pt => pt.Division)
                     .AsQueryable();
 
                 // Filtrar por rango de fechas usando solo Fecha_Subida

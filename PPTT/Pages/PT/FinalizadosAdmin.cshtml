@@ -86,11 +86,13 @@
     <tbody>
             @{
                 var divisionUsuario = HttpContext.Session.GetInt32("Division");
+                var divisionUsuario2 = HttpContext.Session.GetInt32("Division2");
+
             }
 
             @foreach (var item in Model.PedidoTrabajo)
             {
-                if ((item.ID_Estado_Fk == 1004 || item.ID_Estado_Fk == 1006) && item.ID_Division_Fk == divisionUsuario)
+                if ((item.ID_Estado_Fk == 1004 || item.ID_Estado_Fk == 1006) && (item.ID_Division_Fk == divisionUsuario || item.ID_Division_Fk == divisionUsuario2))
                 {
             <tr>
                 <td>

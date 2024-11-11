@@ -56,12 +56,25 @@
                     <span asp-validation-for="Admin.ID_Division_Fk" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Admin.ID_Servicio_Fk" id="servicioLabel" class="control-label"></label>
                     <select asp-for="Admin.ID_Servicio_Fk" id="servicioSelect" class="form-control">
                         <option hidden selected value="">Seleccione el servicio correspondiente</option>
                     </select>
                     <span asp-validation-for="Admin.ID_Servicio_Fk" class="text-danger"></span>
                 </div>
+<div class="form-group">
+    <select asp-for="Admin.Division2"
+            asp-items="Model.Divisions.Select(d => new SelectListItem
+            {
+                Value = d.ID_Division_Pk.ToString(),
+                Text = d.Descripcion_Division
+            })"
+            id="deptSelect2"
+            class="form-control">
+        <option hidden selected value="">Seleccione la 2da división (opcional)</option>
+    </select>
+</div>
+
+
                 <div class="form-group">
                     <input type="submit" value="Generar Alta" class="submit-log" />
                 </div>

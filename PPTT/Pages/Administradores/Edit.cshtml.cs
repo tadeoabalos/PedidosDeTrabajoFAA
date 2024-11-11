@@ -92,7 +92,7 @@ namespace PPTT.Pages.Administradores
             adminFromDb.ID_Rol_Fk = Admin.ID_Rol_Fk ?? 1; // Establecer ID_Rol_Fk con un valor predeterminado si es nulo
             adminFromDb.ID_Servicio_Fk = Admin.ID_Servicio_Fk ?? 1; // Asegúrate de que el ID_Servicio_Fk tenga un valor válido
             adminFromDb.ID_Division_Fk = Admin.ID_Division_Fk ?? 1; // Asegúrate de que el ID_Division_Fk tenga un valor válido
-
+            adminFromDb.Division2 = Admin.Division2 ?? 1;
             // Actualizar el contexto
             _context.Usuario.Update(adminFromDb);
 
