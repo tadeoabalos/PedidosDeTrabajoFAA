@@ -94,7 +94,8 @@ namespace PPTT.Models
         [Display(Name = "Division")]
         public int ID_Division_Fk { get; set; }
         [ForeignKey("ID_Division_Fk")]
-        public Division? Division { get; set; }
+        public Division? Division { get; set; } // Cambiado de Descripcion_Division a Division
+
         [Display(Name = "Observaciones")]
         public string? Observacion { get; set; }
        

@@ -41,5 +41,7 @@ namespace PPTT.Models
         public DateTime? Fecha_Baja { get; set; }
 
         public string? NombreCompleto => Apellido + ", " + Nombre;
+        public int? Division2 { get; set; }  // Permite que sea nulo
+
     }
 }

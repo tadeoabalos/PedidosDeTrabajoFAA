@@ -67,17 +67,21 @@
                 </dt>
                 <dd class="col-sm-8">
                     @if (Model.Admin.ID_Division_Fk == null)
-                    {
-                        @:No se le asignó una división
-                    }
-                    else if (Model.Admin.ID_Division_Fk == 1)
-                    {
-                        @:División Comunicaciones e Informática
-                    }
-                    else
-                    {
-                        @:División Mantenimiento de Instalaciones
-                    }
+                                {
+                                    @:No se le asignó una división
+                                }
+                                else if (Model.Admin.ID_Division_Fk == 1)
+                                {
+                                    @:División Comunicaciones e Informática
+                                }
+                                else if (Model.Admin.ID_Division_Fk == 2)
+                                {
+                                    @:División Mantenimiento de Instalaciones
+                                }
+                                else
+                                {
+                                    @:División Limpieza
+                                }
                 </dd>
 
                 <!-- Servicio -->
@@ -98,6 +102,31 @@
                         @:Servicio no reconocido
                     }
                 </dd>
+                            <dt class="col-sm-4">
+                                2da División
+                            </dt>
+                            <dd class="col-sm-8">
+                                @if (Model.Admin.Division2 == null)
+                                {
+                                    @:No se le asignó una división
+                                }
+                                else if (Model.Admin.Division2 == 1)
+                                {
+                                    @:División Comunicaciones e Informática
+                                }
+                                else if (Model.Admin.Division2 == 2)
+                                {
+                                    @:División Mantenimiento de Instalaciones
+                                }
+                                else if (Model.Admin.Division2 == 3)
+                                {
+                                    @:División Limpieza
+                                }
+                                else
+                                {
+                                    @:No se le asignó una división
+                                }
+                            </dd>
             </dl>
         </div>
     </body>

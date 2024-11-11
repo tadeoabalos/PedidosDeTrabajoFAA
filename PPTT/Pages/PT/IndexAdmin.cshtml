@@ -59,11 +59,12 @@
         <tbody>
             @{
                 var divisionUsuario = HttpContext.Session.GetInt32("Division");
+                var divisionUsuario2 = HttpContext.Session.GetInt32("Division2");
             }
 
             @foreach (var item in Model.PedidoTrabajo)
             {
-                if (item.ID_Estado_Fk != 1004 && item.ID_Estado_Fk != 1006 && item.ID_Division_Fk == divisionUsuario)
+                if ((item.ID_Estado_Fk != 1004 && item.ID_Estado_Fk != 1006) && (item.ID_Division_Fk == divisionUsuario || item.ID_Division_Fk == divisionUsuario2))
                 {
                     <tr data-fecha="@item.Fecha_Subida?.ToString("yyyy-MM-dd") ?? " 0001-01-01"">
                         <td>@Html.DisplayFor(modelItem => item.ID_Orden_Fk)</td>
@@ -83,7 +84,7 @@
                         <td>@Html.DisplayFor(modelItem => item.RTI_Solicitante)</td>
                         <td>@Html.DisplayFor(modelItem => item.Numero_Oficina_PT)</td>
                         <td>@Html.DisplayFor(modelItem => item.Correo)</td>
-                        <td>@Html.DisplayFor(modelItem => item.ID_Division_Fk)</td> <!-- Asegúrate de mostrar esta celda -->
+                        <td>@Html.DisplayFor(modelItem => item.Division.Descripcion_Division)</td><!-- Asegúrate de mostrar esta celda -->
                         <td>
                             @Html.Raw(item.Tarea.Descripcion_Tarea.Length > 3 ?
                                      item.Tarea.Descripcion_Tarea.Substring(0) :

@@ -15,7 +15,8 @@ namespace PPTT.Pages.Vistas
         private string? _nombre;
         private int _ingreso;
         private int _idusuario;
-        private int _division; // Añadida la declaración de _division
+        private int _division;
+        private int _division2;// Añadida la declaración de _division
 
         public IngresoPersonalModel(IConfiguration configuration)
         {
@@ -65,6 +66,7 @@ namespace PPTT.Pages.Vistas
             {
                 HttpContext.Session.SetInt32("UserRole", _rol);
                 HttpContext.Session.SetInt32("Division", _division);
+                HttpContext.Session.SetInt32("Division2", _division2);
                 HttpContext.Session.SetInt32("IDUsuario", _idusuario);
                 //HttpContext.Session.SetInt32("Division", _division);
 
@@ -122,7 +124,7 @@ namespace PPTT.Pages.Vistas
                                 _ingreso = reader.IsDBNull(2) ? 0 : reader.GetInt32(2);
                                 _division = reader.IsDBNull(3) ? 0 : reader.GetInt32(3);
                                 _idusuario = reader.IsDBNull(4) ? 0 : reader.GetInt32(4);
-                                Console.WriteLine(_division);
+                                _division2 = reader.IsDBNull(5) ? 0 : reader.GetInt32(5);
                                 return _rol != 0;
                             }
                             else
