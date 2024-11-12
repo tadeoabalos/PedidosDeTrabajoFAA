@@ -13,13 +13,23 @@
     var currentPage = ViewContext.RouteData.Values["Page"]?.ToString();
     var pages = new List<string> { "/Index", "/Vistas/IngresoPersonal", "/PT/Create", "/Vistas/OlvideContraseña",
     "/Vistas/IngresoPrimeraVez" };
+    var index = "/PT/Create";
 }
 <body>
     <header>
         <div class="navbar">
             <div class="navbar-logo">
-                <a asp-page="/Vistas/IngresoPersonal"><img src="~/imagenes/3.png" alt="logogc" /></a>
-                <a class="a-to-index" asp-page="/Vistas/IngresoPersonal">Pedidos de Trabajo - Cuartel General - Edificio Cóndor</a>
+                @if (index == currentPage)
+                {
+                    <img src="~/imagenes/3.png" alt="logogc" />
+                    <a class="a-to-index" style="cursor: default;">Pedidos de Trabajo - Cuartel General - Edificio Cóndor</a>
+
+                }
+                else
+                {                    
+                    <a asp-page="/Vistas/IngresoPersonal"><img src="~/imagenes/3.png" alt="logogc" /></a>
+                    <a class="a-to-index" asp-page="/Vistas/IngresoPersonal">Pedidos de Trabajo - Cuartel General - Edificio Cóndor</a>
+                }
             </div>
             <div class="centered-button">
                 @if (!pages.Contains(currentPage))

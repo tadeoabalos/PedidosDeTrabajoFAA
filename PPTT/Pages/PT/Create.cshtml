@@ -12,7 +12,7 @@
             <hr/>
         <form method="post">
             <fieldset>
-                    <h3>Datos del solicitante:</b></h3>
+                    <h3>Datos del Solicitante:</b></h3>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">                
                 <select asp-for="PedidoTrabajo.ID_Grado_Fk"
@@ -22,13 +22,14 @@
                             Text = d.Descripcion_Grado.ToString()
                         })"
                         id="deptSelect"
-                        class="form-control">
+                        class="form-control"
+                        required>
                     <option hidden selected value="">Seleccione el Grado</option>
                 </select>
                 <span asp-validation-for="PedidoTrabajo.ID_Grado_Fk" class="text-danger"></span>
             </div>
             <div class="form-group">                
-                <input asp-for="PedidoTrabajo.RTI_Solicitante" class="form-control" placeholder="Numero de RTI"/>
+                <input asp-for="PedidoTrabajo.RTI_Solicitante" class="form-control" placeholder="Número de RTI*"/>
                 <span asp-validation-for="PedidoTrabajo.RTI_Solicitante" class="text-danger"></span>
             </div>
             <div class="form-group">                
@@ -51,23 +52,23 @@
                 <span asp-validation-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" class="text-danger"></span>
             </div>
             <div class="form-group">                
-                <input asp-for="PedidoTrabajo.Correo" class="form-control" placeholder="Correo Institucional"/>
+                <input asp-for="PedidoTrabajo.Correo" class="form-control" placeholder="Correo Institucional*"/>
                 <span asp-validation-for="PedidoTrabajo.Correo" class="text-danger"></span>
             </div>
             <div class="form-group">                
-                <input asp-for="PedidoTrabajo.Nombre_Solicitante" class="form-control" placeholder="Nombre" />
+                <input asp-for="PedidoTrabajo.Nombre_Solicitante" class="form-control" placeholder="Nombre*"/>
                 <span asp-validation-for="PedidoTrabajo.Nombre_Solicitante" class="text-danger"></span>
             </div>
             <div class="form-group">                
-                <input asp-for="PedidoTrabajo.Apellido_Solicitante" class="form-control" placeholder="Apellido" />
+                <input asp-for="PedidoTrabajo.Apellido_Solicitante" class="form-control" placeholder="Apellido*"/>
                 <span asp-validation-for="PedidoTrabajo.Apellido_Solicitante" class="text-danger"></span>
             </div>
             <div class="form-group">                
-                <input asp-for="PedidoTrabajo.DNI_Solicitante" class="form-control" placeholder="DNI"/>
+                <input type="number" asp-for="PedidoTrabajo.DNI_Solicitante" class="form-control" placeholder="DNI*"/>
                 <span asp-validation-for="PedidoTrabajo.DNI_Solicitante" class="text-danger"></span>
             </div>
             <div class="form-group">                
-                <input asp-for="PedidoTrabajo.Numero_Control_Solicitante" class="form-control" placeholder="Numero de Control" />
+                <input asp-for="PedidoTrabajo.Numero_Control_Solicitante" class="form-control" placeholder="Número de Control*" />
                 <span asp-validation-for="PedidoTrabajo.Numero_Control_Solicitante" class="text-danger"></span>
             </div>
             <br />
@@ -75,7 +76,7 @@
             @{
                 // DATOS DEL TRABAJO
             }
-            <h3>Datos del trabajo: </h3>
+            <h3>Datos del Pedido de Trabajo: </h3>
             <div class="form-group">                
                 <select asp-for="PedidoTrabajo.ID_Division_Fk"
                         asp-items="Model.Division.Select(d=> new SelectListItem
@@ -85,7 +86,7 @@
                         })"
                         id="divisionSelect"
                         class="form-control">
-                    <option hidden selected value="">Seleccione Division</option>
+                    <option hidden selected value="">Seleccione División</option>
                 </select>
                 <span asp-validation-for="PedidoTrabajo.ID_Division_Fk" class="text-danger"></span>
             </div>
@@ -102,17 +103,17 @@
             </div>
             <div class="form-group">                
                 <select asp-for="PedidoTrabajo.Piso_Oficina_PT" class="form-control" asp-items="Model.PisosOficina">
-                    <option hidden selected value="">Piso Pedido de Trabajo</option>
+                    <option hidden selected value="">Seleccione el piso del pedido de trabajo</option>
                 </select>
                 <span asp-validation-for="PedidoTrabajo.Piso_Oficina_PT" class="text-danger"></span>
             </div>
             <div class="form-group">                
-                <input asp-for="PedidoTrabajo.Numero_Oficina_PT" class="form-control" placeholder="Numero de Oficina"/>
+                <input asp-for="PedidoTrabajo.Numero_Oficina_PT" class="form-control" placeholder="Número de Oficina*"/>
                 <span asp-validation-for="PedidoTrabajo.Numero_Oficina_PT" class="text-danger"></span>
             </div>
             <div class="form-group">                
-                <select asp-for="PedidoTrabajo.Color_Oficina_PT" class="form-control" asp-items="Model.ColoresOficina">
-                    <option hidden selected value="">Seleccione un color</option>
+                <select asp-for="PedidoTrabajo.Color_Oficina_PT" class="form-control" asp-items="Model.ColoresOficina" required>
+                    <option hidden selected value="">Seleccione el color del sector</option>
                 </select>
                 <span asp-validation-for="PedidoTrabajo.Color_Oficina_PT" class="text-danger"></span>
             </div>
@@ -225,6 +226,8 @@
         h3 {
             font-size: 1.5em;
         }
+
+
     </style>
 }
 

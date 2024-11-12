@@ -72,15 +72,17 @@ namespace PPTT.Pages.Vistas
             if (isValid)
             {
                 SendMail(EmailDestino, asunto, body);
-                return RedirectToPage("/Vistas/IngresoPersonal");
+                TempData["CorreoEnviado"] = true;
+                return Page();
             }
             else
             {
-
+                TempData["CorreoNoValido"] = true;
                 return Page();
             }
-        }
 
+        }
+        
         private bool SendMail(string to, string asunto, string body)
         {
             string mailUser = _configuration["MailSettings:MailUser"];

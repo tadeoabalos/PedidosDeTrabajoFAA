@@ -14,7 +14,15 @@
                 <input type="number" id="dni" name="dni" value="" placeholder="DNI" required />
             </div>           
             <div>                
-                <input type="text" id="Correo" name="Correo" value="" placeholder="Correo Electrónico" required />
+                <input type="text"
+                       id="Correo"
+                       name="Correo"
+                       value=""
+                       placeholder="Correo Electrónico"
+                       required
+                       pattern="^[a-zA-Z0-9._%+-]+@@faa\.mil\.ar$"
+                       title="Por favor, ingrese un correo electrónico válido del tipo @@faa.mil.ar" />
+
             </div>
             <hr />
             <div class="login-botton">                          
@@ -23,7 +31,65 @@
             </div>
         </fieldset>
     </form>  
+    <div class="modal fade" id="correoEnviadoModal" tabindex="-1" role="dialog" aria-labelledby="correoEnviadoModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="PrioModalLabel"><b>Correo enviado</b></h5>
+                </div>
+                <hr />
+                <div class="modal-body">
+                    <span>
+                        <p>Hemos enviado un correo electrónico a la dirección proporcionada.</p>
+                        <p>Por favor, revise su bandeja de entrada (<strong>incluyendo la carpeta de spam</strong>) para encontrar su nueva contraseña para acceder al sistema.</p>
+                        <p>Si no recibes el correo en unos minutos, asegúrate de que la dirección de correo ingresada sea correcta e inténtalo nuevamente.</p>
+                    </span>
+                </div>
+                <div class="modal-footer">
+                    <a asp-page="./IngresoPersonal">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ir a Iniciar Sesión</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="correoNoEnviadoModal" tabindex="-1" role="dialog" aria-labelledby="correoEnviadoModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="PrioModalLabel"><b>Correo no enviado</b></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <hr />
+                <div class="modal-body">
+                    <span>
+                        <p>Los datos ingresados son incorrectos. Por favor, verifique la información y vuelva a intentarlo.</p>
+                    </span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var correoEnviado = '@TempData["CorreoEnviado"]';
+        if (correoEnviado) {
+            var modal = new bootstrap.Modal(document.getElementById('correoEnviadoModal'));
+            modal.show();
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var correoEnviado = '@TempData["CorreoNoValido"]';
+        if (correoEnviado) {
+            var modal = new bootstrap.Modal(document.getElementById('correoNoEnviadoModal'));
+            modal.show();
+        }
+    });
+</script>
 <style>
     body {
         font-family: Arial, sans-serif;
