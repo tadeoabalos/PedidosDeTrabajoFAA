@@ -21,6 +21,7 @@ namespace PPTT.Pages.Administradores
         [BindProperty]
         public Admin Admin { get; set; }
         public List<Division> Divisions { get; set; } = new List<Division>();
+        public List<Division> Div { get; set; } = new List<Division>();
         public List<Servicio> Servicios { get; set; } = new List<Servicio>();
         public int DNI { get; set; }
 
@@ -78,17 +79,30 @@ namespace PPTT.Pages.Administradores
         public async Task<IActionResult> OnGetAsync()
         {
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
-            // Cargar las divisiones de la base de datos
-            Divisions = await _context.Divisions.ToListAsync();
+            int _Id_Division = HttpContext.Session.GetInt32("Division") ?? 0;
+            int _Id_Division2 = HttpContext.Session.GetInt32("Division2") ?? 0;
 
+            Divisions = await _context.Divisions.ToListAsync();
             if (_rol < 2)
             {
                 return RedirectToPage("/Index");
             }
-            else if (_rol > 1)
+            else if (_rol == 3)
             {
                 Divisions = await _context.GetDivisionAsync();
                 return Page();
+            }
+            else if (_rol == 2)
+            {
+                if (_Id_Division2 == 0)
+                {
+                    Divisions = await _context.GetDivisionesPorUsuarioAsync(_Id_Division);
+                    return Page();
+                }
+                else {
+                    Divisions = await _context.GetDosDivisionesPorUsuarioAsync(_Id_Division, _Id_Division2);
+                    return Page();
+                }                
             }
             else
             {
@@ -101,6 +115,6 @@ namespace PPTT.Pages.Administradores
         {
             var servicios = await _context.GetServiciosAsync(int.Parse(division));
             return new JsonResult(servicios);
-        }
+        }        
     }
 }

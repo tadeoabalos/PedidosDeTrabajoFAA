@@ -84,7 +84,15 @@ namespace PPTT.Data
         public async Task<List<Admin>> GetUsuarioPorPtAsync(int PT) 
         {
             return await Usuario.FromSqlRaw("EXEC [dbo].[RetornaUsuarioPorPT] @p0", PT).ToListAsync();
-        }       
+        }
+        public async Task<List<Division>> GetDivisionesPorUsuarioAsync(int IdUsuario) 
+        {
+            return await Divisions.FromSqlRaw("EXEC [dbo].[Retorna_Divisiones] @p0", IdUsuario).ToListAsync();
+        }
+        public async Task<List<Division>> GetDosDivisionesPorUsuarioAsync(int Division1, int Division2)
+        {
+            return await Divisions.FromSqlRaw("EXEC [dbo].[Retorna_Dos_Divisiones] @p0, @p1", Division1, Division2).ToListAsync();
+        }
         // IDENTITYS
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
