@@ -50,6 +50,10 @@
         }
         @foreach (var item in Model.Admin)
         {
+            @if (item.ID_Rol_Fk == 3)  // Verificar si el rol es igual a 3
+            {
+                continue;  // Omitir este usuario en la tabla
+            }
             @if (item.ID_Division_Fk == divisionUsuario || item.ID_Division_Fk == divisionUsuario2)
             {
             <tr>
