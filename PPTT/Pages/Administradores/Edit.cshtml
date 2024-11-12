@@ -47,14 +47,14 @@
                                     })"
                             id="deptSelect"
                             class="form-control">
-                        <option hidden selected value="">Seleccione el Organismo</option>
+                        <option hidden selected value="">Seleccione la Division</option>
                     </select>
                     <span asp-validation-for="Admin.ID_Division_Fk" class="text-danger"></span>
                 </div>
                 <div class="form-group">     
                     <label>Servicio: </label>
                     <select asp-for="Admin.ID_Servicio_Fk" id="servicioSelect" class="form-control" required>
-                        <option hidden value="">Seleccione el Servicio Correspondiente</option>
+                        <option hidden value="Admin.ID_Servicio_Fk">Seleccione el Servicio Correspondiente</option>
                     </select>
                     <span asp-validation-for="Admin.ID_Servicio_Fk" class="text-danger"></span>
                 </div>
@@ -67,6 +67,22 @@
                     </select>
                     <span asp-validation-for="Admin.ID_Rol_Fk" class="text-danger"></span>
                 </div>
+                <div class="form-group">
+                    <h8>2da Division (Opcional)</h8>
+                        <select asp-for="Admin.Division2"
+                                asp-items="Model.Divisions.Select(d => new SelectListItem
+            {
+                Value = d.ID_Division_Pk.ToString(),
+                Text = d.Descripcion_Division,
+                Selected = d.ID_Division_Pk == Model.Admin.Division2 // Verifica si el valor de Division2 coincide con el ID de la división
+            })"
+                                id="deptSelect2"
+                                class="form-control">
+                            <option hidden value="">Seleccione la 2da división (opcional)</option>
+                        </select>
+                    </div>
+
+
                 <div class="form-group">
                     <input type="submit" value="Guardar" class="submit-log" />
                 </div>

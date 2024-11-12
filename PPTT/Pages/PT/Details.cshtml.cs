@@ -23,7 +23,6 @@ namespace PPTT.Pages.PT
             _context = context;
             _configuration = configuration;
         }
-
         public List<Admin> Usuarios { get; set; } = new List<Admin>();
         public PTUsuario? PedidoTrabajo { get; set; } = default!;
         public List<Estado> Estado { get; set; } = default!;
@@ -152,7 +151,9 @@ namespace PPTT.Pages.PT
             int datos = HttpContext.Session.GetInt32("datoss") ?? 0;
             datos++;
             HttpContext.Session.SetInt32("datoss", datos);
+            int idUsuario = HttpContext.Session.GetInt32("IDUsuario") ?? 0;
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[FinalizarPedidoTrabajo] @p0", OrdenTrabajoId);
+            await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[AuditarPT] @p0, @p1, @p2", OrdenTrabajoId, 1004, idUsuario);
             return RedirectToPage("./MandarMailCambioEstado");
         }
 
@@ -164,13 +165,10 @@ namespace PPTT.Pages.PT
             string fechaComoString = fechaEstimadaFin.ToString("dd/MM/yyyy");
             HttpContext.Session.SetString("FechaEstimadaFin", fechaComoString);
             HttpContext.Session.SetString("motivo", motSus);
+            int idUsuario = HttpContext.Session.GetInt32("IDUsuario") ?? 0;
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[SuspenderPedidoTrabajo] @p0, @p1, @p2", OrdenTrabajoId, fechaEstimadaFin, motSus);
+            await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[AuditarPT] @p0, @p1, @p2", OrdenTrabajoId, 1005, idUsuario);
             return RedirectToPage("./MandarMailCambioEstado");
-        }
-
-        public class CorreoResult
-        {
-            public string Correo { get; set; }
         }
 
         public async Task<IActionResult> OnPostEnProcesoEstadoAsync(int OrdenTrabajoId, int IdUsuario)
@@ -180,9 +178,10 @@ namespace PPTT.Pages.PT
                 ModelState.AddModelError(string.Empty, "Debe seleccionar un usuario.");
                 return Page();
             }
+            Console.WriteLine(IdUsuario);
             EjecutarObtenerCorreoStoredProcedure(IdUsuario);
             string corrreo = HttpContext.Session.GetString("correous");
-
+            Console.WriteLine(corrreo);
             string asunto = "Se le ha asignado un trabajo";
             string body = $"Se le ha encargado el trabajo #{OrdenTrabajoId} ingrese para ver los detalles";
             SendMail(corrreo, asunto, body);  // Envía el correo del primer resultado
@@ -191,10 +190,10 @@ namespace PPTT.Pages.PT
             int datos = HttpContext.Session.GetInt32("datoss") ?? 0;
             datos++;
             HttpContext.Session.SetInt32("datoss", datos);
-
+            int idUsuario = HttpContext.Session.GetInt32("IDUsuario") ?? 0;
             // Ejecuta el procedimiento para asignar el usuario a la orden de trabajo
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[AsignarUsuarioAOrden] @p0, @p1", IdUsuario, OrdenTrabajoId);
-
+            await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[AuditarPT] @p0, @p1, @p2", OrdenTrabajoId, 1003, idUsuario);
             return RedirectToPage("./MandarMailCambioEstado");
         }
 
@@ -219,6 +218,7 @@ namespace PPTT.Pages.PT
                             {
                                 _correo = reader.GetString(0);
                                 HttpContext.Session.SetString("correous", _correo);
+                                Console.WriteLine(_correo, "loagarre");
                                 return true;
                             }
                             else
@@ -243,7 +243,9 @@ namespace PPTT.Pages.PT
             datos++;
             HttpContext.Session.SetInt32("datoss", datos);
             HttpContext.Session.SetString("motivo", motCan);
+            int idUsuario = HttpContext.Session.GetInt32("IDUsuario") ?? 0;
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[CancelarPedidoTrabajo] @p0, @p1", OrdenTrabajoId, motCan);
+            await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[AuditarPT] @p0, @p1, @p2", OrdenTrabajoId, 1006, idUsuario);
             return RedirectToPage("./MandarMailCambioEstado");
         }
 
@@ -267,7 +269,9 @@ namespace PPTT.Pages.PT
             int datos = HttpContext.Session.GetInt32("datoss") ?? 0;
             datos++;
             HttpContext.Session.SetInt32("datoss", datos);
+            int idUsuario = HttpContext.Session.GetInt32("IDUsuario") ?? 0;
             await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[PendientePedidoTrabajo] @p0", OrdenTrabajoId);
+            await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[AuditarPT] @p0, @p1, @p2", OrdenTrabajoId, 1002, idUsuario);
             return RedirectToPage("./MandarMailCambioEstado");
         }
 

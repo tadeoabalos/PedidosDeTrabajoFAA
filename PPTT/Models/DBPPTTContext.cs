@@ -16,7 +16,7 @@ public partial class DBPPTTContext : DbContext
     }
 
     // Add the DbSet for CorreoResult
-    public virtual DbSet<CorreoResult> CorreoResults { get; set; }
+    public DbSet<Division> Division { get; set; }
 
     public virtual DbSet<Prueba> Pruebas { get; set; }
 

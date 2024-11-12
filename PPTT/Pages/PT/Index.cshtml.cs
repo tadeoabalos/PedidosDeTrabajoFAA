@@ -53,6 +53,7 @@ namespace PPTT.Pages.Administradores
                     .Include(pt => pt.Prioridad)
                     .Include(pt => pt.Dependencia_Interna)
                     .Include(pt => pt.Grado)
+                    .Include(pt => pt.Division)
                     .AsQueryable();
 
                 // Filtrar por rango de fechas usando solo Fecha_Subida
