@@ -93,16 +93,9 @@ namespace PPTT.Pages.Administradores
                 return Page();
             }
             else if (_rol == 2)
-            {
-                if (_Id_Division2 == 0)
-                {
-                    Divisions = await _context.GetDivisionesPorUsuarioAsync(_Id_Division);
-                    return Page();
-                }
-                else {
-                    Divisions = await _context.GetDosDivisionesPorUsuarioAsync(_Id_Division, _Id_Division2);
-                    return Page();
-                }                
+            {                
+                 Divisions = await _context.GetDosDivisionesPorUsuarioAsync(_Id_Division, _Id_Division2);
+                 return Page();                
             }
             else
             {
