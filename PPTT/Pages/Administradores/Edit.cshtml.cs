@@ -42,7 +42,7 @@ namespace PPTT.Pages.Administradores
             {
                 Roles = Enum.GetValues(typeof(Admin.Rol))
                     .Cast<Admin.Rol>()
-                    .Where(c => !(c == Admin.Rol.SuperAdministrador && _rol < 4)) // Filtra SuperAdministrador si _rol es menor que 3
+                    .Where(c => !(c == Admin.Rol.SuperAdministrador && _rol < 4 )) // Filtra SuperAdministrador si _rol es menor que 3
                     .Select(c => new SelectListItem
                     {
                         Value = ((int)c).ToString(),
