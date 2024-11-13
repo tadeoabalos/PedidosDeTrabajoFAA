@@ -242,47 +242,60 @@
             let exportTbody = document.createElement('tbody');
             exportTable.appendChild(exportTbody);
 
-            // Agregar encabezados a la tabla exportada (excluyendo las columnas ignoradas)
+            // Agregar encabezados a la tabla exportada (excluyendo "Detalle/Estado" y "Asignar Personal")
             const headers = Array.from($tabla.querySelectorAll('thead th'));
             const newRow = document.createElement('tr');
 
             headers.forEach((header, index) => {
-                // Ignorar los índices 12 y 14 (o los que desees ignorar)
-                if (index !== 12 && index !== 14) {
-                    let th = document.createElement('th');
-                    th.innerText = header.innerText;
-                    newRow.appendChild(th);
+                if (header.textContent.trim() !== "Detalle/Estado" && header.textContent.trim() !== "Asignar Personal") {
+                    const newHeader = document.createElement('th');
+                    newHeader.textContent = header.textContent;
+                    newRow.appendChild(newHeader);
                 }
             });
+
             exportTbody.appendChild(newRow);
 
-            // Recorrer las filas de la tabla original y agregar los datos a la tabla exportada
-            Array.from($tabla.querySelectorAll('tbody tr')).forEach(row => {
-                let newRow = document.createElement('tr');
-                Array.from(row.querySelectorAll('td')).forEach((cell, index) => {
-                    // Ignorar las columnas que no deseas exportar
-                    if (index !== 12 && index !== 14) {
-                        let td = document.createElement('td');
-                        if (index === 11) { // Supongamos que la columna de Prioridad es la número 12 (índice 11)
-                            // Obtener el valor del select
-                            const select = cell.querySelector('select');
-                            td.innerText = select ? select.options[select.selectedIndex].text : ''; // Solo el texto de la opción seleccionada
-                        } else {
-                            td.innerText = cell.innerText; // Texto normal
+            // Agregar datos a la tabla exportada
+            const rows = Array.from($tabla.querySelectorAll('tbody tr'));
+
+            rows.forEach(row => {
+                const cells = Array.from(row.querySelectorAll('td'));
+                const newRow = document.createElement('tr');
+
+                cells.forEach((cell, index) => {
+                    const header = headers[index];
+
+                    // Excluir celdas de "Detalle/Estado" y "Asignar Personal"
+                    if (header && header.textContent.trim() !== "Detalle/Estado" && header.textContent.trim() !== "Asignar Personal") {
+                        const newCell = document.createElement('td');
+
+                        // Mostrar solo la opción seleccionada en "Prioridad"
+                        if (header.textContent.trim() === "Prioridad") {
+                            const selectedOption = cell.querySelector('select option:checked');
+                            newCell.textContent = selectedOption ? selectedOption.textContent : '';
                         }
-                        newRow.appendChild(td);
+                        // Mostrar contenido de "Personal asignado"
+                        else if (header.textContent.trim() === "Personal asignado") {
+                            newCell.textContent = cell.textContent.trim();
+                        } else {
+                            newCell.textContent = cell.textContent;
+                        }
+
+                        newRow.appendChild(newCell);
                     }
                 });
+
                 exportTbody.appendChild(newRow);
             });
 
-            // Exportar a Excel
-            let wb = XLSX.utils.table_to_book(exportTable, {
-                sheet: "Trabajos"
-            });
-            XLSX.writeFile(wb, 'Reporte de Pedidos de Trabajo.xlsx');
+            // Exportar la tabla utilizando la biblioteca XLSX
+            const workbook = XLSX.utils.table_to_book(exportTable, { sheet: "Pedidos" });
+            XLSX.writeFile(workbook, "Reporte Pedidos Trabajo.xlsx");
         });
     });
+
+
 </script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

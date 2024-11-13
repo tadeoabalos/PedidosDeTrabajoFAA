@@ -45,12 +45,12 @@
                 </select>
                 <span asp-validation-for="PedidoTrabajo.ID_Organismo_Fk" class="text-danger"></span>
             </div>
-            <div class="form-group">               
-                <select asp-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" id="dependenciaSelect" class="form-control">
+           @*  <div class="form-group">               
+                @* <select asp-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" id="dependenciaSelect" class="form-control">
                     <option hidden select value="">Seleccione la dependencia correspondiente</option>
-                </select>
+                </select> 
                 <span asp-validation-for="PedidoTrabajo.ID_Dependencia_Interna_Fk" class="text-danger"></span>
-            </div>
+            </div> *@
             <div class="form-group">                
                 <input asp-for="PedidoTrabajo.Correo" class="form-control" placeholder="Correo Institucional*"/>
                 <span asp-validation-for="PedidoTrabajo.Correo" class="text-danger"></span>

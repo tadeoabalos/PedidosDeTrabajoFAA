@@ -15,11 +15,12 @@
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Organismo_Fk)</th>
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].RTI_Solicitante)</th>
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Numero_Oficina_PT)</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Color_Oficina_PT)</th>
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Correo)</th>                
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Tarea_Fk)</th>
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Observacion)</th>                
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Prioridad_Fk)</th>
-                <th>Detalle</th>
+
             </tr>
         </thead>
         <tbody>
@@ -46,6 +47,7 @@
                             <td>@Html.DisplayFor(modelItem => item.Organismo.Descripcion_organismo)</td>
                             <td>@Html.DisplayFor(modelItem => item.RTI_Solicitante)</td>
                             <td>@Html.DisplayFor(modelItem => item.Numero_Oficina_PT)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Color_Oficina_PT)</td>
                             <td>@Html.DisplayFor(modelItem => item.Correo)</td>                            
                             <td>
                                 @Html.Raw(item.Tarea.Descripcion_Tarea.Length > 3 ?
@@ -57,9 +59,6 @@
                                 <div class="form-group">
                                     <span class="form-control-plaintext">@item.Prioridad?.Descripcion_Prioridad</span>
                                 </div>
-                            </td>
-                            <td>
-                                <a asp-page="./Details" class="btn-action" asp-route-id="@item.ID_Orden_Trabajo_Pk">Ir</a>
                             </td>
                         </tr>
                     }

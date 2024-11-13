@@ -22,7 +22,10 @@ namespace PPTT.Pages.Administradores
         public List<Admin> Usuarios { get; set; } = new List<Admin>();
         public Orden_Asignada_Usuario Orden_Asignada { get; set; }
         public PTUsuario PT { get; set; } = default!;
-        public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();        
+        public List<Prioridad> Prioridad { get; set; } = new List<Prioridad>();
+        public DateTime? FechaInicio { get; set; }
+        public DateTime? FechaFin { get; set; }
+
         public async Task OnGetAsync()
         {
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;

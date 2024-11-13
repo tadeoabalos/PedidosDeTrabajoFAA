@@ -116,7 +116,7 @@ namespace PPTT.Pages.PT
 
             await _context.SaveChangesAsync();
             string mail = PedidoTrabajo.Correo;
-            string asunto = "Cambio de su Pedido";
+            string asunto = "Recibimos su Solicitud de Trabajo";
             string body = $"Hemos recibido su solicitud de trabajo. El número de identificación asignado es #{PedidoTrabajo.ID_Orden_Fk}. Le mantendremos informado sobre cualquier actualización en el estado de su solicitud.";
             SendMail(mail, asunto, body);
             return RedirectToPage("/Index");

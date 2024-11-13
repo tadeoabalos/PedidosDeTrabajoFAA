@@ -55,14 +55,14 @@ namespace PPTT.Models
         public string? Piso_Oficina_PT { get; set; } = string.Empty;
 
         [Display(Name = "Color de la Oficina del Solicitante")]
-        public string? Color_Oficina_Solicitante { get; set; } = string.Empty;        
+        public string? Color_Oficina_Solicitante { get; set; } = string.Empty;
         [Display(Name = "Número de Oficina del Solicitante")]
-        public string? Numero_Oficina_Solicitante { get; set; } = string.Empty;        
+        public string? Numero_Oficina_Solicitante { get; set; } = string.Empty;
         [Display(Name = "Piso de la Oficina del Solicitante")]
         public string? Piso_Oficina_Solicitante { get; set; } = string.Empty;
 
         [Display(Name = "Dependencia Interna")]
-        public int ID_Dependencia_Interna_Fk { get; set; }
+        public int ID_Dependencia_Interna_Fk { get; set; } = 1;
         [ForeignKey("ID_Dependencia_Interna_Fk")]
         public Dependencia_Interna? Dependencia_Interna { get; set; }
         [Required(ErrorMessage = "El campo DNI es obligatorio")]

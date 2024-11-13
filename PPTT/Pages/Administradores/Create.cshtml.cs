@@ -4,19 +4,25 @@ using PPTT.Models;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-
+using System.Data;
+using System.Net.Mail;
+using System.Net;
+using System.Configuration;
+using System.Data.SqlClient;
 
 namespace PPTT.Pages.Administradores
 {
     public class CreateModel : PageModel
     {
         private readonly PPTT.Data.DBPPTTContext _context;
-
-        public CreateModel(PPTT.Data.DBPPTTContext context)
+        private readonly IConfiguration _configuration;
+        public CreateModel(PPTT.Data.DBPPTTContext context, IConfiguration configuration)
         {
+            _configuration = configuration; // Ahora se asigna el parámetro correctamente
             _context = context;
             Admin = new Admin();
         }
+
 
         [BindProperty]
         public Admin Admin { get; set; }
@@ -63,19 +69,109 @@ namespace PPTT.Pages.Administradores
             _context.Usuario.Add(Admin);
             await _context.SaveChangesAsync();
 
-            DNI = Admin.DNI;
+            int DNI = Admin.DNI;
             HttpContext.Session.SetInt32("DNI", DNI);
 
-            string numeroStr = DNI.ToString();
-            string numeroInvertido = new string(numeroStr.Reverse().ToArray());
+            // Asegúrate de que esta sea una dirección de correo válida
+            var EmailDestino = Admin.Correo; // Cambiado a una dirección válida
+            var asunto = "Tu Nueva Contraseña";
+            Random random = new Random();
+            int randomNumber = random.Next(10000000, 100000000); // Límite inferior (inclusive) y superior (exclusive)
+            var body = $"Su contraseña ahora es {randomNumber}";
+            string randomString = randomNumber.ToString();
+            byte[] bytesContraseña;
+            bytesContraseña = ASCIIEncoding.ASCII.GetBytes(randomString);
+            //lo hasheo
+            byte[] hashContraseña;
+            hashContraseña = MD5.HashData(bytesContraseña);
+            Console.WriteLine(hashContraseña);
+            bool isValid = await CrearContraStoredProcedure(DNI, hashContraseña);
+            if (isValid)
+            {
+                SendMail(EmailDestino, asunto, body);
+                Console.WriteLine("Contraseña actualizada correctamente.");
+                int _roll = HttpContext.Session.GetInt32("UserRole") ?? 0;
+                if (_roll == 3)
+                {
+                    return RedirectToPage("./Index");
 
-            byte[] bytesContraseña = Encoding.ASCII.GetBytes(numeroInvertido);
-            byte[] hashContraseña = MD5.HashData(bytesContraseña);
-            HttpContext.Session.Set("hashContraseña", hashContraseña);
+                }
+                else
+                {
+                    return RedirectToPage("./IndexAdminU");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Error al actualizar la contraseña.");
+                return Page();
+            }
 
-            return RedirectToPage("/Administradores/SubirPass");
+    }
+
+        private async Task<bool> CrearContraStoredProcedure(int DNI, byte[] hashContraseña)
+        {
+            string connectionString = _configuration.GetConnectionString("ConnectionSQL");
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+                    using (SqlCommand command = new SqlCommand("Crear_Password", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        // Pasar los parámetros al stored procedure
+                        command.Parameters.AddWithValue("@DNI", DNI);
+                        command.Parameters.AddWithValue("@Pass", hashContraseña);  // Enviar el hash en formato byte[]
+
+                        // Ejecutar el stored procedure
+                        await command.ExecuteNonQueryAsync();
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
+            }
         }
+        private bool SendMail(string to, string asunto, string body)
+        {
+            string mailUser = _configuration["MailSettings:MailUser"];
+            string mailPassword = _configuration["MailSettings:MailPassword"];
+            string from = mailUser; // Asegúrate de que esta sea una dirección válida
+            string displayName = "Soporte C.G Pedidos de Trabajo Fuerza Aerea Argentina";
 
+            try
+            {
+                MailMessage mail = new MailMessage();
+                mail.From = new MailAddress(from, displayName);
+                mail.To.Add(to);  // Asegúrate de que 'to' sea una dirección válida
+                mail.Subject = asunto;
+                mail.Body = body;
+                mail.IsBodyHtml = true;  // false si es texto plano.
+                SmtpClient client = new SmtpClient("10.0.8.19", 25); // mailserver.condor.faa
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential(from, mailPassword);
+                client.EnableSsl = false; // Ver si el servidor de correo maneja cifrado o poner falso si no lo maneja.
+                client.Send(mail);
+                return true;
+            }
+            catch (SmtpException ex)
+            {
+                // Manejo de errores con Console.WriteLine o cualquier otro método de registro.
+                Console.WriteLine($"ERROR SMTP: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores generales.
+                Console.WriteLine($"ERROR GENERAL: {ex.Message}");
+                return false;
+            }
+        }
         public async Task<IActionResult> OnGetAsync()
         {
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;

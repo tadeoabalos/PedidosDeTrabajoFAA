@@ -50,6 +50,10 @@
         }
         @foreach (var item in Model.Admin)
         {
+            @if (item.ID_Rol_Fk == 3)  // Verificar si el rol es igual a 3
+            {
+                continue;  // Omitir este usuario en la tabla
+            }
             @if (item.ID_Division_Fk == divisionUsuario || item.ID_Division_Fk == divisionUsuario2)
             {
             <tr>
@@ -135,25 +139,49 @@
             $tabla = document.querySelector("#tabla");
 
         $btnExportar.addEventListener("click", function () {
-            let tableExport = new TableExport($tabla, {
-                exportButtons: false, 
-                filename: "Reporte de Usuarios", 
-                sheetname: "Usuarios", 
-                ignoreCols: [9] 
+            // Crear una nueva tabla para la exportación
+            let exportTable = document.createElement('table');
+            let exportTbody = document.createElement('tbody');
+            exportTable.appendChild(exportTbody);
+
+            // Agregar encabezados a la tabla exportada (excluyendo "Estados y Modificaciones")
+            const headers = Array.from($tabla.querySelectorAll('thead th'));
+            const newRow = document.createElement('tr');
+
+            headers.forEach((header, index) => {
+                if (header.textContent.trim() !== "Estados y Modificaciones") {
+                    const newHeader = document.createElement('th');
+                    newHeader.textContent = header.textContent;
+                    newRow.appendChild(newHeader);
+                }
             });
 
-            let datos = tableExport.getExportData();
-            let preferenciasDocumento = datos.tabla.xlsx;
+            exportTbody.appendChild(newRow);
 
-            tableExport.export2file(
-                preferenciasDocumento.data,
-                preferenciasDocumento.mimeType,
-                preferenciasDocumento.filename,
-                preferenciasDocumento.fileExtension,
-                preferenciasDocumento.merges,
-                preferenciasDocumento.RTL,
-                preferenciasDocumento.sheetname
-            );
+            // Agregar datos a la tabla exportada
+            const rows = Array.from($tabla.querySelectorAll('tbody tr'));
+
+            rows.forEach(row => {
+                const cells = Array.from(row.querySelectorAll('td'));
+                const newRow = document.createElement('tr');
+
+                cells.forEach((cell, index) => {
+                    const header = headers[index];
+
+                    // Excluir celdas de "Estados y Modificaciones"
+                    if (header && header.textContent.trim() !== "Estados y Modificaciones") {
+                        const newCell = document.createElement('td');
+                        newCell.textContent = cell.textContent;
+                        newRow.appendChild(newCell);
+                    }
+                });
+
+                exportTbody.appendChild(newRow);
+            });
+
+            // Exportar la tabla utilizando la biblioteca XLSX
+            const workbook = XLSX.utils.table_to_book(exportTable, { sheet: "Usuarios" });
+            XLSX.writeFile(workbook, "Reporte Usuarios.xlsx");
         });
     });
 </script>

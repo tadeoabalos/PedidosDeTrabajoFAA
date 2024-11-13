@@ -41,13 +41,13 @@ namespace PPTT.Pages.Administradores
             if (_rol > 1)
             {
                 Roles = Enum.GetValues(typeof(Admin.Rol))
-.Cast<Admin.Rol>()
-.Where(c => !(c == Admin.Rol.SuperAdministrador && _rol < 3)) // Filtra SuperAdministrador si _rol es menor que 3
-.Select(c => new SelectListItem
-{
-    Value = ((int)c).ToString(),
-    Text = c.ToString()
-}).ToList();
+                    .Cast<Admin.Rol>()
+                    .Where(c => !(c == Admin.Rol.SuperAdministrador && _rol < 4 )) // Filtra SuperAdministrador si _rol es menor que 3
+                    .Select(c => new SelectListItem
+                    {
+                        Value = ((int)c).ToString(),
+                        Text = c.ToString()
+                    }).ToList();
 
                 if (id == null)
                 {
