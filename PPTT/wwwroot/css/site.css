@@ -330,6 +330,7 @@ table tr:nth-child(even) td {
     color: white;
     transition: background-color 0.3s, transform 0.3s;
     font-size: 0.9em;
+ 
 }
 
     .btnExportar:hover {
@@ -369,4 +370,20 @@ a.btn-header-pt {
 .buscador {
 
     width: 30vw;
+}
+
+.icon-half {
+    width: 16px; /* Mantener la dimensión del ícono */
+    height: 16px;
+    object-fit: contain;
+    filter: brightness(0) invert(1); /* Cambiar el color a blanco */
+    margin-left: 5px;
+}
+
+.icon-index-log {
+    margin: 10px;
+    width: 40px; /* Mantener la dimensión del ícono */
+    height: 40px;
+    filter: brightness(0) invert(1); /* Cambiar el color a blanco */
+    margin-left: 5px;
 }

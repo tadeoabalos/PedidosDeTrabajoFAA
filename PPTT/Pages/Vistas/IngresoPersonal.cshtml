@@ -2,22 +2,32 @@
 @model PPTT.Pages.Vistas.IngresoPersonalModel
 @{
 }
+
 <body>
     <form method="post" class="form-log">
         <fieldset>
             <legend>Ingreso Personal</legend>
-            <hr/>
-            <div>               
-                <input type="text" id="DNI" name="DNI" required placeholder="DNI"/>
+            <hr />
+
+            <!-- Mostrar mensaje de error si las credenciales son incorrectas -->
+            @if (TempData["CredencialesFallidas"] != null)
+            {
+                <div class="alert alert-danger">
+                    @ModelState[""]?.Errors.FirstOrDefault()?.ErrorMessage
+                </div>
+            }
+
+            <div>
+                <input type="text" id="DNI" name="DNI"  required placeholder="DNI" />
             </div>
-            <div>                
+            <div>
                 <input type="text" id="NumerodeControl" name="NumerodeControl" required placeholder="Número de control" />
             </div>
-            <div class="password-container">                
+            <div class="password-container">
                 <input type="password" id="Contraseña" name="Contraseña" required placeholder="Contraseña" />
                 <button type="button" class="toggle-password" onclick="togglePassword()">Mostrar</button>
             </div>
-            <hr/>
+            <hr />
             <div class="login-botton">
                 <input type="submit" value="Ingresar" class="submit-log" />
                 <a href="/Vistas/OlvideContraseña">Olvidé Mi Contraseña</a>
@@ -39,6 +49,7 @@
         }
     </script>
 </body>
+
 
 <style>
     body {
@@ -150,4 +161,14 @@
         font-size: 0.9em;
         padding: 5px;
     }
+    
+    .alert {
+        color: red;
+        background-color: white;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        border-color:red;
+    }
+
 </style>

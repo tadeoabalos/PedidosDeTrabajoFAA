@@ -29,7 +29,7 @@
                 <button type="button" id="filtrar" class="filtrar">Filtrar</button>
             </form>
     </div>*/}
-    <button id="btnExportar" class="btnExportar">Exportar Excel</button>
+        <button id="btnExportar" class="btnExportar">Exportar Excel</button>
     </div>
 <table class="table" id="tabla">
     <thead>
@@ -100,8 +100,8 @@
                     </td>
                     <td>
                         <div class="form-group">
-                            <select id="usuarioSelect_@item.ID_Orden_Trabajo_Pk" class="formControl" data-division-id="@item.ID_Division_Fk">
-                                <option hidden selected value="">Selecciona un usuario</option>
+                                <select disabled id="usuarioSelect_@item.ID_Orden_Trabajo_Pk" class="formControl" data-division-id="@item.ID_Division_Fk">
+                                <option hidden selected value="" >Selecciona un usuario</option>
                             </select>
                         </div>
                     </td>
@@ -111,8 +111,8 @@
                         </span>
                     </td>
                     <td>
-                            <a asp-page="./Details" class="btn-action" asp-route-id="@item.ID_Orden_Trabajo_Pk">
-                                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                            <a asp-page="./Details" asp-route-id="@item.ID_Orden_Trabajo_Pk">
+                                Ir a Detalle
                             </a>
                     </td>
                 </tr>
@@ -383,4 +383,12 @@
         });
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+<style>
+    .icon-half {
+        width: 16px; /* Mantener la dimensión del ícono */
+        height: 16px;
+        object-fit: contain;
+        filter: brightness(0) invert(1); /* Cambiar el color a blanco */       
+        margin-left: 5px;
+    }
+</style>
