@@ -56,15 +56,13 @@ namespace PPTT.Models
 
         [Display(Name = "Color de la Oficina del Solicitante")]
         public string? Color_Oficina_Solicitante { get; set; } = string.Empty;
-        [Required(ErrorMessage = "El campo N° de oficina es obligatorio")]
         [Display(Name = "Número de Oficina del Solicitante")]
         public string? Numero_Oficina_Solicitante { get; set; } = string.Empty;
-        [Required(ErrorMessage = "El campo Piso es obligatorio")]
         [Display(Name = "Piso de la Oficina del Solicitante")]
         public string? Piso_Oficina_Solicitante { get; set; } = string.Empty;
 
         [Display(Name = "Dependencia Interna")]
-        public int ID_Dependencia_Interna_Fk { get; set; }
+        public int ID_Dependencia_Interna_Fk { get; set; } = 1;
         [ForeignKey("ID_Dependencia_Interna_Fk")]
         public Dependencia_Interna? Dependencia_Interna { get; set; }
         [Required(ErrorMessage = "El campo DNI es obligatorio")]
