@@ -13,6 +13,7 @@ namespace PPTT.Pages.Vistas
         private readonly IConfiguration _configuration;
         private int _rol;
         private string? _nombre;
+        private string? _apellido;
         private int _ingreso;
         private int _idusuario;
         private int _division;
@@ -68,6 +69,8 @@ namespace PPTT.Pages.Vistas
                 HttpContext.Session.SetInt32("Division", _division);
                 HttpContext.Session.SetInt32("Division2", _division2);
                 HttpContext.Session.SetInt32("IDUsuario", _idusuario);
+                HttpContext.Session.SetString("Nombre", _nombre);
+                HttpContext.Session.SetString("Apellido", _apellido);
 
                 if (_ingreso == 0)
                 {
@@ -127,6 +130,7 @@ namespace PPTT.Pages.Vistas
                                 _division = reader.IsDBNull(3) ? 0 : reader.GetInt32(3);
                                 _idusuario = reader.IsDBNull(4) ? 0 : reader.GetInt32(4);
                                 _division2 = reader.IsDBNull(5) ? 0 : reader.GetInt32(5);
+                                _apellido = reader.IsDBNull(6) ? string.Empty : reader.GetString(6);
                                 return _rol != 0;
                             }
                             else

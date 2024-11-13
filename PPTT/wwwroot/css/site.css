@@ -82,8 +82,8 @@ body {
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.7);
 }    
 
 header {
@@ -373,17 +373,34 @@ a.btn-header-pt {
 }
 
 .icon-half {
-    width: 16px; /* Mantener la dimensión del ícono */
+    width: 16px; 
     height: 16px;
     object-fit: contain;
-    filter: brightness(0) invert(1); /* Cambiar el color a blanco */
+    filter: brightness(0) invert(1);
     margin-left: 5px;
 }
 
 .icon-index-log {
     margin: 10px;
-    width: 40px; /* Mantener la dimensión del ícono */
+    width: 40px; 
     height: 40px;
-    filter: brightness(0) invert(1); /* Cambiar el color a blanco */
+    filter: brightness(0) invert(1); 
     margin-left: 5px;
+}
+.icon-logout {
+    width: 18px; 
+    height: 18px;
+    filter: brightness(0) saturate(100%) invert(30%) sepia(100%) saturate(5000%) hue-rotate(-10deg) brightness(90%) contrast(100%);
+}
+    .icon-logout:hover {
+        color: #d13a64;      
+    }
+
+.seccion-usuario-top {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-items: center;
+    align-items: center;    
 }
