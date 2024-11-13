@@ -47,9 +47,9 @@
             <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Observacion)</th>
             <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Estado_Fk)</th>
             <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Prioridad_Fk)</th>
-            <th><span>Asignar Personal</span></th>
             <th><span>Personal Asignado</span></th>
             <th>Detalle/Estado</th>
+            <th><span</span></th>
         </tr>
     </thead>
     <tbody>
@@ -99,13 +99,6 @@
                         </div>
                     </td>
                     <td>
-                        <div class="form-group">
-                                <select disabled id="usuarioSelect_@item.ID_Orden_Trabajo_Pk" class="formControl" data-division-id="@item.ID_Division_Fk">
-                                <option hidden selected value="" >Selecciona un usuario</option>
-                            </select>
-                        </div>
-                    </td>
-                    <td>
                         <span id="personalAsignado_@item.ID_Orden_Trabajo_Pk" data-orden-id="@item.ID_Orden_Trabajo_Pk">
                             Personal asignado
                         </span>
@@ -114,6 +107,13 @@
                             <a asp-page="./Details" asp-route-id="@item.ID_Orden_Trabajo_Pk">
                                 Ir a Detalle
                             </a>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                                <select hidden id="usuarioSelect_@item.ID_Orden_Trabajo_Pk" class="formControl" data-division-id="@item.ID_Division_Fk">
+                                <option hidden selected value="" >Selecciona un usuario</option>
+                            </select>
+                        </div>
                     </td>
                 </tr>
             }

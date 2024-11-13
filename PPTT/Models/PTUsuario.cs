@@ -55,11 +55,9 @@ namespace PPTT.Models
         public string? Piso_Oficina_PT { get; set; } = string.Empty;
 
         [Display(Name = "Color de la Oficina del Solicitante")]
-        public string? Color_Oficina_Solicitante { get; set; } = string.Empty;
-        [Required(ErrorMessage = "El campo N° de oficina es obligatorio")]
+        public string? Color_Oficina_Solicitante { get; set; } = string.Empty;        
         [Display(Name = "Número de Oficina del Solicitante")]
-        public string? Numero_Oficina_Solicitante { get; set; } = string.Empty;
-        [Required(ErrorMessage = "El campo Piso es obligatorio")]
+        public string? Numero_Oficina_Solicitante { get; set; } = string.Empty;        
         [Display(Name = "Piso de la Oficina del Solicitante")]
         public string? Piso_Oficina_Solicitante { get; set; } = string.Empty;
 

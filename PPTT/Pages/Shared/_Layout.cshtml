@@ -34,12 +34,20 @@
             <div class="centered-button">
                 @if (!pages.Contains(currentPage))
                 {
-                    <form method="post" asp-page="/Vistas/IndexLogueado" asp-page-handler="cerrar">
-                        <button type="submit" class="cerrarsesion">
-                            <span style="margin-right: 8px">Cerrar Sesión</span>
-                        </button>
-                    </form>
-
+                    var userName = Context.Session.GetString("Nombre");
+                    var userSurname = Context.Session.GetString("Apellido");
+                    
+                    @if (!string.IsNullOrEmpty(userName))
+                    {
+                       <div class="seccion-usuario-top">
+                            <span>@userName @userSurname</span>
+                            <form method="post" asp-page="/Vistas/IndexLogueado" asp-page-handler="cerrar" onsubmit="return confirmLogout()">
+                                <button type="submit" class="cerrarsesion">
+                                    <img src="~/svgs/right-from-bracket.svg" class="icon-logout" />
+                                </button>
+                            </form>
+                       </div>
+                    }                    
                 }
             </div>
         </div>
@@ -57,4 +65,9 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+<script>
+    function confirmLogout() {
+        return confirm("¿Estás seguro de que deseas cerrar sesión?");
+    }
+</script>
 
