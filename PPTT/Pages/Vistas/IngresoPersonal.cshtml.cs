@@ -68,7 +68,6 @@ namespace PPTT.Pages.Vistas
                 HttpContext.Session.SetInt32("Division", _division);
                 HttpContext.Session.SetInt32("Division2", _division2);
                 HttpContext.Session.SetInt32("IDUsuario", _idusuario);
-                
 
                 if (_ingreso == 0)
                 {
@@ -94,10 +93,13 @@ namespace PPTT.Pages.Vistas
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Las credenciales no son válidas.");
+                // Mostrar un mensaje de error si las credenciales son incorrectas
+                ModelState.AddModelError(string.Empty, "DNI, Número de control o Contraseña incorrectos.");
+                TempData["CredencialesFallidas"] = true;
                 return Page();
             }
         }
+
 
         private async Task<bool> EjecutarValidarStoredProcedure(int dni, int numeroDeControl, byte[] password)
         {
