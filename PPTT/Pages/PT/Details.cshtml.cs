@@ -182,6 +182,13 @@ namespace PPTT.Pages.PT
             EjecutarObtenerCorreoStoredProcedure(IdUsuario);
             string corrreo = HttpContext.Session.GetString("correous");
             Console.WriteLine(corrreo);
+            Console.WriteLine(corrreo);
+            Console.WriteLine(corrreo);
+            Console.WriteLine(corrreo);
+            Console.WriteLine(corrreo);
+            Console.WriteLine(corrreo);
+            Console.WriteLine(corrreo);
+            Console.WriteLine(corrreo);
             string asunto = "Se le ha asignado un trabajo";
             string body = $"Se le ha encargado el trabajo #{OrdenTrabajoId} ingrese para ver los detalles";
             SendMail(corrreo, asunto, body);  // Envía el correo del primer resultado
