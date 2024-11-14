@@ -193,38 +193,44 @@
             </div>
         </div>
     </div><!-- VENTANA MODAL DE ESTADO CANCELAR -->
-    <div class="modal fade" id="ModalEstSus" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <form method="post" asp-page-handler="SuspenderEstado">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="SusModalLabel">Suspender Pedido de trabajo</h5>
-                    </div>
-                    <div class="modal-body">
-                        <label id="labelFechaInicioSuspension">Fecha inicio de la suspensión:</label>
-                        <input type="date" id="fechaInicioSuspendido" disabled />
-                        <label id="labelFechaSuspension">Fecha estimada de retomo de trabajo:</label>
-                        <br />
-                        <input type="date" id="fechaEstimadaFin" name="fechaEstimadaFin" />
-                        <br />
-                        <label id="labelMotivoSuspension">Motivo de suspensión:</label>
-                        <select id="motivo" name="motSus">
-                            <option value="Falta De Material">Falta de material</option>
-                            <option value="Falta de personal">Falta de personal</option>
-                            <option value="Falta de herramientas">Falta de herramientas</option>
-                            <option value="Condición riesgosa">Condición riesgosa</option>
-                            <option value="A la espera de material">A la espera de material</option>
-                        </select>
-                        <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="canSus" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Aceptar</button>
-                    </div>
-                </form>
+        <div class="modal fade" id="ModalEstSus" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form method="post" asp-page-handler="SuspenderEstado">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="SusModalLabel">Suspender Pedido de trabajo</h5>
+                        </div>
+                        <div class="modal-body">
+                            <label id="labelFechaInicioSuspension">Fecha inicio de la suspensión:</label>
+                            <input type="date" id="fechaInicioSuspendido" disabled />
+
+                            <label id="labelFechaSuspension">Fecha estimada de retomo de trabajo:</label>
+                            <br />
+                            <!-- Agregamos el atributo 'min' para evitar fechas anteriores a hoy -->
+                            <input type="date" id="fechaEstimadaFin" name="fechaEstimadaFin" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                            <br />
+
+                            <label id="labelMotivoSuspension">Motivo de suspensión:</label>
+                            <select id="motivo" name="motSus">
+                                <option value="Falta De Material">Falta de material</option>
+                                <option value="Falta de personal">Falta de personal</option>
+                                <option value="Falta de herramientas">Falta de herramientas</option>
+                                <option value="Condición riesgosa">Condición riesgosa</option>
+                                <option value="A la espera de material">A la espera de material</option>
+                            </select>
+
+                            <input type="hidden" name="OrdenTrabajoId" value="@Model.PedidoTrabajo.ID_Orden_Trabajo_Pk" />
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" id="canSus" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Aceptar</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
-    </div><!-- VENTANA MODAL DE ESTADO SUSPENDIDO -->
+        </div><!-- VENTANA MODAL DE ESTADO SUSPENDIDO -->
+
     <div class="modal fade" id="ModalEstPro" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

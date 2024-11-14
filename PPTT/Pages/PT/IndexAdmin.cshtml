@@ -124,19 +124,22 @@
             }
         </tbody>
     </table>
-
-
-    @if (Model.PedidoTrabajo != null)
-    {
+    <div class="pagination">
         @if (Model.PedidoTrabajo.HasPreviousPage)
         {
-            <a asp-page="IndexPPTT" asp-route-PageIndex="@(Model.PedidoTrabajo.PageIndex - 1)">Anterior</a>
+            <a asp-page="./Index" asp-route-pageIndex="@(Model.PedidoTrabajo.PageIndex - 1)" class="pag">Anterior</a>
         }
+
+        @for (int i = 1; i <= Model.PedidoTrabajo.TotalPages; i++)
+        {
+            <a asp-page="./Index" asp-route-pageIndex="@i" class="pag">@i</a>
+        }
+
         @if (Model.PedidoTrabajo.HasNextPage)
         {
-            <a asp-page="IndexPPTT" asp-route-PageIndex="@(Model.PedidoTrabajo.PageIndex + 1)">Siguiente</a>
+            <a asp-page="./Index" asp-route-pageIndex="@(Model.PedidoTrabajo.PageIndex + 1)" class="pag">Siguiente</a>
         }
-    }
+    </div>
 </body>
 
 <script>
