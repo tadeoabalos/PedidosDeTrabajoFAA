@@ -62,7 +62,7 @@ namespace PPTT.Models
         public string? Piso_Oficina_Solicitante { get; set; } = string.Empty;
 
         [Display(Name = "Dependencia Interna")]
-        public int ID_Dependencia_Interna_Fk { get; set; } = 1;
+        public int? ID_Dependencia_Interna_Fk { get; set; } = null;
         [ForeignKey("ID_Dependencia_Interna_Fk")]
         public Dependencia_Interna? Dependencia_Interna { get; set; }
         [Required(ErrorMessage = "El campo DNI es obligatorio")]
