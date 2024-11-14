@@ -35,9 +35,20 @@ namespace PPTT.Pages.Administradores
         }
 
         public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            Divisions = await _context.GetDivisionAsync();
-            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+        {            
+            int _Id_Division = HttpContext.Session.GetInt32("Division") ?? 0;
+            int _Id_Division2 = HttpContext.Session.GetInt32("Division2") ?? 0;
+            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;            
+            var admin = await _context.Usuario.FirstOrDefaultAsync(m => m.ID_Usuario_Pk == id);
+            if (_rol == 3)
+            {
+                Divisions = await _context.GetDivisionAsync();
+            }
+            else
+            {
+                Divisions = await _context.GetDosDivisionesPorUsuarioAsync(_Id_Division, _Id_Division2);
+            }
+
             if (_rol > 1)
             {
                 Roles = Enum.GetValues(typeof(Admin.Rol))
@@ -54,7 +65,6 @@ namespace PPTT.Pages.Administradores
                     return NotFound();
                 }
 
-                var admin = await _context.Usuario.FirstOrDefaultAsync(m => m.ID_Usuario_Pk == id);
                 if (admin == null)
                 {
                     return NotFound();
@@ -82,23 +92,21 @@ namespace PPTT.Pages.Administradores
             {
                 return NotFound();
             }  
-
-            // Asignar las propiedades del objeto Admin basadas en el formulario
+           
             adminFromDb.Nombre = Admin.Nombre;
             adminFromDb.Apellido = Admin.Apellido;
             adminFromDb.DNI = Admin.DNI;
             adminFromDb.Numero_Control = Admin.Numero_Control;
             adminFromDb.Correo = Admin.Correo;
-            adminFromDb.ID_Rol_Fk = Admin.ID_Rol_Fk ?? 1; // Establecer ID_Rol_Fk con un valor predeterminado si es nulo
-            adminFromDb.ID_Servicio_Fk = Admin.ID_Servicio_Fk ?? 1; // Asegúrate de que el ID_Servicio_Fk tenga un valor válido
-            adminFromDb.ID_Division_Fk = Admin.ID_Division_Fk ?? 1; // Asegúrate de que el ID_Division_Fk tenga un valor válido
-            adminFromDb.Division2 = Admin.Division2 ?? 1;
-            // Actualizar el contexto
+            adminFromDb.ID_Rol_Fk = Admin.ID_Rol_Fk ?? 1; 
+            adminFromDb.ID_Servicio_Fk = Admin.ID_Servicio_Fk ?? 1; 
+            adminFromDb.ID_Division_Fk = Admin.ID_Division_Fk ?? 1;         
+            adminFromDb.Division2 = Admin.Division2;            
             _context.Usuario.Update(adminFromDb);
 
             try
             {
-                // Llamar al stored procedure
+                // Llamar al stored procedure 
                 var parameters = new[]
                 {
             new Microsoft.Data.SqlClient.SqlParameter("@IDUSUARIO", adminFromDb.ID_Usuario_Pk),
@@ -128,12 +136,6 @@ namespace PPTT.Pages.Administradores
 
             return RedirectToPage("./Index");
         }
-
-
-
-
-
-
 
         private bool AdminExists(int id)
         {

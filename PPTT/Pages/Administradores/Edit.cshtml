@@ -3,6 +3,9 @@
 
 @{
     ViewData["Title"] = "Editar Usuario";
+    int _Id_Division = HttpContext.Session.GetInt32("Division") ?? 0;
+    int _Id_Division2 = HttpContext.Session.GetInt32("Division2") ?? 0;
+    int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
 }
 <div class="page-content">
     <div class="form-alta">
@@ -67,31 +70,29 @@
                     </select>
                     <span asp-validation-for="Admin.ID_Rol_Fk" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <h8>2da Division (Opcional)</h8>
-                        <select asp-for="Admin.Division2"
-                                asp-items="Model.Divisions.Select(d => new SelectListItem
-            {
-                Value = d.ID_Division_Pk.ToString(),
-                Text = d.Descripcion_Division,
-                Selected = d.ID_Division_Pk == Model.Admin.Division2 // Verifica si el valor de Division2 coincide con el ID de la división
-            })"
-                                id="deptSelect2"
-                                class="form-control">
-                            <option hidden value="">Seleccione la 2da división (opcional)</option>
-                        </select>
+                @if(_Id_Division2 >= 1 || _rol == 3)
+                {
+                    <div class="form-group">
+                        <label>Segunda División (OPCIONAL) </label>
+                            <select asp-for="Admin.Division2"
+                                    asp-items="Model.Divisions.Select(d => new SelectListItem
+                                    {
+                                        Value = d.ID_Division_Pk.ToString(),
+                                        Text = d.Descripcion_Division,
+                                        Selected = d.ID_Division_Pk == Model.Admin.Division2 
+                                    })"
+                                    id="deptSelect2"
+                                    class="form-control">
+                                <option value="">Sin segunda división</option>                            
+                            </select>
+                        </div>
+                    <div class="form-group">                                        
+                        <input type="submit" value="Guardar" class="submit-log" />
                     </div>
-
-
-                <div class="form-group">
-                    <input type="submit" value="Guardar" class="submit-log" />
-                </div>
+                }
             </form>
         </div>
-        <div class="centered-button">
-        @{
-            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
-        }
+        <div class="centered-button">       
         @if (_rol == 3)
         {
             <a class="btn-action" asp-page="../Vistas/IndexLogueado">Volver al menú</a>
