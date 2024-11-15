@@ -404,3 +404,14 @@ a.btn-header-pt {
     justify-items: center;
     align-items: center;    
 }
+.post-create-div {
+    display: flex;
+    min-height:90vh;
+    justify-items: center;
+    flex-direction: column;
+}
+
+    .post-create-div image {
+        height: 100px;
+        width: 100px;
+    }

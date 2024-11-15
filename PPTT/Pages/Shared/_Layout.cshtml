@@ -16,52 +16,58 @@
     var index = "/PT/Create";
 }
 <body>
-    <header>
-        <div class="navbar">
-            <div class="navbar-logo">
-                @if (index == currentPage)
-                {
-                    <img src="~/imagenes/3.png" alt="logogc" />
-                    <a class="a-to-index" style="cursor: default;">Pedidos de Trabajo - Cuartel General - Edificio Cóndor</a>
-
-                }
-                else
-                {                    
-                    <a asp-page="/Vistas/IngresoPersonal"><img src="~/imagenes/3.png" alt="logogc" /></a>
-                    <a class="a-to-index" asp-page="/Vistas/IngresoPersonal">Pedidos de Trabajo - Cuartel General - Edificio Cóndor</a>
-                }
-            </div>
-            <div class="centered-button">
-                @if (!pages.Contains(currentPage))
-                {
-                    var userName = Context.Session.GetString("Nombre");
-                    var userSurname = Context.Session.GetString("Apellido");
-                    
-                    @if (!string.IsNullOrEmpty(userName))
+    @if (ViewData["ShowHeader"] == null || (bool)ViewData["ShowHeader"])
+    {
+        <header>
+            <div class="navbar">
+                <div class="navbar-logo">
+                    @if (index == currentPage)
                     {
-                       <div class="seccion-usuario-top">
-                            <span>@userName @userSurname</span>
-                            <form method="post" asp-page="/Vistas/IndexLogueado" asp-page-handler="cerrar" onsubmit="return confirmLogout()">
-                                <button type="submit" class="cerrarsesion">
-                                    <img src="~/svgs/right-from-bracket.svg" class="icon-logout" />
-                                </button>
-                            </form>
-                       </div>
-                    }                    
-                }
+                        <img src="~/imagenes/3.png" alt="logogc" />
+                        <a class="a-to-index" style="cursor: default;">Pedidos de Trabajo - Cuartel General - Edificio Cóndor</a>
+
+                    }
+                    else
+                    {
+                        <a asp-page="/Vistas/IngresoPersonal"><img src="~/imagenes/3.png" alt="logogc" /></a>
+                        <a class="a-to-index" asp-page="/Vistas/IngresoPersonal">Pedidos de Trabajo - Cuartel General - Edificio Cóndor</a>
+                    }
+                </div>
+                <div class="centered-button">
+                    @if (!pages.Contains(currentPage))
+                    {
+                        var userName = Context.Session.GetString("Nombre");
+                        var userSurname = Context.Session.GetString("Apellido");
+
+                        @if (!string.IsNullOrEmpty(userName))
+                        {
+                            <div class="seccion-usuario-top">
+                                <span>@userName @userSurname</span>
+                                <form method="post" asp-page="/Vistas/IndexLogueado" asp-page-handler="cerrar" onsubmit="return confirmLogout()">
+                                    <button type="submit" class="cerrarsesion">
+                                        <img src="~/svgs/right-from-bracket.svg" class="icon-logout" />
+                                    </button>
+                                </form>
+                           </div>
+                        }                    
+                    }
+                </div>
             </div>
-        </div>
-    </header>
+        </header>
+    }
     <main role="main" class="pb-3">
         @RenderBody()
     </main>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <footer>
-        <img src="~/imagenes/dirinfo_logo.gif" alt="logogc" />
+    @if (ViewData["ShowHeader"] == null || (bool)ViewData["ShowHeader"])
+    {
+        <footer>
+            <img src="~/imagenes/dirinfo_logo.gif" alt="logogc" />
         <p>Dirección de Informática</p>
     </footer>
+    }
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

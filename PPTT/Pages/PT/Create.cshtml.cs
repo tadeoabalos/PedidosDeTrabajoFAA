@@ -110,8 +110,8 @@ namespace PPTT.Pages.PT
             PedidoTrabajo.ID_Prioridad_Fk = 1;
 
             //  Almacena el valor retornado del stored procedure en la propiedad ID_Orden_Fk
-              PedidoTrabajo.ID_Orden_Fk = await EjecutarDiferentesIDs(PedidoTrabajo.ID_Tarea_Fk);
-            //PedidoTrabajo.ID_Orden_Fk = 1;
+            // PedidoTrabajo.ID_Orden_Fk = await EjecutarDiferentesIDs(PedidoTrabajo.ID_Tarea_Fk);
+             PedidoTrabajo.ID_Orden_Fk = 1;
             _context.PTUsuario.Add(PedidoTrabajo);
 
             await _context.SaveChangesAsync();
@@ -119,7 +119,7 @@ namespace PPTT.Pages.PT
             string asunto = "Recibimos su Solicitud de Trabajo";
             string body = $"Hemos recibido su solicitud de trabajo. El número de identificación asignado es #{PedidoTrabajo.ID_Orden_Fk}. Le mantendremos informado sobre cualquier actualización en el estado de su solicitud.";
             SendMail(mail, asunto, body);
-            return RedirectToPage("/Index");
+            return RedirectToPage("../PT/postCreate");
         }
 
         private async Task<int> EjecutarDiferentesIDs(int idTarea)

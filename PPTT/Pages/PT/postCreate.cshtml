@@ -1,0 +1,71 @@
+﻿@page
+@model PPTT.Pages.PT.postCreateModel
+@{
+}
+<div class="post-create-div">
+    <div class="card-post-create">
+        <img src="~/imagenes/logoCG.png" alt="logogc" class="logo-post-create" />
+        <h1>PEDIDO DE TRABAJO REALIZADO</h1>
+        <p class="message">Recibirá un correo electrónico con el número de pedido de trabajo.</p>
+        <a asp-page="../index" class="btn-action">Volver al Inicio</a>
+        <a asp-page="./Create" class="btn-action">Relizar otro Pedido de Trabajo</a>
+    </div>
+</div>
+
+<style>
+    body {
+        overflow-y: hidden;
+    }
+    .post-create-div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 95vh;
+        background-color: #f0f2f5;
+    }
+
+    .card-post-create {
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        padding: 40px 30px;
+        max-width: 500px;
+        margin: auto;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .logo-post-create {
+        width: 100px;
+        height: auto;
+        margin-bottom: 20px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .message {
+        font-size: 1rem;
+        color: #666;
+        margin-bottom: 25px;
+    }
+
+    .btn-post-create {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-post-create:hover {
+        background-color: #0056b3;
+    }
+</style>
