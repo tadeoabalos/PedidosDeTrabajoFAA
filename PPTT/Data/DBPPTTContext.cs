@@ -81,10 +81,17 @@ namespace PPTT.Data
         {
             return await Usuario.FromSqlRaw("EXEC [dbo].[Retorna_Usuarios]").ToListAsync();
         }
-        public async Task<List<Admin>> GetUsuarioPorPtAsync(int PT) 
+        public async Task<List<Admin>> GetUsuarioPorPtAsync(int PT)
         {
-            return await Usuario.FromSqlRaw("EXEC [dbo].[RetornaUsuarioPorPT] @p0", PT).ToListAsync();
+            return await Usuario
+                .FromSqlRaw("EXEC [dbo].[RetornaUsuarioPorPT] @p0", PT)
+                .ToListAsync();
         }
+
+
+
+
+
         public async Task<List<Division>> GetDivisionesPorUsuarioAsync(int IdUsuario) 
         {
             return await Divisions.FromSqlRaw("EXEC [dbo].[Retorna_Divisiones] @p0", IdUsuario).ToListAsync();
