@@ -67,6 +67,17 @@ namespace PPTT.Pages.Administradores
             return new JsonResult(usuarios);
         }
 
+        public async Task<JsonResult> OnGetUsuarioPorPtAsync(int idPedidoTrabajo)
+        {
+            var usuario = await _context.GetUsuarioPorPtAsync(idPedidoTrabajo);
+            if (usuario == null)
+            {
+                return new JsonResult(new { success = false, message = "Usuario no encontrado" });
+            }
+
+            return new JsonResult(new { success = true, nombre = usuario[0].Nombre, apellido = usuario[0].Apellido });
+        }
+
 
         public async Task<IActionResult> OnPostAsignarUsuarioAsync(int UsuarioId, int OrdenTrabajoId)
         {

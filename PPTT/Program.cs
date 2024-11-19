@@ -4,6 +4,7 @@ using PPTT.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -14,10 +15,10 @@ builder.Services.AddDbContext<DBPPTTContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionSQL")));
 
 // Register session services
-builder.Services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
+builder.Services.AddDistributedMemoryCache(); 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set timeout for the session
+    options.IdleTimeout = TimeSpan.FromMinutes(30); 
 });
 
 // Register GlobalState as a singleton service
