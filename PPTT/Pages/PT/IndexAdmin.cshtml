@@ -59,9 +59,14 @@
                         <td>@Html.DisplayFor(modelItem => item.Estado.Descripcion_Estado)</td>
                         <td>@Html.DisplayFor(modelItem => item.Prioridad.Descripcion_Prioridad)</td>                        
                         <td>
-                            <span id="personalAsignado_@item.ID_Orden_Trabajo_Pk" data-orden-id="@item.ID_Orden_Trabajo_Pk">
-                                Personal asignado
-                            </span>
+                            @if (item.ID_Estado_Fk == 1003)
+                            {
+                                <span class="usuario-estado" data-pedido-id="@item.ID_Orden_Trabajo_Pk">Cargando...</span>
+                            }
+                            else
+                            {
+                                <span>No se asignó personal</span>
+                            }
                         </td>
                         <td>
                             <a asp-page="./Details" class="" asp-route-id="@item.ID_Orden_Trabajo_Pk">Ir a Detalle</a>
@@ -238,87 +243,29 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script type="text/javascript">
-        $(document).ready(function () {                       
-            $('select[id^="usuarioSelect_"]').each(function () {
-                var usuarioSelect = $(this); 
-                var selectedDivision = usuarioSelect.data('division-id');
-                var ordenTrabajoId = usuarioSelect.closest('tr').find('span[id^="personalAsignado_"]').data('orden-id');
-                var personalAsignado = $('#personalAsignado_' + ordenTrabajoId);
-        
-                if (selectedDivision && usuarioSelect.find('option').length <= 1) {
-                    $.ajax({
-                        url: '@Url.Page("./Index", "UsuariosFiltrados")',
-                        type: 'GET',
-                        data: { division: selectedDivision },
-                        success: function (data) {                        
-                            usuarioSelect.empty(); 
-                            usuarioSelect.append('<option hidden selected value="">Seleccione el usuario</option>');
-                            usuarioSelect.append('<option value="-1">Sin asignación</option>');
-                            $.each(data, function (index, usuario) {
-                                usuarioSelect.append('<option value="' + usuario.iD_Usuario_Pk + '">' + usuario.nombre + ' ' + usuario.apellido + '</option>');
-                            });
-                        },
-                        error: function (error) {
-                            console.log('Error:', error);
-                        }
-                    });
-                }
-                                 
-                if (ordenTrabajoId) {
-                    $.ajax({
-                        url: '@Url.Page("./Index", "UsuarioPorPt")',
-                        type: 'GET',
-                        data: { PT: ordenTrabajoId }, 
-                        success: function (data) {                              
-                            if (data[0] == null) 
-                            {
-                                personalAsignado.empty();
-                                personalAsignado.append('<span>No se asignó personal</span>');
-                            }
-                            else 
-                            {
-                                personalAsignado.empty();
-                                personalAsignado.append('<span>' + data[0].nombre + ' ' + data[0].apellido + '</span>');
-                            }                        
-                        },
-                        error: function (error) {
-                            console.log('Error en la carga de información del usuario asignado:', error);
-                        }
-                    }); //SE COLOCA EL USUARIO ASIGNADO EN EL SPAN
-                }
-            }); //LISTADO DE USUARIOS
-    
-            $('select[id^="usuarioSelect_"]').change(function () {
-                var selectedOption = $(this).find("option:selected");
-                var selectedUsuarioId = selectedOption.val();
-                var selectedOrdenTrabajoId = $(this).attr("id").split("_")[1];             
-                $('#usuarioNombre').text(selectedOption.text()); 
-                $('#usuarioId').val(selectedUsuarioId); 
-                $('#ordenTrabajoId').val(selectedOrdenTrabajoId); 
-
-                $('#confirmModal').modal('show'); 
-            }); //EVENTO ONCHANGE EN EL SELECT
-
-            $('.PrioridadSelect').change(function () {
-                var selectedPrioridad = parseInt($(this).val());
-                var ordenTrabajoId = parseInt($(this).closest('td').data('orden-trabajo-id'));                      
-                $('#prioridadInput').val(selectedPrioridad);  
-                $('#prioridadDisplay').text(selectedPrioridad);  
-                $('#ordenTrabajo').val(ordenTrabajoId);                         
-            
-                $('#confirmPrioridadModal').modal('show');
-            });                            
-
-            $('#cancelaAsignacion').click(function () {
-                location.reload();
-                $('#confirmModal').modal('hide');
-            });
-
-            $('#cancelaPrioridad').click(function () {
-                location.reload();
-                $('#confirmPrioridadModal').modal('hide');            
-            });
+    $(document).ready(function () {
+        $(".usuario-estado").each(function () {
+            const idPedidoTrabajo = $(this).data("pedido-id");
+            cargarUsuario(idPedidoTrabajo, $(this));
         });
+    });
+    function cargarUsuario(idPedidoTrabajo, elemento) {
+        $.ajax({
+            url: '/PT?handler=UsuarioPorPt',
+            type: 'GET',
+            data: { idPedidoTrabajo },
+            success: function (response) {
+                if (response.success) {
+                    elemento.text(response.nombre + " " + response.apellido);
+                } else {
+                    elemento.text("Error: " + response.message);
+                }
+            },
+            error: function () {
+                elemento.text("Error al cargar el usuario");
+            }
+        });
+    }
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
