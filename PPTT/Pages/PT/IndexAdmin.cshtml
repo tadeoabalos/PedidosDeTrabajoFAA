@@ -28,8 +28,7 @@
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Tarea_Fk)</th>
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Observacion)</th>
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Estado_Fk)</th>
-                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Prioridad_Fk)</th>
-                <th>Asignar Personal</th>
+                <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Prioridad_Fk)</th>                
                 <th>Personal Asignado</th>
                 <th>Detalle/Estado</th>
             </tr>
@@ -58,14 +57,7 @@
                         <td>@Html.Raw(item.Tarea.Descripcion_Tarea.Length > 3 ? item.Tarea.Descripcion_Tarea : item.Tarea.Descripcion_Tarea)</td>
                         <td>@Html.DisplayFor(modelItem => item.Observacion)</td>
                         <td>@Html.DisplayFor(modelItem => item.Estado.Descripcion_Estado)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Prioridad.Descripcion_Prioridad)</td>
-                        <td>
-                            <div class="form-group">
-                                <select id="usuarioSelect_@item.ID_Orden_Trabajo_Pk" class="formControl" data-division-id="@item.ID_Division_Fk">
-                                    <option hidden selected value="">Selecciona un usuario</option>
-                                </select>
-                            </div>
-                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.Prioridad.Descripcion_Prioridad)</td>                        
                         <td>
                             <span id="personalAsignado_@item.ID_Orden_Trabajo_Pk" data-orden-id="@item.ID_Orden_Trabajo_Pk">
                                 Personal asignado
@@ -84,10 +76,6 @@
         @Html.PagedListPager(Model.PedidoTrabajo, page => Url.Page("./IndexAdmin", new { pageNumber = page }), PagedListRenderOptions.Classic)
     </div>
 </body>
-
-<!-- Agregar el resto de los scripts como en tu archivo original -->
-
-
 <script>
     function formatDateInput(input) {
         let value = input.value.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos

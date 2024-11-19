@@ -52,8 +52,7 @@
             }
         </tbody>
     </table>
-
-    <!-- Paginación usando PagedListPager -->
+    
     <div>
         @Html.PagedListPager(Model.PedidoTrabajo, page => Url.Page("./Index", new { pageNumber = page }), PagedListRenderOptions.Classic)
     </div>
@@ -143,10 +142,8 @@
             </form>
         </div>
     </div>
-</div> <!-- VENTANA MODAL PRIORIDAD -->
+</div> 
 
-
-<!-- SCRIPTS PARA EXPORTAR AL EXCEL -->
 <script src="https://unpkg.com/xlsx@0.16.9/dist/xlsx.full.min.js"></script>
 <script src="https://unpkg.com/file-saverjs@latest/FileSaver.min.js"></script>
 <script src="https://unpkg.com/tableexport@latest/dist/js/tableexport.min.js"></script>
@@ -304,12 +301,4 @@
         });
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<style>
-    .icon-half {
-        width: 16px; /* Mantener la dimensión del ícono */
-        height: 16px;
-        object-fit: contain;
-        filter: brightness(0) invert(1); /* Cambiar el color a blanco */       
-        margin-left: 5px;
-    }
-</style>
+
