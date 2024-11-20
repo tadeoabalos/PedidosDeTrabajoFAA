@@ -83,45 +83,56 @@
                         <span asp-validation-for="Admin.ID_Rol_Fk" class="text-danger"></span>                                                
                     }
                 </div>
-                @if(_Id_Division2 >= 1 || _rol == 3)
-                {
-                    <div class="form-group">
-                        <label>Segunda División (OPCIONAL) </label>
-                            <select asp-for="Admin.Division2"
-                                    asp-items="Model.Divisions.Select(d => new SelectListItem
-                                    {
-                                        Value = d.ID_Division_Pk.ToString(),
-                                        Text = d.Descripcion_Division,
-                                        Selected = d.ID_Division_Pk == Model.Admin.Division2 
-                                    })"
-                                    id="deptSelect2"
-                                    class="form-control">
-                                <option value="">Sin segunda división</option>                            
+                @if (_Id_Division2 >= 1 || _rol == 3)
+                    {                        
+                            var division_admin = Model.Admin.ID_Division_Fk;
+                            
+                            var availableDivisions = Model.Divisions
+                                .Where(d => d.ID_Division_Pk != division_admin)
+                                .Select(d => new SelectListItem
+                                {
+                                    Value = d.ID_Division_Pk.ToString(),
+                                    Text = d.Descripcion_Division,
+                                    Selected = d.ID_Division_Pk == Model.Admin.Division2
+                                }).ToList();
+                        
+
+                        <div class="form-group">
+                            <label>Segunda División (OPCIONAL)</label>
+                            <select asp-for="Admin.Division2" id="deptSelect2" class="form-control">
+                                <option value="">Sin segunda división</option>
+                                @foreach (var division in availableDivisions)
+                                {
+                                    <option value="@division.Value">
+                                        @division.Text
+                                    </option>
+                                }
                             </select>
                         </div>
-                    <div class="form-group">                                        
-                        <input type="submit" value="Guardar" class="submit-log" />
-                    </div>
-                }
+                        <div class="form-group">                                        
+                            <input type="submit" value="Guardar" class="submit-log" />
+                        </div>
+                    }
+
             </form>
         </div>
         <div class="centered-button">       
         @if (_rol == 3)
         {
-            <a class="btn-action" asp-page="../Vistas/IndexLogueado">Volver al menú</a>
+            <a asp-page="../Vistas/IndexLogueado">Volver al menú</a>
         }
         else
         {
-            <a class="btn-action" asp-page="../Vistas/IndexAdmin">Volver al menú</a>
+            <a asp-page="../Vistas/IndexAdmin">Volver al menú</a>
         }
         |
         @if (_rol == 3)
         {
-            <a class="btn-action" asp-page="./Index" type="boton" class="btn-action">Volver al Listado</a>
+            <a asp-page="./Index" type="boton" >Volver al Listado</a>
         }
         else
         {
-            <a class="btn-action" asp-page="./IndexAdminU">Volver al Listado</a>
+            <a asp-page="./IndexAdminU">Volver al Listado</a>
         }
     </div>
     </div>
