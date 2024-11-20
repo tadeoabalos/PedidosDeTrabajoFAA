@@ -12,6 +12,7 @@
     <table class="table" id="tabla">
         <thead>
             <tr>
+
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Orden_Fk)</th>
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Fecha_Subida)</th>
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Grado_Fk)</th>
@@ -25,7 +26,6 @@
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Observacion)</th>
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Estado_Fk)</th>
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Prioridad_Fk)</th>
-                <th>Personal Asignado</th>
                 <th>Detalle/Estado</th>
             </tr>
         </thead>
@@ -66,7 +66,6 @@
         @Html.PagedListPager(Model.PedidoTrabajo, page => Url.Page("./Index", new { pageNumber = page }), PagedListRenderOptions.Classic)
     </div>
 </body>
-
 <script>
     function formatDateInput(input) {
         let value = input.value.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
@@ -252,4 +251,3 @@
     }
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-

@@ -69,10 +69,10 @@ namespace PPTT.Models
         [Display(Name = "DNI del Solicitante")]
         [Range(1000000, 99999999, ErrorMessage = "Número inválido de DNI")]
         public int DNI_Solicitante { get; set; }
-        [Required(ErrorMessage = "El campo Número de control es obligatorio")]        
+        [Required(ErrorMessage = "El campo Número de control es obligatorio")]
         [Display(Name = "Número de Control del Solicitante")]
         public string? Numero_Control_Solicitante { get; set; } = string.Empty;
-        
+
         [DisplayFormat(DataFormatString = "{0:d/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? Fecha_Estimada_Fin { get; set; } = DateTime.Now;
 
@@ -86,7 +86,7 @@ namespace PPTT.Models
         public Prioridad? Prioridad { get; set; }
 
         [Display(Name = "Estado")]
-        public int ID_Estado_Fk { get; set; } = 1002;        
+        public int ID_Estado_Fk { get; set; } = 1002;
         [ForeignKey("ID_Estado_Fk")]
         public Estado? Estado { get; set; }
 
@@ -102,6 +102,5 @@ namespace PPTT.Models
         [StringLength(250)]
         [Display(Name = "Observaciones")]
         public string? Observacion { get; set; }
-       
     }
 }
