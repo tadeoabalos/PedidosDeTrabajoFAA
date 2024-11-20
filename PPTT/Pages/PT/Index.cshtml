@@ -26,6 +26,7 @@
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Observacion)</th>
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Estado_Fk)</th>
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Prioridad_Fk)</th>
+                <th>Personal Asignado</th>
                 <th>Detalle/Estado</th>
             </tr>
         </thead>
@@ -195,13 +196,13 @@
                     if (header && header.textContent.trim() !== "Detalle/Estado" && header.textContent.trim() !== "Asignar Personal") {
                         const newCell = document.createElement('td');
 
-                        // Mostrar solo la opción seleccionada en "Prioridad"
-                        if (header.textContent.trim() === "Prioridad") {
-                            const selectedOption = cell.querySelector('select option:checked');
-                            newCell.textContent = selectedOption ? selectedOption.textContent : '';
-                        }
+                        // // Mostrar solo la opción seleccionada en "Prioridad"
+                        // if (header.textContent.trim() === "Prioridad") {
+                        //     const selectedOption = cell.querySelector('select option:checked');
+                        //     newCell.textContent = selectedOption ? selectedOption.textContent : '';
+                        // }
                         // Mostrar contenido de "Personal asignado"
-                        else if (header.textContent.trim() === "Personal asignado") {
+                        if (header.textContent.trim() === "Personal asignado") {
                             newCell.textContent = cell.textContent.trim();
                         } else {
                             newCell.textContent = cell.textContent;
