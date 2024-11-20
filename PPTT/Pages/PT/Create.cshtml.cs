@@ -182,7 +182,7 @@ namespace PPTT.Pages.PT
             string mailUser = _configuration["MailSettings:MailUser"];
             string mailPassword = _configuration["MailSettings:MailPassword"];
             string from = mailUser;
-            string displayName = "Soporte Turnos Web Fuerza Aerea Argentina";
+            string displayName = "Soporte C.G Pedidos de Trabajo Fuerza Aerea Argentina";
             try
             {
                 MailMessage mail = new MailMessage();

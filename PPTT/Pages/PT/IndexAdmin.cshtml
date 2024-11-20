@@ -213,12 +213,9 @@
                         const newCell = document.createElement('td');
 
                         // Mostrar solo la opción seleccionada en "Prioridad"
-                        if (header.textContent.trim() === "Prioridad") {
-                            const selectedOption = cell.querySelector('select option:checked');
-                            newCell.textContent = selectedOption ? selectedOption.textContent : '';
-                        }
+
                         // Mostrar contenido de "Personal asignado"
-                        else if (header.textContent.trim() === "Personal asignado") {
+                        if (header.textContent.trim() === "Personal asignado") {
                             newCell.textContent = cell.textContent.trim();
                         } else {
                             newCell.textContent = cell.textContent;

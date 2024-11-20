@@ -12,6 +12,7 @@
     <table class="table" id="tabla">
         <thead>
             <tr>
+
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Orden_Fk)</th>
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].Fecha_Subida)</th>
                 <th>@Html.DisplayNameFor(model => model.PedidoTrabajo[0].ID_Grado_Fk)</th>
@@ -66,7 +67,6 @@
         @Html.PagedListPager(Model.PedidoTrabajo, page => Url.Page("./Index", new { pageNumber = page }), PagedListRenderOptions.Classic)
     </div>
 </body>
-
 <script>
     function formatDateInput(input) {
         let value = input.value.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
@@ -196,13 +196,13 @@
                     if (header && header.textContent.trim() !== "Detalle/Estado" && header.textContent.trim() !== "Asignar Personal") {
                         const newCell = document.createElement('td');
 
-                        // Mostrar solo la opción seleccionada en "Prioridad"
-                        if (header.textContent.trim() === "Prioridad") {
-                            const selectedOption = cell.querySelector('select option:checked');
-                            newCell.textContent = selectedOption ? selectedOption.textContent : '';
-                        }
+                        // // Mostrar solo la opción seleccionada en "Prioridad"
+                        // if (header.textContent.trim() === "Prioridad") {
+                        //     const selectedOption = cell.querySelector('select option:checked');
+                        //     newCell.textContent = selectedOption ? selectedOption.textContent : '';
+                        // }
                         // Mostrar contenido de "Personal asignado"
-                        else if (header.textContent.trim() === "Personal asignado") {
+                        if (header.textContent.trim() === "Personal asignado") {
                             newCell.textContent = cell.textContent.trim();
                         } else {
                             newCell.textContent = cell.textContent;
@@ -252,4 +252,3 @@
     }
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
