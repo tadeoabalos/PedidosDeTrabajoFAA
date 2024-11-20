@@ -118,6 +118,10 @@ namespace PPTT.Pages.PT
                     break;
                 case 1003:
                     body = $"Su solicitud de trabajo #{pedidoTrabajo.ID_Orden_Fk} se encuentra en curso. Se ha asignado al personal correspondiente para proceder con la resolución de la solicitud.";
+                    string bodyy = $"Se le ha encargado el trabajo #{pedidoTrabajo.ID_Orden_Fk} ingrese para ver los detalles";
+                    string corrreo = HttpContext.Session.GetString("corrreo");
+                    string asuntoo = HttpContext.Session.GetString("asuntoo");
+                    SendMail(corrreo, asuntoo, bodyy);  // Envía el correo del primer resultado
                     break;
                 case 1004:
                     body = $"Su pedido de trabajo #{pedidoTrabajo.ID_Orden_Fk} ha sido completado satisfactoriamente el día {fechaFormateada}.";
@@ -181,9 +185,10 @@ namespace PPTT.Pages.PT
             Console.WriteLine(IdUsuario);
             EjecutarObtenerCorreoStoredProcedure(IdUsuario);
             string corrreo = HttpContext.Session.GetString("correous");
-            string asunto = "Se le ha asignado un trabajo";
-            string body = $"Se le ha encargado el trabajo #{OrdenTrabajoId} ingrese para ver los detalles";
-            SendMail(corrreo, asunto, body);  // Envía el correo del primer resultado
+            string asuntoo = "Se le ha asignado un trabajo";
+            string bodyy = $"Se le ha encargado el trabajo #{OrdenTrabajoId} ingrese para ver los detalles";
+            HttpContext.Session.SetString("corrreo", corrreo);
+            HttpContext.Session.SetString("asuntoo", asuntoo);
 
             // Actualiza la sesión
             int datos = HttpContext.Session.GetInt32("datoss") ?? 0;
