@@ -248,7 +248,7 @@
     });
     function cargarUsuario(idPedidoTrabajo, elemento) {
         $.ajax({
-            url: '/PT?handler=UsuarioPorPt',
+            url: '@Url.Page("./Index", "UsuarioPorPt")',
             type: 'GET',
             data: { idPedidoTrabajo },
             success: function (response) {

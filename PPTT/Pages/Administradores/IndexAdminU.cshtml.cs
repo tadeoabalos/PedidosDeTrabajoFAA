@@ -13,7 +13,7 @@ namespace PPTT.Pages.Administradores
     public class IndexAdminUModel : PageModel
     {
         private readonly IConfiguration _configuration;
-        private readonly PPTT.Data.DBPPTTContext _context;
+        private readonly PPTT.Data.DBPPTTContext _context;        
 
         public IndexAdminUModel(PPTT.Data.DBPPTTContext context, IConfiguration configuration)
         {
@@ -42,7 +42,7 @@ namespace PPTT.Pages.Administradores
             int _division2 = HttpContext.Session.GetInt32("Division2") ?? 0;
             HttpContext.Session.SetInt32("UserRole", _rol);            
             HttpContext.Session.SetInt32("Division", _division);
-            HttpContext.Session.SetInt32("Division2", _division2);
+            HttpContext.Session.SetInt32("Division2", _division2);    
 
             if (_rol < 2)
             {

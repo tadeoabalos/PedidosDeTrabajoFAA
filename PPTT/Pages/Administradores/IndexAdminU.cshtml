@@ -37,7 +37,8 @@
             <th>@Html.DisplayNameFor(model => model.Admin[0].Apellido)</th>
             <th>@Html.DisplayNameFor(model => model.Admin[0].DNI)</th>
             <th>@Html.DisplayNameFor(model => model.Admin[0].Numero_Control)</th>
-            <th>@Html.DisplayNameFor(model => model.Admin[0].Correo)</th>            
+            <th>@Html.DisplayNameFor(model => model.Admin[0].Correo)</th>        
+            <th>@Html.DisplayNameFor(model => model.Admin[0].ID_Division_Fk)</th>
             <th>@Html.DisplayNameFor(model => model.Admin[0].ID_Servicio_Fk)</th>
             <th>@Html.DisplayNameFor(model => model.Admin[0].Fecha_Alta)</th>
             <th>@Html.DisplayNameFor(model => model.Admin[0].Fecha_Baja)</th>
@@ -63,22 +64,9 @@
                 <td>@item.DNI</td>
                 <td>@item.Numero_Control</td>
                 <td>@item.Correo</td>
-                @if (item.ID_Division_Fk == null)
-                {
-                    @:No se le asignó una división
-                }
-                else if (Model.Divisiones != null)
-                {
-                    var division = Model.Divisiones.FirstOrDefault(d => d.ID_Division_Pk == item.ID_Division_Fk);
-                    if (division != null)
-                    {
-                        @division.Descripcion_Division
-                    }
-                    else
-                    {
-                        @:División desconocida
-                    }
-                }
+                <td>
+                    @item.ID_Division_Fk
+                </td>
                 <td>
                     @if (item.ID_Servicio_Fk == null)
                     {
