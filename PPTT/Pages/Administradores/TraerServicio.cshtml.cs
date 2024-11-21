@@ -38,8 +38,8 @@ namespace PPTT.Pages.Administradores
                 Servicios = JsonConvert.DeserializeObject<Dictionary<int, string>>(serviciosJson) ?? new Dictionary<int, string>();
             }
 
-            Console.WriteLine($"ID: {_id_servicio_pk}");
-            Console.WriteLine($"Descripción: {_descripcion_servicio}");
+            //Console.WriteLine($"ID: {_id_servicio_pk}");
+            //Console.WriteLine($"Descripción: {_descripcion_servicio}");
 
             // Ejecutar el stored procedure
             bool isValid = await EjecutarValidarStoredProcedure();
