@@ -134,7 +134,16 @@ namespace PPTT.Pages.Administradores
                 }
             }
 
-            return RedirectToPage("./Index");
+            int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
+            if (_rol == 3)
+            {
+                return RedirectToPage("./Index");
+
+            }
+            else
+            {
+                return RedirectToPage("./IndexAdminU");
+            }
         }
 
         private bool AdminExists(int id)
