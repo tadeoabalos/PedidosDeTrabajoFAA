@@ -31,9 +31,17 @@
             </tr>
         </thead>
         <tbody>
+            @{
+                var divisionUsuario = HttpContext.Session.GetInt32("Division");
+                var divisionUsuario2 = HttpContext.Session.GetInt32("Division2");
+            }
+
             @foreach (var item in Model.PedidoTrabajo)
             {
-                <tr>
+                if ((item.ID_Estado_Fk != 1004 && item.ID_Estado_Fk != 1006) &&
+                (item.ID_Division_Fk == divisionUsuario || item.ID_Division_Fk == divisionUsuario2))
+                {
+                    <tr data-fecha="@item.Fecha_Subida?.ToString("yyyy-MM-dd") ?? " 0001-01-01"">
                     <td>@Html.DisplayFor(modelItem => item.ID_Orden_Fk)</td>
                     <td>@(item.Fecha_Subida?.ToString("dd-MM-yyyy") ?? "01-01-0001")</td>
                     <td>@Html.DisplayFor(modelItem => item.Grado.Descripcion_Grado)</td>
@@ -59,7 +67,7 @@
                     </td>
                     <td><a asp-page="./Details" asp-route-id="@item.ID_Orden_Trabajo_Pk">Ir a Detalle</a></td>
                 </tr>
-            }
+                }
             }
         </tbody>
 
