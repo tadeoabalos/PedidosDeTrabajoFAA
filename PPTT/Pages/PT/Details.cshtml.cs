@@ -50,6 +50,12 @@ namespace PPTT.Pages.PT
                 // Obtener los usuarios filtrados
                 try
                 {
+                    if (_rol == 3) {
+                        Usuarios = await _context.GetUsuariosFiltradosByOrdenAdminAsync(id);
+                    }
+                    else {
+                        Usuarios = await _context.GetUsuariosFiltradosByOrdenAsync(id);
+                    }
                     Usuarios = await _context.GetUsuariosFiltradosByOrdenAsync(id);
                     Estado = await _context.GetEstadosAsync();
                     Prioridad = await _context.GetPrioridadAsync();
