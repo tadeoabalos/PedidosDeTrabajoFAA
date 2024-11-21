@@ -83,12 +83,12 @@
 </body>
 <script>
     function formatDateInput(input) {
-        let value = input.value.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
+        let value = input.value.replace(/[^0-9]/g, ''); 
         if (value.length >= 2) {
-            value = value.slice(0, 2) + '-' + value.slice(2); // Añadir el primer guion
+            value = value.slice(0, 2) + '-' + value.slice(2); 
         }
         if (value.length >= 5) {
-            value = value.slice(0, 5) + '-' + value.slice(5); // Añadir el segundo guion
+            value = value.slice(0, 5) + '-' + value.slice(5); 
         }
         input.value = value;
     }
@@ -248,7 +248,7 @@
     });
     function cargarUsuario(idPedidoTrabajo, elemento) {
         $.ajax({
-            url: '/PT?handler=UsuarioPorPt',
+            url: '@Url.Page("./Index", "UsuarioPorPt")',
             type: 'GET',
             data: { idPedidoTrabajo },
             success: function (response) {

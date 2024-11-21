@@ -63,12 +63,25 @@
                 </div>
                 <div class="form-group">           
                     <label>Roles: </label>
-                    <select asp-for="Admin.ID_Rol_Fk"
-                            asp-items="Model.Roles"
-                            class="form-control">
-                        <option hidden selected value="">Seleccione un Rol</option>
-                    </select>
-                    <span asp-validation-for="Admin.ID_Rol_Fk" class="text-danger"></span>
+                    @if (_rol < 3 && Model.Admin.ID_Rol_Fk > 1)
+                    {
+                        <select asp-for="Admin.ID_Rol_Fk"
+                                asp-items="Model.Roles"
+                                class="form-control"
+                                disabled>
+                            <option hidden selected value="">Seleccione un Rol</option>
+                        </select>
+                        <span asp-validation-for="Admin.ID_Rol_Fk" class="text-danger"></span>
+                    }
+                    else
+                    {
+                        <select asp-for="Admin.ID_Rol_Fk"
+                                asp-items="Model.Roles"
+                                class="form-control">
+                            <option hidden selected value="">Seleccione un Rol</option>
+                        </select>
+                        <span asp-validation-for="Admin.ID_Rol_Fk" class="text-danger"></span>                                                
+                    }
                 </div>
                 @if(_Id_Division2 >= 1 || _rol == 3)
                 {
@@ -124,8 +137,7 @@
         $(document).ready(function () {
             $('#servicioLabel').hide();
             $('#servicioSelect').hide();
-
-            // Función para cargar los servicios automáticamente al cargar la página
+            
             function loadServicios(divisionId) {
                 $.ajax({
                     url: '@Url.Page("./Edit", "ServiciosByDivision")',
@@ -133,8 +145,7 @@
                     data: { division: divisionId },
                     success: function (data) {
                         var servicioSelect = $('#servicioSelect');
-                        servicioSelect.empty();
-                        servicioSelect.append('<option hidden value="">Seleccione el servicio correspondiente</option>');
+                        servicioSelect.empty();          
                         $.each(data, function (index, servicio) {
                             servicioSelect.append('<option value="' + servicio.iD_Servicio_Pk + '">' + servicio.descripcion_Servicio + '</option>');
                         });
@@ -143,17 +154,15 @@
                     }
                 });
             }
-
-            // Al cambiar la división
+       
             $('#deptSelect').change(function () {
                 var selectedDivision = $(this).val();
                 if (selectedDivision) {
                     loadServicios(selectedDivision);
                 }
             });
-
-            // Cargar servicios automáticamente al cargar la página si ya hay una división seleccionada
-            var initialDivisionId = $('#deptSelect').val(); // Obtiene el valor seleccionado
+            
+            var initialDivisionId = $('#deptSelect').val(); 
             if (initialDivisionId) {
                 loadServicios(initialDivisionId);
             }

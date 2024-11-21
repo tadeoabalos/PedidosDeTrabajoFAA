@@ -5,13 +5,15 @@ using PPTT.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
+using X.PagedList.Extensions;
 
 namespace PPTT.Pages.Administradores
 {
     public class IndexAdminUModel : PageModel
     {
         private readonly IConfiguration _configuration;
-        private readonly PPTT.Data.DBPPTTContext _context;
+        private readonly PPTT.Data.DBPPTTContext _context;        
 
         public IndexAdminUModel(PPTT.Data.DBPPTTContext context, IConfiguration configuration)
         {
@@ -21,9 +23,9 @@ namespace PPTT.Pages.Administradores
 
         public List<ServicioModel> Items { get; set; } = new List<ServicioModel>();
         public List<string> Divisions { get; set; } = new List<string>();
-        public IList<Admin> Admin { get; set; } = default!;
-
-        // Propiedad de búsqueda para filtrar los datos
+        public IPagedList<Admin> Admin { get; set; } = default!;
+        public int PageNumber { get; set; } = 1;
+        
         [BindProperty(SupportsGet = true)]
         public string SearchQuery { get; set; }
 
@@ -32,10 +34,15 @@ namespace PPTT.Pages.Administradores
             public int? ID_Servicio_Fk { get; set; }
         }
         public DbSet<Division> Divisiones { get; set; }
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(int? pageNumber)
         {
+            PageNumber = pageNumber ?? 1;
             int _rol = HttpContext.Session.GetInt32("UserRole") ?? 0;
-            HttpContext.Session.SetInt32("UserRole", _rol);
+            int _division = HttpContext.Session.GetInt32("Division") ?? 0;
+            int _division2 = HttpContext.Session.GetInt32("Division2") ?? 0;
+            HttpContext.Session.SetInt32("UserRole", _rol);            
+            HttpContext.Session.SetInt32("Division", _division);
+            HttpContext.Session.SetInt32("Division2", _division2);    
 
             if (_rol < 2)
             {
@@ -57,7 +64,8 @@ namespace PPTT.Pages.Administradores
                     var query = _context.Usuario
     .Include(u => u.Division) // Asegúrate de cargar la información de Division
     .AsQueryable();
-
+    query = query.Where(u => u.ID_Rol_Fk != 3); 
+                    query = query.Where(u => u.ID_Division_Fk == _division || u.ID_Division_Fk == _division2); 
 
                     if (!string.IsNullOrEmpty(SearchQuery))
                     {                       
@@ -74,7 +82,7 @@ namespace PPTT.Pages.Administradores
                         }
                     }
 
-                    Admin = await query.ToListAsync();
+                    Admin = query.ToPagedList(PageNumber, 8);
                     return Page();
                 }
             }

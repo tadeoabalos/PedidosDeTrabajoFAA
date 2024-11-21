@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using X.PagedList;
-using PPTT.Data;
 using PPTT.Models;
 using X.PagedList.Extensions;
 
@@ -95,30 +90,6 @@ namespace PPTT.Pages.Administradores
         {
             var prioridades = await _context.GetPrioridadAsync();
             return new JsonResult(prioridades);
-        }
-
-        public async Task<JsonResult> OnGetUsuarioPorPtAsync(string OrdenTrabajoId)
-        {
-            if (string.IsNullOrEmpty(OrdenTrabajoId))
-            {
-                return new JsonResult(new List<Admin>()); // Retorna una lista vacía si PT no es válido
-            }
-
-            int ptId = int.Parse(OrdenTrabajoId); // Convierte PT a int
-            var usuarios = await _context.GetUsuarioPorPtAsync(ptId);
-
-            if (usuarios != null && usuarios.Count > 0)
-            {
-                return new JsonResult(usuarios); // Retorna la lista de usuarios como JSON
-            }
-
-            return new JsonResult(new List<Admin>());
-        }
-
-
-
-
-
-
+        }        
     }
 }

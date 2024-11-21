@@ -51,7 +51,7 @@
                         @if (item.ID_Estado_Fk == 1003)
                         {
                             <span class="usuario-estado" data-pedido-id="@item.ID_Orden_Trabajo_Pk">Cargando...</span>
-                        }   
+                        }
                         else
                         {
                             <span>No se asignó personal</span>
@@ -60,7 +60,9 @@
                     <td><a asp-page="./Details" asp-route-id="@item.ID_Orden_Trabajo_Pk">Ir a Detalle</a></td>
                 </tr>
             }
+            }
         </tbody>
+
     </table>
     
     <div>
@@ -233,9 +235,10 @@
             cargarUsuario(idPedidoTrabajo, $(this));
         });
     });
+
     function cargarUsuario(idPedidoTrabajo, elemento) {
         $.ajax({
-            url: '/PT?handler=UsuarioPorPt',
+            url: '@Url.Page("./Index", "UsuarioPorPt")',
             type: 'GET',
             data: { idPedidoTrabajo },
             success: function (response) {
@@ -251,4 +254,5 @@
         });
     }
 </script>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

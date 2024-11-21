@@ -2,7 +2,8 @@
 @model PPTT.Pages.Administradores.IndexAdminUModel
 @using Microsoft.AspNetCore.Mvc.RazorPages
 @using PPTT.Data
-
+@using X.PagedList.Mvc.Core
+@using X.PagedList
 @{
     ViewData["Title"] = "ABM usuario";    
     var servicios = HttpContext.Session.GetObject<Dictionary<int, string>>("Servicios");
@@ -51,9 +52,9 @@
         }
         @foreach (var item in Model.Admin)
         {
-            @if (item.ID_Rol_Fk == 3)  // Verificar si el rol es igual a 3
+            @if (item.ID_Rol_Fk == 3)  
             {
-                continue;  // Omitir este usuario en la tabla
+                continue;  
             }
             @if (item.ID_Division_Fk == divisionUsuario || item.ID_Division_Fk == divisionUsuario2)
             {
@@ -112,7 +113,9 @@
         }
     </tbody>
 </table>
-
+<div>
+    @Html.PagedListPager(Model.Admin, page => Url.Page("./IndexAdminU", new { pageNumber = page }), PagedListRenderOptions.Classic)
+</div>
 <!-- Scripts para exportar a Excel -->
 <script src="https://unpkg.com/xlsx@0.16.9/dist/xlsx.full.min.js"></script>
 <script src="https://unpkg.com/file-saverjs@latest/FileSaver.min.js"></script>
