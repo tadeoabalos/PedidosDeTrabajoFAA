@@ -51,7 +51,9 @@ namespace PPTT.Pages.Administradores
                     .Include(pt => pt.Grado)
                     .Include(pt => pt.Division)
                     .AsNoTracking()
-                    .Where(pt => pt.ID_Division_Fk == _division || pt.ID_Division_Fk == _division2);
+                    .Where(pt => (pt.ID_Division_Fk == _division || pt.ID_Division_Fk == _division2)
+                                 && pt.ID_Estado_Fk != 1004);
+                ;
 
                 if (fechaInicio.HasValue && fechaFin.HasValue)
                 {

@@ -38,8 +38,7 @@
 
             @foreach (var item in Model.PedidoTrabajo)
             {
-                if ((item.ID_Estado_Fk != 1004 && item.ID_Estado_Fk != 1006) &&
-                (item.ID_Division_Fk == divisionUsuario || item.ID_Division_Fk == divisionUsuario2))
+                if (item.ID_Estado_Fk != 1004 && item.ID_Estado_Fk != 1006)
                 {
                     <tr data-fecha="@item.Fecha_Subida?.ToString("yyyy-MM-dd") ?? " 0001-01-01"">
                     <td>@Html.DisplayFor(modelItem => item.ID_Orden_Fk)</td>

@@ -75,7 +75,7 @@ namespace PPTT.Data
         }
         public async Task<List<Admin>> GetUsuariosFiltradosByOrdenAsync(int? id)
         {
-            return await Usuario.FromSqlRaw("EXEC [dbo].[UsuariosFiltrados]  @p0", id).ToListAsync();
+            return await Usuario.FromSqlRaw("EXEC [dbo].[UsuariosFiltradosRol]  @p0", id).ToListAsync();
         }
         public async Task<List<Admin>> GetUsuariosAsync()
         {
