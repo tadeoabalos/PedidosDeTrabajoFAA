@@ -73,9 +73,13 @@ namespace PPTT.Data
         {
             return await Usuario.FromSqlRaw("EXEC [dbo].[Usuarios_Filtrados]  @p0", division).ToListAsync();
         }
-        public async Task<List<Admin>> GetUsuariosFiltradosByOrdenAsync(int? id)
+        public async Task<List<Admin>> GetUsuariosFiltradosByOrdenAdminAsync(int? id)
         {
             return await Usuario.FromSqlRaw("EXEC [dbo].[UsuariosFiltrados]  @p0", id).ToListAsync();
+        }
+        public async Task<List<Admin>> GetUsuariosFiltradosByOrdenAsync(int? id)
+        {
+            return await Usuario.FromSqlRaw("EXEC [dbo].[UsuariosFiltradosRol]  @p0", id).ToListAsync();
         }
         public async Task<List<Admin>> GetUsuariosAsync()
         {

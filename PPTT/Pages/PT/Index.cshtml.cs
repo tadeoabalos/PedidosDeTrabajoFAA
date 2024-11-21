@@ -40,14 +40,13 @@ namespace PPTT.Pages.Administradores
                     .Include(pt => pt.Dependencia_Interna)
                     .Include(pt => pt.Grado)
                     .Include(pt => pt.Division)
-                    .AsNoTracking();
-
+                    .AsNoTracking()
+                    .Where(pt => pt.ID_Estado_Fk != 1004);
                 if (fechaInicio.HasValue && fechaFin.HasValue)
                 {
                     var fechaFinFinal = fechaFin.Value.Date.AddDays(1).AddTicks(-1);
                     pedidosQuery = pedidosQuery.Where(pt => pt.Fecha_Subida >= fechaInicio && pt.Fecha_Subida <= fechaFinFinal);
-                }
-
+                }                
                 PedidoTrabajo = pedidosQuery.ToPagedList(PageNumber, 8);
             }
             else
