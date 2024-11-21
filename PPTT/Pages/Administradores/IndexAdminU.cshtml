@@ -37,7 +37,7 @@
             <th>@Html.DisplayNameFor(model => model.Admin[0].Apellido)</th>
             <th>@Html.DisplayNameFor(model => model.Admin[0].DNI)</th>
             <th>@Html.DisplayNameFor(model => model.Admin[0].Numero_Control)</th>
-            <th>@Html.DisplayNameFor(model => model.Admin[0].Correo)</th>        
+            <th>@Html.DisplayNameFor(model => model.Admin[0].Correo)</th>
             <th>@Html.DisplayNameFor(model => model.Admin[0].ID_Division_Fk)</th>
             <th>@Html.DisplayNameFor(model => model.Admin[0].ID_Servicio_Fk)</th>
             <th>@Html.DisplayNameFor(model => model.Admin[0].Fecha_Alta)</th>
@@ -64,9 +64,7 @@
                 <td>@item.DNI</td>
                 <td>@item.Numero_Control</td>
                 <td>@item.Correo</td>
-                <td>
-                    @item.ID_Division_Fk
-                </td>
+                    <td>@Html.DisplayFor(modelItem => item.Division.Descripcion_Division)</td>
                 <td>
                     @if (item.ID_Servicio_Fk == null)
                     {
