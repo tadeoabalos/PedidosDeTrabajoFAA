@@ -54,8 +54,11 @@ namespace PPTT.Pages.Administradores
                 }
                 else
                 {
-                    var query = _context.Usuario.AsQueryable();
-                   
+                    var query = _context.Usuario
+    .Include(u => u.Division) // Asegúrate de cargar la información de Division
+    .AsQueryable();
+
+
                     if (!string.IsNullOrEmpty(SearchQuery))
                     {                       
                         if (int.TryParse(SearchQuery, out int dniQuery))
