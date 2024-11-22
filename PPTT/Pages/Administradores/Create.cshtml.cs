@@ -36,30 +36,7 @@ namespace PPTT.Pages.Administradores
             if (!ModelState.IsValid)
             {
                 return Page();
-            }
-
-            // Verificar si el DNI, Correo o NumeroDeControl ya existen en la base de datos
-            var usuarioExistente = await _context.Usuario.FirstOrDefaultAsync(u =>
-                u.DNI == Admin.DNI ||
-                u.Correo == Admin.Correo ||
-                u.Numero_Control == Admin.Numero_Control);
-
-            if (usuarioExistente != null)
-            {
-                if (usuarioExistente.DNI == Admin.DNI)
-                {
-                    ModelState.AddModelError(string.Empty, "El DNI ya existe en la base de datos.");
-                }
-                if (usuarioExistente.Correo == Admin.Correo)
-                {
-                    ModelState.AddModelError(string.Empty, "El correo ya existe en la base de datos.");
-                }
-                if (usuarioExistente.Numero_Control == Admin.Numero_Control)
-                {
-                    ModelState.AddModelError(string.Empty, "El número de control ya existe en la base de datos.");
-                }
-                return Page();
-            }
+            }                   
 
             // Configuración de las propiedades del nuevo usuario
             Admin.ID_Rol_Fk = 1;

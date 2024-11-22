@@ -46,11 +46,7 @@
     </thead>
     <tbody>
         @foreach (var item in Model.Admin)
-        {
-            @if (item.ID_Rol_Fk == 3) 
-            {
-                continue; 
-            }
+        {            
             <tr>
                 <td>@item.Nombre</td>
                 <td>@item.Apellido</td>

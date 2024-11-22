@@ -41,7 +41,7 @@ namespace PPTT.Pages.Administradores
                     .Include(pt => pt.Grado)
                     .Include(pt => pt.Division)
                     .AsNoTracking()
-                    .Where(pt => pt.ID_Estado_Fk != 1004);
+                    .Where(pt => pt.ID_Estado_Fk != 1004 && pt.ID_Estado_Fk != 1006);                    
                 if (fechaInicio.HasValue && fechaFin.HasValue)
                 {
                     var fechaFinFinal = fechaFin.Value.Date.AddDays(1).AddTicks(-1);

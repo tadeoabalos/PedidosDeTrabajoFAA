@@ -40,39 +40,35 @@
             }
 
             @foreach (var item in Model.PedidoTrabajo)
-            {
-                if ((item.ID_Estado_Fk != 1004 && item.ID_Estado_Fk != 1006) &&
-                (item.ID_Division_Fk == divisionUsuario || item.ID_Division_Fk == divisionUsuario2))
-                {
-                    <tr data-fecha="@item.Fecha_Subida?.ToString("yyyy-MM-dd") ?? " 0001-01-01"">
-                        <td>@Html.DisplayFor(modelItem => item.ID_Orden_Fk)</td>
-                        <td>@item.Fecha_Subida?.ToString("dd-MM-yyyy")</td>
-                        <td>@Html.DisplayFor(modelItem => item.Grado.Descripcion_Grado)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Apellido_Solicitante)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Organismo.Descripcion_organismo)</td>
-                        <td>@Html.DisplayFor(modelItem => item.RTI_Solicitante)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Numero_Oficina_PT)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Correo)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Division.Descripcion_Division)</td>
-                        <td>@Html.Raw(item.Tarea.Descripcion_Tarea.Length > 3 ? item.Tarea.Descripcion_Tarea : item.Tarea.Descripcion_Tarea)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Observacion)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Estado.Descripcion_Estado)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Prioridad.Descripcion_Prioridad)</td>                        
-                        <td>
-                            @if (item.ID_Estado_Fk == 1003)
-                            {
-                                <span class="usuario-estado" data-pedido-id="@item.ID_Orden_Trabajo_Pk">Cargando...</span>
-                            }
-                            else
-                            {
-                                <span>No se asignó personal</span>
-                            }
-                        </td>
-                        <td>
-                            <a asp-page="./Details" class="" asp-route-id="@item.ID_Orden_Trabajo_Pk">Ir a Detalle</a>
-                        </td>
-                    </tr>
-                }
+            {                
+                <tr data-fecha="@item.Fecha_Subida?.ToString("yyyy-MM-dd") ?? " 0001-01-01"">
+                    <td>@Html.DisplayFor(modelItem => item.ID_Orden_Fk)</td>
+                    <td>@item.Fecha_Subida?.ToString("dd-MM-yyyy")</td>
+                    <td>@Html.DisplayFor(modelItem => item.Grado.Descripcion_Grado)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Apellido_Solicitante)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Organismo.Descripcion_organismo)</td>
+                    <td>@Html.DisplayFor(modelItem => item.RTI_Solicitante)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Numero_Oficina_PT)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Correo)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Division.Descripcion_Division)</td>
+                    <td>@Html.Raw(item.Tarea.Descripcion_Tarea.Length > 3 ? item.Tarea.Descripcion_Tarea : item.Tarea.Descripcion_Tarea)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Observacion)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Estado.Descripcion_Estado)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Prioridad.Descripcion_Prioridad)</td>                        
+                    <td>
+                        @if (item.ID_Estado_Fk == 1003)
+                        {
+                            <span class="usuario-estado" data-pedido-id="@item.ID_Orden_Trabajo_Pk">Cargando...</span>
+                        }
+                        else
+                        {
+                            <span>No se asignó personal</span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-page="./Details" class="" asp-route-id="@item.ID_Orden_Trabajo_Pk">Ir a Detalle</a>
+                    </td>
+                </tr>                
             }
         </tbody>
     </table>

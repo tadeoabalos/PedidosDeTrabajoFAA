@@ -52,10 +52,9 @@ namespace PPTT.Pages.Administradores
                 }
                 else
                 {
-                    var query = _context.Usuario
-    .Include(u => u.Division) // Asegúrate de cargar la información de Division
-    .AsQueryable();
-    query = query.Where(u => u.ID_Rol_Fk != 3);
+                    var query = _context.Usuario 
+                    .AsQueryable();
+                    query = query.Where(u => u.ID_Rol_Fk != 3);
 
                     if (!string.IsNullOrEmpty(SearchQuery))
                     {

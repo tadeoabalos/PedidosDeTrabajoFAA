@@ -189,7 +189,7 @@ namespace PPTT.Pages.PT
                 return Page();
             }
             Console.WriteLine(IdUsuario);
-            EjecutarObtenerCorreoStoredProcedure(IdUsuario);
+            await EjecutarObtenerCorreoStoredProcedure(IdUsuario);
             string corrreo = HttpContext.Session.GetString("correous");
             string asuntoo = "Se le ha asignado un trabajo";
             string bodyy = $"Se le ha encargado el trabajo #{OrdenTrabajoId} ingrese para ver los detalles";

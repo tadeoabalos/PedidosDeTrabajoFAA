@@ -62,9 +62,8 @@ namespace PPTT.Pages.Administradores
                 else
                 {
                     var query = _context.Usuario
-    .Include(u => u.Division) // Asegúrate de cargar la información de Division
-    .AsQueryable();
-    query = query.Where(u => u.ID_Rol_Fk != 3); 
+                        .AsQueryable();
+                    query = query.Where(u => u.ID_Rol_Fk != 3); 
                     query = query.Where(u => u.ID_Division_Fk == _division || u.ID_Division_Fk == _division2); 
 
                     if (!string.IsNullOrEmpty(SearchQuery))

@@ -1,6 +1,7 @@
 ﻿@page
-@model PPTT.Pages.Administradores.IndexPPTT
-
+@model PPTT.Pages.Administradores.IndexPTFin
+@using X.PagedList.Mvc.Core
+@using X.PagedList
 @{
     ViewData["Title"] = "Pedidos de trabajo";
 }
@@ -85,59 +86,59 @@
         </thead>
         <tbody>
             @foreach (var item in Model.PedidoTrabajo)
-            {
-                if (item.ID_Estado_Fk == 1004 || item.ID_Estado_Fk == 1006)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ID_Orden_Fk)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Fecha_Subida)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Fecha_Estimada_Fin)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Grado.Descripcion_Grado)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Apellido_Solicitante)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Organismo.Descripcion_organismo)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RTI_Solicitante)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Numero_Oficina_PT)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Correo)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ID_Division_Fk)
-                        </td>
-                        <td>
-                            @Html.Raw(item.Tarea.Descripcion_Tarea.Length > 3 ?
-                                     item.Tarea.Descripcion_Tarea.Substring(0) :
-                                     item.Tarea.Descripcion_Tarea)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Observacion)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Estado.Descripcion_Estado)
-                        </td>
-                        <td>
-                            <a asp-page="./Details" asp-route-id="@item.ID_Orden_Trabajo_Pk">Editar Estado</a>
-                        </td>
-                    </tr>
-                }
-            }
+            {               
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ID_Orden_Fk)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Fecha_Subida)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Fecha_Estimada_Fin)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Grado.Descripcion_Grado)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Apellido_Solicitante)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Organismo.Descripcion_organismo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RTI_Solicitante)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Numero_Oficina_PT)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Correo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ID_Division_Fk)
+                    </td>
+                    <td>
+                        @Html.Raw(item.Tarea.Descripcion_Tarea.Length > 3 ?
+                                    item.Tarea.Descripcion_Tarea.Substring(0) :
+                                    item.Tarea.Descripcion_Tarea)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Observacion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Estado.Descripcion_Estado)
+                    </td>
+                    <td>
+                        <a asp-page="./Details" asp-route-id="@item.ID_Orden_Trabajo_Pk">Editar Estado</a>                        
+                    </td>
+                </tr>
+            }            
         </tbody>
     </table>
+    <div>
+        @Html.PagedListPager(Model.PedidoTrabajo, page => Url.Page("./Finalizados", new { pageNumber = page }), PagedListRenderOptions.Classic)
+    </div>
 </body>
 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
