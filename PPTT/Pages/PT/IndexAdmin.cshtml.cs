@@ -61,8 +61,13 @@ namespace PPTT.Pages.Administradores
                     pedidosQuery = pedidosQuery.Where(pt => pt.Fecha_Subida >= fechaInicio && pt.Fecha_Subida <= fechaFinFinal);
                 }
 
-                PedidoTrabajo = pedidosQuery.ToPagedList(PageNumber, 8);               
+                PedidoTrabajo = pedidosQuery.ToPagedList(PageNumber, 8);
             }
+            else if (_rol == 3)
+            {
+                RedirectToPage("/PT/Index");
+            }
+
             else
             {
                 RedirectToPage("/Index");
