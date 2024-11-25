@@ -109,10 +109,9 @@ namespace PPTT.Pages.PT
             PedidoTrabajo.IP_Solicitante = HttpContext.Connection.RemoteIpAddress?.ToString();
             PedidoTrabajo.ID_Prioridad_Fk = 1;
 
-            //  Almacena el valor retornado del stored procedure en la propiedad ID_Orden_Fk
-            // PedidoTrabajo.ID_Orden_Fk = await EjecutarDiferentesIDs(PedidoTrabajo.ID_Tarea_Fk);
-             PedidoTrabajo.ID_Orden_Fk = 1;
-            _context.PTUsuario.Add(PedidoTrabajo);
+            PedidoTrabajo.ID_Orden_Fk = await EjecutarDiferentesIDs(PedidoTrabajo.ID_Tarea_Fk);
+             
+             _context.PTUsuario.Add(PedidoTrabajo);
 
             await _context.SaveChangesAsync();
             string mail = PedidoTrabajo.Correo;
@@ -142,6 +141,24 @@ namespace PPTT.Pages.PT
                             if (await reader.ReadAsync())
                             {
                                 idOrden = reader.GetInt32(0); // Asigna el ID retornado
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
+                                Console.WriteLine(idOrden);
                             }
                         }
                     }
