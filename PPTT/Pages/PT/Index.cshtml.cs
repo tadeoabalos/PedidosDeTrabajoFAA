@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using X.PagedList;
 using PPTT.Models;
 using X.PagedList.Extensions;
+using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace PPTT.Pages.Administradores
 {
@@ -93,6 +95,48 @@ namespace PPTT.Pages.Administradores
         {
             var prioridades = await _context.GetPrioridadAsync();
             return new JsonResult(prioridades);
-        }        
+        }
+
+        public IActionResult OnGetBuscarPedidos(string searchTerm)
+        {
+            var resultados = new List<dynamic>();
+            
+            using (var connection = new SqlConnection(_context.Database.GetDbConnection().ConnectionString))
+            {
+                connection.Open();
+                
+                using (var command = new SqlCommand("BuscarPedidos", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@searchTerm", searchTerm);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            resultados.Add(new
+                            {
+                                idOrden = reader["ID_Orden_Fk"],
+                                fechaSubida = reader["Fecha_Subida"],
+                                grado = reader["ID_Grado_Fk"],
+                                organismo = reader["ID_Organismo_Fk"],
+                                apellidoSolicitante = reader["Apellido_Solicitante"],
+                                correo = reader["Correo"],
+                                rti = reader["RTI_Solicitante"],
+                                oficina = reader["Numero_Oficina_PT"],
+                                division = reader["ID_Division_Fk"],
+                                tarea = reader["ID_Tarea_Fk"],
+                                observacion = reader["Observacion"],
+                                estado = reader["ID_Estado_Fk"],
+                                prioridad = reader["ID_Prioridad_Fk"],                                
+                            });
+                        }
+                    }
+                }
+            }
+
+            return new JsonResult(resultados);
+        }
+
     }
 }

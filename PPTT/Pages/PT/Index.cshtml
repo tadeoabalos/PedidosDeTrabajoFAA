@@ -8,7 +8,6 @@
         <a asp-page="./Finalizados" class="btn-header-pt">Trabajos Finalizados</a>
         <button id="btnExportar" class="btnExportar">Exportar Excel</button>
     </div>
-
     <table class="table" id="tabla">
         <thead>
             <tr>
@@ -72,6 +71,10 @@
         @Html.PagedListPager(Model.PedidoTrabajo, page => Url.Page("./Index", new { pageNumber = page }), PagedListRenderOptions.Classic)
     </div>
 </body>
+<script src="https://unpkg.com/xlsx@0.16.9/dist/xlsx.full.min.js"></script>
+<script src="https://unpkg.com/file-saverjs@latest/FileSaver.min.js"></script>
+<script src="https://unpkg.com/tableexport@latest/dist/js/tableexport.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     function formatDateInput(input) {
         let value = input.value.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
@@ -113,124 +116,6 @@
         });
     });
 </script>
-
-
-<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form method="post" asp-page-handler="AsignarUsuario">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmModalLabel">Confirmar Asignación</h5>
-                </div>
-                <div class="modal-body">
-                    <p>¿Está seguro de querer asignar a <b id="usuarioNombre"></b> para esta tarea?</p>
-                    <input type="hidden" id="usuarioId" name="UsuarioId" />
-                    <input type="hidden" id="ordenTrabajoId" name="OrdenTrabajoId" />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="cancelaAsignacion" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Aceptar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>  <!-- VENTANA MODAL ASIGNACION -->
-<div class="modal fade" id="confirmPrioridadModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form method="post" asp-page-handler="SetPrioridad">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmModalLabel">Confirmar Modificación</h5>
-                </div>
-                <div class="modal-body">
-                    <span id="warningMessagePen" class="alert alert-warning">
-                        <b>Advertencia:</b> Estás a punto de cambiar la prioridad de esta orden. Por favor, confirma que deseas proceder.
-                    </span>
-                    <input type="hidden" id="ordenTrabajo" name="OrdenTrabajoId" />
-                    <input type="hidden" id="prioridadInput" name="PrioridadId" />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="cancelaPrioridad" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Aceptar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div> 
-
-<script src="https://unpkg.com/xlsx@0.16.9/dist/xlsx.full.min.js"></script>
-<script src="https://unpkg.com/file-saverjs@latest/FileSaver.min.js"></script>
-<script src="https://unpkg.com/tableexport@latest/dist/js/tableexport.min.js"></script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const $btnExportar = document.querySelector("#btnExportar"),
-            $tabla = document.querySelector("#tabla");
-
-        $btnExportar.addEventListener("click", function () {
-            // Crear una nueva tabla para la exportación
-            let exportTable = document.createElement('table');
-            let exportTbody = document.createElement('tbody');
-            exportTable.appendChild(exportTbody);
-
-            // Agregar encabezados a la tabla exportada (excluyendo "Detalle/Estado" y "Asignar Personal")
-            const headers = Array.from($tabla.querySelectorAll('thead th'));
-            const newRow = document.createElement('tr');
-
-            headers.forEach((header, index) => {
-                if (header.textContent.trim() !== "Detalle/Estado" && header.textContent.trim() !== "Asignar Personal") {
-                    const newHeader = document.createElement('th');
-                    newHeader.textContent = header.textContent;
-                    newRow.appendChild(newHeader);
-                }
-            });
-
-            exportTbody.appendChild(newRow);
-
-            // Agregar datos a la tabla exportada
-            const rows = Array.from($tabla.querySelectorAll('tbody tr'));
-
-            rows.forEach(row => {
-                const cells = Array.from(row.querySelectorAll('td'));
-                const newRow = document.createElement('tr');
-
-                cells.forEach((cell, index) => {
-                    const header = headers[index];
-
-                    // Excluir celdas de "Detalle/Estado" y "Asignar Personal"
-                    if (header && header.textContent.trim() !== "Detalle/Estado" && header.textContent.trim() !== "Asignar Personal") {
-                        const newCell = document.createElement('td');
-
-                        // // Mostrar solo la opción seleccionada en "Prioridad"
-                        // if (header.textContent.trim() === "Prioridad") {
-                        //     const selectedOption = cell.querySelector('select option:checked');
-                        //     newCell.textContent = selectedOption ? selectedOption.textContent : '';
-                        // }
-                        // Mostrar contenido de "Personal asignado"
-                        if (header.textContent.trim() === "Personal asignado") {
-                            newCell.textContent = cell.textContent.trim();
-                        } else {
-                            newCell.textContent = cell.textContent;
-                        }
-
-                        newRow.appendChild(newCell);
-                    }
-                });
-
-                exportTbody.appendChild(newRow);
-            });
-
-            // Exportar la tabla utilizando la biblioteca XLSX
-            const workbook = XLSX.utils.table_to_book(exportTable, { sheet: "Pedidos" });
-            XLSX.writeFile(workbook, "Reporte Pedidos Trabajo.xlsx");
-        });
-    });
-
-
-</script>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script type="text/javascript">
     $(document).ready(function () {
         $(".usuario-estado").each(function () {
@@ -257,5 +142,44 @@
         });
     }
 </script>
+<script>
+    $(document).ready(function () {
+        $('#searchBar').on('keyup', function () {
+            const query = $(this).val();
+            if (query.length > 2 || query.length === 0) { 
+                $.ajax({
+                    url: '@Url.Page("./Index", "BuscarPedidos")',
+                    type: 'GET',
+                    data: { searchTerm: query },
+                    success: function (response) {
+                        $('#tabla tbody').empty(); 
+                        response.forEach(item => {
+                            $('#tabla tbody').append(`
+                                    <tr>
+                                        <td>${item.idOrden}</td>
+                                        <td>${item.fechaSubida}</td>
+                                        <td>${item.grado.Descripcion_Grado}</td>
+                                        <td>${item.apellidoSolicitante}</td>
+                                        <td>${item.organismo}</td>
+                                        <td>${item.rti}</td>
+                                        <td>${item.oficina}</td>
+                                        <td>${item.correo}</td>
+                                        <td>${item.division}</td>
+                                        <td>${item.tarea}</td>
+                                        <td>${item.observacion}</td>
+                                        <td>${item.estado}</td>
+                                        <td>${item.prioridad}</td>
+                                        <td></td>
+                                    </tr>
+                                `);
+                        });
+                    },
+                    error: function () {
+                        alert('Error al buscar los datos');
+                    }
+                });
+            }
+        });
+    });
+</script>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
